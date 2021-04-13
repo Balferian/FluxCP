@@ -43,7 +43,7 @@ $col .= 'defense, magic_defense, attack, attack2, ';
 $col .= 'STR AS strength, AGI AS agility, VIT AS vitality, `INT` AS intelligence, DEX AS dexterity, LUK AS luck, ';
 $col .= 'size, race, element, element_level, mode_canmove AS mode, ';
 $col .= 'walk_speed, attack_delay, attack_motion, damage_motion, ';
-$col .= 'mvp_exp, ai, ';
+$col .= 'mvp_exp, ai, class, ';
 $col .= implode(', ', $mode_list).', ';		// Mode list
 
 // Item drops.
@@ -132,41 +132,58 @@ if ($monster) {
 				'nosteal' => ($monster->{$dropField.'_nosteal'} ? 'NoLabel' : 'YesLabel')
 			);
 
-			if ($itemDrops[$dropField]['type'] == 'Card') { 
-				$adjust = ($monster->boss) ? $server->dropRates['CardBoss'] : $server->dropRates['Card'];
-				$itemDrops[$dropField]['type'] = 'card';
-			}
-			elseif (preg_match('/^mvpdrop/', $dropField)) {
+			if (preg_match('/^mvpdrop/', $dropField)) {
 				$adjust = $server->dropRates['MvpItem'];
 				$itemDrops[$dropField]['type'] = 'mvp';
 				$itemDrops[$dropField]['nosteal'] = 'NoLabel';
+				$drops['Min'] = null;
+				$drops['Max'] = null;
 			}
 			elseif (preg_match('/^drop/', $dropField)) {
 				switch($monster->{$dropField.'_type'}) {
 					case 'Healing':
-						$adjust = ($monster->boss) ? $server->dropRates['HealBoss'] : $server->dropRates['Heal'];
+						$adjust = ($monster->class == "Boss") ? (($monster->mvp_exp) ? $server->dropRates['HealMVP'] : $server->dropRates['HealBoss']) : $server->dropRates['Heal'];
+						$drops['Min'] = $server->dropRates['HealMin'];
+						$drops['Max'] = $server->dropRates['HealMax'];
 						break;
 
 					case 'Usable':
 					case 'Cash':
-						$adjust = ($monster->boss) ? $server->dropRates['UseableBoss'] : $server->dropRates['Useable'];
+						$adjust = ($monster->class == "Boss") ? (($monster->mvp_exp) ? $server->dropRates['UseableMVP'] : $server->dropRates['UseableBoss']) : $server->dropRates['Useable'];
+						$drops['Min'] = $server->dropRates['UseableMin'];
+						$drops['Max'] = $server->dropRates['UseableMax'];
 						break;
 
 					case 'Weapon':
 					case 'Armor':
 					case 'Petarmor':
-						$adjust = ($monster->boss) ? $server->dropRates['EquipBoss'] : $server->dropRates['Equip'];
+						$adjust = ($monster->class == "Boss") ? (($monster->mvp_exp) ? $server->dropRates['EquipMVP'] : $server->dropRates['EquipBoss']) : $server->dropRates['Equip'];
+						$drops['Min'] = $server->dropRates['EquipMin'];
+						$drops['Max'] = $server->dropRates['EquipMax'];
+						break;
+						
+					case 'Card':
+						$adjust = ($monster->class == "Boss") ? (($monster->mvp_exp) ? $server->dropRates['CardMVP'] : $server->dropRates['CardBoss']) : $server->dropRates['Card'];
+						$drops['Min'] = $server->dropRates['CardMin'];
+						$drops['Max'] = $server->dropRates['CardMax'];
 						break;
 					
 					default: // Common
-						$adjust = ($monster->boss) ? $server->dropRates['CommonBoss'] : $server->dropRates['Common'];
+						$adjust = ($monster->class == "Boss") ? (($monster->mvp_exp) ? $server->dropRates['CommonMVP'] : $server->dropRates['CommonBoss']) : $server->dropRates['Common'];
+						$drops['Min'] = $server->dropRates['CommonMin'];
+						$drops['Max'] = $server->dropRates['CommonMax'];
 						break;
 				}
 				
 				$itemDrops[$dropField]['type'] = 'normal';
 			}
 			
-			$itemDrops[$dropField]['chance'] = $itemDrops[$dropField]['chance'] * $adjust / 10000;
+			$itemDrops[$dropField]['chance'] = $itemDrops[$dropField]['chance'] * $adjust;
+			if($drops['Min'] && $itemDrops[$dropField]['chance'] < $drops['Min'])
+				$itemDrops[$dropField]['chance'] = $drops['Min'] * 100;
+			if($drops['Max'] && $itemDrops[$dropField]['chance'] > $drops['Max'])
+				$itemDrops[$dropField]['chance'] = $drops['Max'] * 100;
+			$itemDrops[$dropField]['chance'] /= 10000;
 
 			if ($itemDrops[$dropField]['chance'] > 100) {
 				$itemDrops[$dropField]['chance'] = 100;

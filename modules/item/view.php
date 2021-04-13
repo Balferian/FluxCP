@@ -83,7 +83,7 @@ if ($item) {
 	$mobTable   = new Flux_TemporaryTable($server->connection, $mobDB, $fromTables);
 
 	$col  = 'id AS monster_id, name_english AS monster_name, level AS monster_level, ';
-	$col .= 'race AS monster_race, element AS monster_element, element_level AS monster_ele_lv, mvp_exp, ';
+	$col .= 'race AS monster_race, element AS monster_element, element_level AS monster_ele_lv, mvp_exp, class, ';
 
 	// Normal drops.
 	$col .= 'drop1_item, drop1_rate, drop1_nosteal, drop1_option, drop1_index, ';
@@ -168,26 +168,46 @@ if ($item) {
 				elseif (preg_match('/^drop/', $dropName)) {
 					switch($item->type) {
 						case 'Healing':
-							$adjust = ($drop->mvp_exp) ? $server->dropRates['HealBoss'] : $server->dropRates['Heal'];
+							$adjust = ($drop->class == "Boss") ? (($drop->mvp_exp) ? $server->dropRates['HealMVP'] : $server->dropRates['HealBoss']) : $server->dropRates['Heal'];
+							if($dropArray['drop_rate'] < $server->dropRates['HealMin'])
+								$dropArray['drop_rate'] = $server->dropRates['HealMin'];
+							if($dropArray['drop_rate'] > $server->dropRates['HealMax'])
+								$dropArray['drop_rate'] = $server->dropRates['HealMax'];
 							break;
 
 						case 'Usable':
 						case 'Cash':
-							$adjust = ($drop->mvp_exp) ? $server->dropRates['UseableBoss'] : $server->dropRates['Useable'];
+							$adjust = ($drop->class == "Boss") ? (($drop->mvp_exp) ? $server->dropRates['UseableMVP'] : $server->dropRates['UseableBoss']) : $server->dropRates['Useable'];
+							if($dropArray['drop_rate'] < $server->dropRates['UseableMin'])
+								$dropArray['drop_rate'] = $server->dropRates['UseableMin'];
+							if($dropArray['drop_rate'] > $server->dropRates['UseableMax'])
+								$dropArray['drop_rate'] = $server->dropRates['UseableMax'];
 							break;
 
 						case 'Weapon':
 						case 'Armor':
 						case 'Petarmor':
-							$adjust = ($drop->mvp_exp) ? $server->dropRates['EquipBoss'] : $server->dropRates['Equip'];
+							$adjust = ($drop->class == "Boss") ? (($drop->mvp_exp) ? $server->dropRates['EquipMVP'] : $server->dropRates['EquipBoss']) : $server->dropRates['Equip'];
+							if($dropArray['drop_rate'] < $server->dropRates['EquipMin'])
+								$dropArray['drop_rate'] = $server->dropRates['EquipMin'];
+							if($dropArray['drop_rate'] > $server->dropRates['EquipMax'])
+								$dropArray['drop_rate'] = $server->dropRates['EquipMax'];
 							break;
 
 						case 'Card':
-							$adjust = ($drop->mvp_exp) ? $server->dropRates['CardBoss'] : $server->dropRates['Card'];
+							$adjust = ($drop->class == "Boss") ? (($drop->mvp_exp) ? $server->dropRates['CardMVP'] : $server->dropRates['CardBoss']) : $server->dropRates['Card'];
+							if($dropArray['drop_rate'] < $server->dropRates['CardMin'])
+								$dropArray['drop_rate'] = $server->dropRates['CardMin'];
+							if($dropArray['drop_rate'] > $server->dropRates['CardMax'])
+								$dropArray['drop_rate'] = $server->dropRates['CardMax'];
 							break;
 
 						default:
-							$adjust = ($drop->mvp_exp) ? $server->dropRates['CommonBoss'] : $server->dropRates['Common'];
+							$adjust = ($drop->class == "Boss") ? (($drop->mvp_exp) ? $server->dropRates['CommonMVP'] : $server->dropRates['CommonBoss']) : $server->dropRates['Common'];
+							if($dropArray['drop_rate'] < $server->dropRates['CommonMin'])
+								$dropArray['drop_rate'] = $server->dropRates['CommonMin'];
+							if($dropArray['drop_rate'] > $server->dropRates['CommonMax'])
+								$dropArray['drop_rate'] = $server->dropRates['CommonMax'];
 							break;
 					}
 

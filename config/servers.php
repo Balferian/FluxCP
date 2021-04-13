@@ -67,18 +67,33 @@ return array(
 					// The rate the common items (in the ETC tab, besides card) are dropped
 					'Common'      => 100,
 					'CommonBoss'  => 100,
+					'CommonMVP'   => 100,
+					'CommonMin'   => 1,
+					'CommonMax'   => 10000,
 					// The rate healing items (that restore HP or SP) are dropped
 					'Heal'        => 100,
 					'HealBoss'    => 100,
+					'HealMVP'     => 100,
+					'HealMin'     => 1,
+					'HealMax'     => 10000,
 					// The rate usable items (in the item tab other then healing items) are dropped
 					'Useable'     => 100,
 					'UseableBoss' => 100,
+					'UseableMVP'  => 100,
+					'UseableMin'  => 1,
+					'UseableMax'  => 10000,
 					// The rate at which equipment is dropped
 					'Equip'       => 100,
 					'EquipBoss'   => 100,
+					'EquipMVP'    => 100,
+					'EquipMin'    => 1,
+					'EquipMax'    => 10000,
 					// The rate at which cards are dropped
 					'Card'        => 100,
 					'CardBoss'    => 100,
+					'CardMVP'     => 600,
+					'CardMin'     => 1,
+					'CardMax'     => 10000,
 					// The rate adjustment for the MVP items that the MVP gets directly in their inventory
 					'MvpItem'     => 100
 				),
