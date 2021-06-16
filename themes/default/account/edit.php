@@ -51,12 +51,16 @@
 			<tr>
 				<th><label for="logincount"><?php echo htmlspecialchars(Flux::message('LoginCountLabel')) ?></label></th>
 				<td><input type="text" name="logincount" id="logincount" value="<?php echo (int)$account->logincount ?>" /></td>
-				<?php if ($auth->allowedToEditAccountBalance): ?>
-					<th><label for="balance"><?php echo htmlspecialchars(Flux::message('CreditBalanceLabel')) ?></label></th>
-					<td><input type="text" name="balance" id="balance" value="<?php echo (int)$account->balance ?>" /></td>
+				<?php if(!Flux::config('MasterAccount')): ?>
+					<?php if ($auth->allowedToEditAccountBalance): ?>
+						<th><label for="balance"><?php echo htmlspecialchars(Flux::message('CreditBalanceLabel')) ?></label></th>
+						<td><input type="text" name="balance" id="balance" value="<?php echo (int)$account->balance ?>" /></td>
+					<?php else: ?>
+						<th><?php echo htmlspecialchars(Flux::message('CreditBalanceLabel')) ?></th>
+						<td><?php echo number_format((int)$account->balance) ?></td>
+					<?php endif ?>
 				<?php else: ?>
-					<th><?php echo htmlspecialchars(Flux::message('CreditBalanceLabel')) ?></th>
-					<td><?php echo number_format((int)$account->balance) ?></td>
+					<td colspan="2"></td>
 				<?php endif ?>
 			</tr>
 			<tr>
