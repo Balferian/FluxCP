@@ -9,6 +9,9 @@
 <p class="important">Note: These items are for redemption on the <span class="server-name"><?php echo htmlspecialchars($server->serverName) ?></span> server ONLY.</p>
 <p>
 	<form action="<?php echo $this->url ?>" method="post">
+		<?php if(Flux::config('MasterAccount')): ?>
+			<?php echo Flux::message('PurchaseSelectAccountLabel') ?> <select name="select_account_id"><?php echo $accountList ?></select>
+		<?php endif; ?>
 		<?php echo $this->moduleActionFormInputs($params->get('module'), 'checkout') ?>
 		<input type="hidden" name="process" value="1" />
 		<button type="submit" onclick="return confirm('Are you sure you want to continue purchasing the below item(s)?')">

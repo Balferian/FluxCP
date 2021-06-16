@@ -65,13 +65,23 @@
 		<tr>
 			<th><?php echo htmlspecialchars(Flux::message('LoginCountLabel')) ?></th>
 			<td><?php echo number_format((int)$account->logincount) ?></td>
-			<th><?php echo htmlspecialchars(Flux::message('CreditBalanceLabel')) ?></th>
-			<td>
-				<?php echo number_format((int)$account->balance) ?>
-				<?php if ($auth->allowedToDonate && $isMine): ?>
-					<a href="<?php echo $this->url('donate') ?>"><?php echo htmlspecialchars(Flux::message('AccountViewDonateLink')) ?></a>
-				<?php endif ?>
-			</td>
+			<?php if(Flux::config('MasterAccount')): ?>
+				<th><?php echo htmlspecialchars(Flux::message('CashPointLabel')) ?></th>
+				<td>
+					<?php echo number_format((int)$account->cashpoints) ?>
+					<?php if ($auth->allowedToDonate && $isMine): ?>
+						<a href="<?php echo $this->url('donate') ?>"><?php echo htmlspecialchars(Flux::message('AccountViewDonateLink')) ?></a>
+					<?php endif ?>
+				</td>
+			<?php else :?>
+				<th><?php echo htmlspecialchars(Flux::message('CreditBalanceLabel')) ?></th>
+				<td>
+					<?php echo number_format((int)$account->balance) ?>
+					<?php if ($auth->allowedToDonate && $isMine): ?>
+						<a href="<?php echo $this->url('donate') ?>"><?php echo htmlspecialchars(Flux::message('AccountViewDonateLink')) ?></a>
+					<?php endif ?>
+				</td>
+			<?php endif ?>
 		</tr>
 		<tr>
 			<th><?php echo htmlspecialchars(Flux::message('AccountBirthdateLabel')) ?></th>

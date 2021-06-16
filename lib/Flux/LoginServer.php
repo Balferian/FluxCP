@@ -371,9 +371,12 @@ class Flux_LoginServer extends Flux_BaseServer {
 	 */
 	public function hasCreditsRecord($accountID)
 	{
-		$creditsTable = Flux::config('FluxTables.CreditsTable');
+		$creditsTable = Flux::config('MasterAccount') ? Flux::config('FluxTables.MasterCreditsTable') : Flux::config('FluxTables.CreditsTable');
 		
-		$sql = "SELECT COUNT(account_id) AS hasRecord FROM {$this->loginDatabase}.$creditsTable WHERE account_id = ?";
+		if(Flux::config('MasterAccount'))
+			$sql = "SELECT COUNT(master_id) AS hasRecord FROM {$this->loginDatabase}.$creditsTable WHERE master_id = ?";
+		else
+			$sql = "SELECT COUNT(account_id) AS hasRecord FROM {$this->loginDatabase}.$creditsTable WHERE account_id = ?";
 		$sth = $this->connection->getStatement($sql);
 		
 		$sth->execute(array($accountID));
@@ -391,17 +394,27 @@ class Flux_LoginServer extends Flux_BaseServer {
 	 */
 	public function depositCredits($targetAccountID, $credits, $donationAmount = null)
 	{
-		$sql = "SELECT COUNT(account_id) AS accountExists FROM {$this->loginDatabase}.login WHERE account_id = ?";
-		$sth = $this->connection->getStatement($sql);
-		
-		if (!$sth->execute(array($targetAccountID)) || !$sth->fetch()->accountExists) {
-			return false; // Account doesn't exist.
+		if(Flux::config('MasterAccount')) {
+			$usersTable = Flux::config('FluxTables.MasterUserTable');
+			$sql = "SELECT COUNT(id) AS accountExists FROM {$this->loginDatabase}.$usersTable WHERE id = ?";
+			$sth = $this->connection->getStatement($sql);
+			
+			if (!$sth->execute(array($targetAccountID)) || !$sth->fetch()->accountExists) {
+				return false; // Account doesn't exist.
+			}
+		} else {
+			$sql = "SELECT COUNT(account_id) AS accountExists FROM {$this->loginDatabase}.login WHERE account_id = ?";
+			$sth = $this->connection->getStatement($sql);
+			
+			if (!$sth->execute(array($targetAccountID)) || !$sth->fetch()->accountExists) {
+				return false; // Account doesn't exist.
+			}
 		}
 		
-		$creditsTable = Flux::config('FluxTables.CreditsTable');
+		$creditsTable = Flux::config('MasterAccount') ? Flux::config('FluxTables.MasterCreditsTable') : Flux::config('FluxTables.CreditsTable');
 		
 		if (!$this->hasCreditsRecord($targetAccountID)) {
-			$fields = 'account_id, balance';
+			$fields = (Flux::config('MasterAccount') ? 'master_id' : 'account_id').', balance';
 			$values = '?, ?';
 			
 			if (!is_null($donationAmount)) {
@@ -433,7 +446,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 			}
 			$vals[] = $targetAccountID;
 			
-			$sql .= "WHERE account_id = ?";
+			$sql .= Flux::config('MasterAccount') ? "WHERE master_id = ?" : "WHERE account_id = ?";
 			$sth  = $this->connection->getStatement($sql);
 			
 			return $sth->execute($vals);

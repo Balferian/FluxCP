@@ -544,6 +544,7 @@ return array(
 		'MasterUserTable'			=> 'cp_users',
 		'MasterUserAccountTable'	=> 'cp_user_accounts',
 		'MasterUserBanTable'		=> 'cp_user_banlog',
+		'MasterCreditsTable'		=> 'cp_credits_master',
 		'MasterUserTableColumns'	=> array (
 			'id' => 'id',
 			'name' => 'name',

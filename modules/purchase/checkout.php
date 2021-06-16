@@ -16,10 +16,29 @@ elseif (!$server->cart->hasFunds()) {
 
 $items = $server->cart->getCartItems();
 
+if(Flux::config('MasterAccount')) {
+	$accounts = $session->account->game_accounts['account_ids'];
+	$user_names = $session->account->game_accounts['user_names'];
+
+	if(!$accounts){
+		$accountList ='<option value="-1">No Account available</option>';
+	} else {
+		$accountList = '';
+		$acc_list = 0;
+		foreach($accounts as $key => $account) {
+			$accountList .='<option ';
+			$accountList .= (!empty($_POST['select_account_id']) && $_POST['select_account_id'] == $account) ? 'selected' : '';
+			$accountList .= ' value="'. $account .'">'. $user_names[$acc_list] .'</option>';
+			$acc_list++;
+		}
+	}
+}
+
 if (count($_POST) && $params->get('process')) {
 	$redeemTable = Flux::config('FluxTables.RedemptionTable');
 	$creditTable = Flux::config('FluxTables.CreditsTable');
 	$deduct      = 0;
+	$selected_account = $params->get('select_account_id');
 	
 	$sql  = "INSERT INTO {$server->charMapDatabase}.$redeemTable ";
 	$sql .= "(nameid, quantity, cost, account_id, char_id, redeemed, redemption_date, purchase_date, credits_before, credits_after) ";
@@ -35,7 +54,7 @@ if (count($_POST) && $params->get('process')) {
 			$item->shop_item_nameid,
 			$item->shop_item_qty,
 			$item->shop_item_cost,
-			$session->account->account_id,
+			(Flux::config('MasterAccount') ? $selected_account : $session->account->account_id),
 			$balance,
 			$creditsAfter
 		));
@@ -46,7 +65,7 @@ if (count($_POST) && $params->get('process')) {
 		}
 	}
 	
-	$session->loginServer->depositCredits($session->account->account_id, -$deduct);
+	$session->loginServer->depositCredits(Flux::config('MasterAccount') ? $session->account->id : $session->account->account_id, -$deduct);
 	
 	if ($res) {
 		if (!$deduct) {

@@ -837,6 +837,9 @@ return array(
 	// Module: webcommands
 	'WCTitleLabel'			=> 'Web Commands',
 
+	'CashPointLabel'		=> 'Cash Points',
+	'PurchaseSelectAccountLabel'		=> '<b>Choose account for redeem:</b>',
+
 	// Master Account
 	'MasterAccountIdLabel'			 => 'Master ID',
 	'MasterAccountLabel'			 => 'Master Account',

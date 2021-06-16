@@ -211,10 +211,12 @@ class Flux_MasterSessionData extends Flux_SessionData {
     {
         $usersTable = Flux::config('FluxTables.MasterUserTable');
         $userColumns = Flux::config('FluxTables.MasterUserTableColumns');
+		$creditsTable  = Flux::config('FluxTables.MasterCreditsTable');
 
         $sql  = "SELECT *, {$userColumns->get('id')} as id, {$userColumns->get('email')} as userid ";
         $sql .= "FROM {$loginAthenaGroup->loginDatabase}.{$usersTable} ";
-        $sql .= "WHERE {$userColumns->get('group_id')} >= 0 AND {$userColumns->get('email')} = ? LIMIT 1";
+ 		$sql .= "LEFT OUTER JOIN $creditsTable AS credits ON id = credits.master_id ";
+		$sql .= "WHERE {$userColumns->get('group_id')} >= 0 AND {$userColumns->get('email')} = ? LIMIT 1";
         $smt  = $loginAthenaGroup->connection->getStatement($sql);
         $res  = $smt->execute(array($email));
 
