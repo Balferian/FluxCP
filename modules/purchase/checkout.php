@@ -18,18 +18,16 @@ $items = $server->cart->getCartItems();
 
 if(Flux::config('MasterAccount')) {
 	$accounts = $session->account->game_accounts['account_ids'];
-	$user_names = $session->account->game_accounts['user_names'];
+	$usernames = $session->account->game_accounts['user_names'];
 
 	if(!$accounts){
 		$accountList ='<option value="-1">No Account available</option>';
 	} else {
 		$accountList = '';
-		$acc_list = 0;
 		foreach($accounts as $key => $account) {
 			$accountList .='<option ';
 			$accountList .= (!empty($_POST['select_account_id']) && $_POST['select_account_id'] == $account) ? 'selected' : '';
-			$accountList .= ' value="'. $account .'">'. $user_names[$acc_list] .'</option>';
-			$acc_list++;
+			$accountList .= ' value="'. $account .'">'. $usernames[$key] .'</option>';
 		}
 	}
 }
