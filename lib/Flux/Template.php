@@ -435,6 +435,10 @@ class Flux_Template {
 				$module = array_key_exists('module', $menuItem) ? $menuItem['module'] : false;
 				$action = array_key_exists('action', $menuItem) ? $menuItem['action'] : $defaultAction;
 				$exturl = array_key_exists('exturl', $menuItem) ? $menuItem['exturl'] : null;
+				// Master account
+				$masterAccount = array_key_exists('master', $menuItem) ? $menuItem['master'] : null;
+				if ($masterAccount === false && Flux::config('MasterAccount')) continue;
+				if ($masterAccount === true && !Flux::config('MasterAccount')) continue;
 
 				if ($adminMenus) {
 					if ($auth->actionAllowed($module, $action) && $auth->config("modules.$module.$action") >= $adminMenuLevel) {
@@ -895,6 +899,33 @@ class Flux_Template {
 		$paginator = new Flux_Paginator($total, $this->url($this->moduleName, $this->actionName, array('_host' => false)), $options);
 		return $paginator;
 	}
+
+	/**
+	 * Link to a master account view page.
+	 *
+	 * @param int $userId
+	 * @param string $text
+	 * @return mixed
+	 * @access public
+	 */
+	public function linkToMasterAccount($userId, $text)
+	{
+		if ($userId) {
+			$url = $this->url('master', 'view', array('id' => $userId));
+			return sprintf(
+				'<a href="%s" class="link-to-account">%s</a>',
+				$url, htmlspecialchars($this->getMasterId($text))
+			);
+		}
+		else {
+			return false;
+		}
+	}
+
+	public function getMasterId($userId)
+    {
+        return $userId;
+    }
 	
 	/**
 	 * Link to an account view page.
@@ -1152,6 +1183,16 @@ class Flux_Template {
 	{
 		$dispatcher = Flux_Dispatcher::getInstance();
 		$dispatcher->loginRequired($this->basePath, $message);
+		$this->gameAccountRequired();
+	}
+
+	/**
+	 * Redirect to create game account page if the user don't have any game account.
+	 */
+	public function gameAccountRequired($message = null)
+	{
+		$dispatcher = Flux_Dispatcher::getInstance();
+		$dispatcher->gameAccountRequired($this->basePath, $message);
 	}
 	
 	/**

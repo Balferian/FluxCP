@@ -98,7 +98,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 	/**
 	 *
 	 */
-	public function register($username, $password, $confirmPassword, $email,$email2, $gender, $birthdate, $securityCode)
+	public function register($username, $password, $confirmPassword, $birthDate, $securityCode, $email, $email2, $gender)
 	{
 		if (preg_match('/[^' . Flux::config('UsernameAllowedChars') . ']/', $username)) {
 			throw new Flux_RegisterError('Invalid character(s) used in username', Flux_RegisterError::INVALID_USERNAME);
@@ -145,7 +145,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 		elseif (!in_array(strtoupper($gender), array('M', 'F'))) {
 			throw new Flux_RegisterError('Invalid gender', Flux_RegisterError::INVALID_GENDER);
 		}
-		elseif (($birthdatestamp = strtotime($birthdate)) === false || date('Y-m-d', $birthdatestamp) != $birthdate) {
+		elseif (($birthdatestamp = strtotime($birthDate)) === false || date('Y-m-d', $birthdatestamp) != $birthDate) {
 			throw new Flux_RegisterError('Invalid birthdate', Flux_RegisterError::INVALID_BIRTHDATE);
 		}
 		elseif (Flux::config('UseCaptcha')) {
@@ -179,7 +179,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 			throw new Flux_RegisterError('Username is already taken', Flux_RegisterError::USERNAME_ALREADY_TAKEN);
 		}
 		
-		if (!Flux::config('AllowDuplicateEmails')) {
+		if (!Flux::config('AllowDuplicateEmails') && !Flux::config('MasterAccount')) {
 			$sql = "SELECT email FROM {$this->loginDatabase}.login WHERE email = ? LIMIT 1";
 			$sth = $this->connection->getStatement($sql);
 			$sth->execute(array($email));
@@ -215,6 +215,20 @@ class Flux_LoginServer extends Flux_BaseServer {
 		else {
 			return false;
 		}
+	}
+	
+	public function registerGameAccount($account, $username, $password, $confirmPassword, $gender, $securityCode)
+	{
+		return self::register(
+			$username,
+			$password,
+			$confirmPassword,
+			$account->birth_date,
+			$securityCode,
+			$account->email,
+			$account->email,
+			$gender
+		);
 	}
 	
 	/**

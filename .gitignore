@@ -25,3 +25,5 @@
 !/themes/default
 !/themes/bootstrap
 !/themes/installer
+
+.idea/*

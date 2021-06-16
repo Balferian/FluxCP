@@ -23,10 +23,19 @@ $isMine        = false;
 $accountID     = $params->get('id');
 $account       = false;
 
+if (!$accountID && Flux::config('MasterAccount')) {
+	$this->deny();
+}
+
 if (!$accountID || $accountID == $session->account->account_id) {
 	$isMine    = true;
 	$accountID = $session->account->account_id;
 	$account   = $session->account;
+}
+
+if ($accountID && Flux::config('MasterAccount')) {
+	$account = $session->loginServer->getGameAccount($session->account->id, $accountID);
+	$isMine = !empty($account);
 }
 
 if (!$isMine) {
@@ -64,13 +73,13 @@ $showTempBan = !$isMine && !$tempBanned && !$permBanned && $auth->allowedToTempB
 $showPermBan = !$isMine && !$permBanned && $auth->allowedToPermBanAccount;
 $showUnban   = !$isMine && ($tempBanned && $auth->allowedToTempUnbanAccount) || ($permBanned && $auth->allowedToPermUnbanAccount);
 
-if($account->vip_time != '0'){
-$vipexpiretime = $account->vip_time;
-	$dt = new DateTime("@$vipexpiretime");
+if($account->vip_time != '0' && $account->vip_time !== null){
+	$vipexpiretime = $account->vip_time;
+	$dt = new DateTime("$vipexpiretime");
 	$vipexpires = 'Expires '.$dt->format('Y-m-d');
 } elseif ($account->vip_time == '0'){
 	$vipexpires = 'Standard Account';
-} else {$vipexpires = 'Unknown';}	
+} else {$vipexpires = 'Unknown';}
 
 if (count($_POST) && $account) {
 	$reason = (string)$params->get('reason');
