@@ -54,7 +54,7 @@ if (count($_POST)) {
 		$session->loginServer->setPref($account->account_id, 'NumberOfGenderChanges', $changeTimes + 1);
 
 		if ($cost && !$auth->allowedToAvoidSexChangeCost) {
-			$session->loginServer->depositCredits($account->account_id, -$cost);
+			$session->loginServer->depositCredits(Flux::config('MasterAccount') ? $account->id : $account->account_id, -$cost);
 			$session->setMessageData(sprintf(Flux::message('GenderChanged'), $cost));
 		}
 		else {

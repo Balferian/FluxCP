@@ -96,7 +96,7 @@ if ($account) {
 
 			if ($auth->allowedToEditAccountBalance) {
 				$deposit = $balance - $account->balance;
-				$session->loginServer->depositCredits($account->account_id, $deposit);
+				$session->loginServer->depositCredits(Flux::config('MasterAccount') ? $account->id : $account->account_id, $deposit);
 			}
 			
 			$session->setMessageData(Flux::message('AccountModified'));
