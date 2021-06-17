@@ -252,12 +252,19 @@ class Flux_Paginator {
 		}
 		
 		if ($hasPrev) {
-			array_unshift($pages, sprintf('<a href="%s" title="Previous Pane (p#%d)" class="page-prev">Prev.</a> ', $this->getPageURI($start - 1), $start - 1));
+			array_unshift($pages, sprintf('<a href="%s" title="%s%d" class="page-prev">%s</a> ', $this->getPageURI($start - 1), Flux::message('PaginatorTitleInfoLabel'), $start - 1, Flux::message('PaginatorPreviousPageLabel')));
+		}
+		if ($hasPrev) {
+			array_unshift($pages, sprintf('<a href="%s" title="%s%d" class="page-prev">%s</a> ', $this->getPageURI("1"), Flux::message('PaginatorTitleInfoLabel'), 1, Flux::message('PaginatorFirstPageLabel')));
 		}
 		
 		if ($hasNext) {
-			array_push($pages, sprintf(' <a href="%s" title="Next Pane (p#%d)" class="page-next">Next</a>', $this->getPageURI($end), $end));
+			array_push($pages, sprintf(' <a href="%s" title="%s%d" class="page-next">%s</a>', $this->getPageURI($end), Flux::message('PaginatorTitleInfoLabel'), $end, Flux::message('PaginatorNextPageLabel')));
 		}
+		if ($hasNext) {
+			array_push($pages, sprintf(' <a href="%s" title="%s%d" class="page-next">%s</a>', $this->getPageURI($this->numberOfPages), Flux::message('PaginatorTitleInfoLabel'), $this->numberOfPages, Flux::message('PaginatorLastPageLabel')));
+		}
+
 		
 		$links  = sprintf('<div class="pages">%s</div>', implode(" {$this->pageSeparator} ", $pages))."\n";
 		
@@ -267,7 +274,7 @@ class Flux_Paginator {
 			$pageVar = preg_quote($this->pageVariable);
 			$event   = "location.href='".$this->getPageURI(0)."'";
 			$event   = preg_replace("/$pageVar=0/", "{$this->pageVariable}='+this.value+'", $event);
-			$jump    = '<label>Page Jump: <input type="text" name="jump_to_page" id="jump_to_page" size="4" onkeypress="if (event.keyCode == 13) { %s }" /></label>';
+			$jump    = '<label>'.Flux::message('PageJumpLabel').' <input type="text" name="jump_to_page" id="jump_to_page" size="4" onkeypress="if (event.keyCode == 13) { %s }" /></label>';
 			$jump    = sprintf($jump, $event);
 			$links  .= sprintf('<div class="jump-to-page">%s</div>', $jump);
 		}

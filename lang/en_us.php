@@ -840,6 +840,14 @@ return array(
 	'CashPointLabel'		=> 'Cash Points',
 	'PurchaseSelectAccountLabel'		=> '<b>Choose account for redeem:</b>',
 
+	//Paginator
+	'PageJumpLabel'				=> 'Jump to page:',
+	'PaginatorTitleInfoLabel'	=> 'Page #',
+	'PaginatorFirstPageLabel'	=> 'First',
+	'PaginatorPreviousPageLabel'=> 'Previous',
+	'PaginatorNextPageLabel'	=> 'Next',
+	'PaginatorLastPageLabel'	=> 'Last',
+	
 	// Master Account
 	'MasterAccountIdLabel'			 => 'Master ID',
 	'MasterAccountLabel'			 => 'Master Account',
