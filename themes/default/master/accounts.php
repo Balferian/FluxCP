@@ -28,11 +28,11 @@
                         <td><?php echo $acct->lastlogin ? date(Flux::config('DateTimeFormat'), $acct->lastlogin) : null ?></td>
                         <td><?php echo $acct->last_ip ?></td>
                         <td>
-                            <?php if (($state = $this->accountStateText($account->state)) && !$account->unban_time): ?>
+                            <?php if (($state = $this->accountStateText($acct->state)) && !$acct->unban_time): ?>
                                 <?php echo $state ?>
-                            <?php elseif ($account->unban_time): ?>
+                            <?php elseif ($acct->unban_time): ?>
                                 <span class="account-state state-banned">
-                                    <?php printf(htmlspecialchars(Flux::message('AccountStateTempBanned')), date(Flux::config('DateTimeFormat'), $account->unban_time)) ?>
+                                    <?php printf(htmlspecialchars(Flux::message('AccountStateTempBanned')), date(Flux::config('DateTimeFormat'), $acct->unban_time)) ?>
                                 </span>
                             <?php else: ?>
                                 <span class="account-state state-unknown"><?php echo htmlspecialchars(Flux::message('UnknownLabel')) ?></span>
