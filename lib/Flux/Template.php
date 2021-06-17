@@ -611,7 +611,9 @@ class Flux_Template {
 		$defaultAction  = Flux_Dispatcher::getInstance()->defaultAction;
 		$serverProtocol = '';
 		$serverAddress  = '';
-		$params = array();
+
+		if(!is_array($params))
+			$params = array($params);
 		
 		if ($params instanceOf Flux_Config) {
 			$params = $params->toArray();
