@@ -613,7 +613,7 @@ class Flux_Template {
 		$serverAddress  = '';
 
 		if(!is_array($params))
-			$params = array($params);
+			$params = array();
 		
 		if ($params instanceOf Flux_Config) {
 			$params = $params->toArray();
