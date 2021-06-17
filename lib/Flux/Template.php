@@ -1558,6 +1558,9 @@ class Flux_Template {
 
 	public static function ReCapchaCheck($gcapcha)
 	{
+		if (!Flux::config('EnableReCaptcha'))
+			return true;
+
 		$Response = null;
 		$Data = http_build_query( array( 'secret' => Flux::config('ReCaptchaPrivateKey'), 'response' => $gcapcha, 'remoteip' => $_SERVER['REMOTE_ADDR'] ) );
 		$Opts = array( 'http' => array( 'method'  => 'POST', 'header'  => 'Content-type: application/x-www-form-urlencoded', 'content' => $Data ) );
@@ -1565,7 +1568,7 @@ class Flux_Template {
 		$Response = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $Context);
 		$Result = json_decode($Response);
 
-		if ($Response->success)
+		if ($Result->success)
 			return true;
 		else 
 			return false;
