@@ -179,13 +179,13 @@ class Flux_MasterSessionData extends Flux_SessionData {
             }
 
             $sql = "UPDATE {$loginAthenaGroup->loginDatabase}.{$usersTable} SET ";
-            $sql .= "{$userColumns->get('last_ip')} = ?, ";
+            $sql .= "{$userColumns->get('last_ip')} = ? ";
 
             if (!empty($userColumns->get('last_login')))
-                $sql .= "{$userColumns->get('last_login')} = NOW(), ";
+                $sql .= ", {$userColumns->get('last_login')} = NOW() ";
 
             if (!empty($userColumns->get('updated_at')))
-                $sql .= "{$userColumns->get('updated_at')} = NOW(), ";
+                $sql .= ", {$userColumns->get('updated_at')} = NOW() ";
 
             $sql = rtrim($sql,",");
             $sql .= " WHERE {$idColumn} = ?";
