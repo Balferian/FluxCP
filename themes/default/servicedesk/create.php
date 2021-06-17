@@ -10,8 +10,6 @@ $this->loginRequired();
 			<?php if (Flux::config('MasterAccount')): ?>
 					<th>Account</th>
 					<td><select name="select_account_id" onchange="this.form.submit()"><?php echo $accountList ?></select></td>
-				</form>
- 				<form action="<?php echo $this->urlWithQs ?>" method="post">
            <?php else: ?>
                 <th>Account ID</th>
 			    <td><input type="text" name="account_id" id="account_id" value="<?php echo $session->account->account_id ?>" readonly="readonly" /></td>
@@ -77,7 +75,10 @@ $this->loginRequired();
 		<?php endif ?>
 
 		<tr>
-			<td colspan="2"><input type="hidden" name="ip" value="<?php echo $_SERVER['REMOTE_ADDR'] ?>" /><input type="submit" value="Create Ticket" /></td>
+			<td colspan="2"><input type="hidden" name="ip" value="<?php echo $_SERVER['REMOTE_ADDR'] ?>" />
+					<button value="CreateTicket" name="Submit" onclick="this.form.submit()">Create Ticket</button>
+					<input type="submit" style="display:none;"/>
+			</td>
 		</tr>
     </table>
 </form>

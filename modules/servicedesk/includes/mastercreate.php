@@ -13,6 +13,8 @@ $accounts = $session->account->game_accounts['account_ids'];
 $usernames = $session->account->game_accounts['user_names'];
 $accountId = $session->account->account_id;
 
+$charlist = null;
+
 if(!$accounts){
     $accountList ='<option value="-1">No Account available</option>';
 } else {
@@ -47,7 +49,7 @@ $catsql = $server->connection->getStatement("SELECT * FROM {$server->loginDataba
 $catsql->execute();
 $catlist = $catsql->fetchAll();
 
-if(isset($_POST['account_id'])){
+if(isset($_POST['account_id']) && isset($_POST['Submit'])){
 	if ($this->ReCapchaCheck($_POST['g-recaptcha-response'])) {
 		$char_id	= (int)$_POST['char_id'];
 		$category	= $_POST['category'];
@@ -101,6 +103,5 @@ if(isset($_POST['account_id'])){
 		$this->redirect($this->url('servicedesk','index'));
 	} else
 		$errorMessage = Flux::message('InvalidSecurityCode');
-
 }
 ?>
