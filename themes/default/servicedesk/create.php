@@ -69,6 +69,12 @@ $this->loginRequired();
 			<td><input type="text" name="videolink" id="chatlink" size="50" /><br /><?php echo Flux::message('SDPointerVideoLink') ?></td>
 		</tr>
 		</tbody>
+		
+		<?php if (Flux::config('ReCaptchaServiceDesk')): ?>
+			<tr>
+				<td colspan="2"><div class="g-recaptcha" data-theme = "<?php echo Flux::config('ReCaptchaTheme'); ?>" data-sitekey="<?php echo Flux::config('ReCaptchaPublicKey'); ?>"></div></td>
+			</tr>
+		<?php endif ?>
 
 		<tr>
 			<td colspan="2"><input type="hidden" name="ip" value="<?php echo $_SERVER['REMOTE_ADDR'] ?>" /><input type="submit" value="Create Ticket" /></td>

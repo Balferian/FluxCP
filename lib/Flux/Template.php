@@ -1,5 +1,6 @@
 <?php
 require_once 'Flux/Paginator.php';
+require_once 'recaptchalib.php';
 
 /**
  * The template is mostly responsible for the presentation logic of things, but
@@ -1552,6 +1553,21 @@ class Flux_Template {
 		if($Data)
 			return preg_replace($find, $replace, str_replace("\n",'<br />',$Data[description]));
 		else
+			return false;
+	}
+
+	public static function ReCapchaCheck($gcapcha)
+	{
+		$Response = null;
+		$Data = http_build_query( array( 'secret' => Flux::config('ReCaptchaPrivateKey'), 'response' => $gcapcha, 'remoteip' => $_SERVER['REMOTE_ADDR'] ) );
+		$Opts = array( 'http' => array( 'method'  => 'POST', 'header'  => 'Content-type: application/x-www-form-urlencoded', 'content' => $Data ) );
+		$Context  = stream_context_create($Opts);
+		$Response = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $Context);
+		$Result = json_decode($Response);
+
+		if ($Response->success)
+			return true;
+		else 
 			return false;
 	}
 }
