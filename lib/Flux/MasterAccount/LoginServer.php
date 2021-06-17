@@ -177,7 +177,7 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
     /**
      *
      */
-    public function temporarilyBan($bannedBy, $banReason, $accountID, $until)
+    public function temporarilyBanMaster($bannedBy, $banReason, $accountID, $until)
     {
         $table = Flux::config('FluxTables.AccountBanTable');
 
@@ -196,7 +196,7 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
         }
     }
 
-    public function permanentlyBan($bannedBy, $banReason, $userId)
+    public function permanentlyBanMaster($bannedBy, $banReason, $userId)
     {
         $table = Flux::config('FluxTables.MasterUserBanTable');
         $usersTable = Flux::config('FluxTables.MasterUserTable');
@@ -216,7 +216,7 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
         }
     }
 
-    public function unban($unbannedBy, $unbanReason, $userId)
+    public function unbanMaster($unbannedBy, $unbanReason, $userId)
     {
         $table = Flux::config('FluxTables.MasterUserBanTable');
         $usersTable = Flux::config('FluxTables.MasterUserTable');
@@ -243,16 +243,16 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
     /**
      *
      */
-    public function getBanInfo($accountID)
+    public function getBanInfoMaster($masterID)
     {
-        $table = Flux::config('FluxTables.AccountBanTable');
-        $col   = "$table.id, $table.account_id, $table.banned_by, $table.ban_type, ";
+        $table = Flux::config('FluxTables.MasterUserBanTable');
+        $col   = "$table.id, $table.user_id, $table.banned_by, $table.ban_type, ";
         $col  .= "$table.ban_until, $table.ban_date, $table.ban_reason, login.userid";
         $sql   = "SELECT $col FROM {$this->loginDatabase}.$table ";
         $sql  .= "LEFT OUTER JOIN {$this->loginDatabase}.login ON login.account_id = $table.banned_by ";
-        $sql  .= "WHERE $table.account_id = ? ORDER BY $table.ban_date DESC ";
+        $sql  .= "WHERE $table.user_id = ? ORDER BY $table.ban_date DESC ";
         $sth   = $this->connection->getStatement($sql);
-        $res   = $sth->execute(array($accountID));
+        $res   = $sth->execute(array($masterID));
 
         if ($res) {
             $ban = $sth->fetchAll();

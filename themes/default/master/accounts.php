@@ -22,7 +22,7 @@
                         </td>
                         <td><?php echo (int)$acct->group_id ?></td>
                         <td><?php echo (int)$acct->logincount ?></td>
-                        <td><?php echo $acct->lastlogin ? date(Flux::config('DateTimeFormat'), $acct->lastlogin) : null ?></td>
+                        <td><?php echo $acct->lastlogin ? date(Flux::config('DateTimeFormat'), strtotime($acct->lastlogin)) : null ?></td>
                         <td><?php echo $acct->last_ip ?></td>
                         <td>
                             <?php if (($state = $this->accountStateText($acct->state)) && !$acct->unban_time): ?>

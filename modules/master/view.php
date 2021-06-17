@@ -35,6 +35,11 @@ if (!$isMine) {
     $headerTitle = $title = sprintf(Flux::message('MasterAccountViewHeading2'), $account->email);
 }
 
+$banInfo = false;
+if ($account) {
+	$banInfo = $server->loginServer->getBanInfoMaster($session->account->id);
+}
+
 $userAccounts = array();
 $userAccountTable = Flux::config('FluxTables.MasterUserAccountTable');
 foreach ($session->getAthenaServerNames() as $serverName) {

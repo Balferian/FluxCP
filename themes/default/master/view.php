@@ -61,7 +61,7 @@
             <?php foreach ($banInfo as $ban): ?>
                 <tr>
                     <td align="right"><?php echo htmlspecialchars($this->banTypeText($ban->ban_type)) ?></td>
-                    <td><?php echo htmlspecialchars($this->formatDateTime($ban->ban_date)) ?></td>
+                    <td><?php echo $ban->ban_date ?></td>
                     <td><?php echo nl2br(htmlspecialchars($ban->ban_reason)) ?></td>
                     <td>
                         <?php if ($ban->userid): ?>
@@ -100,7 +100,7 @@
                         </td>
                         <td><?php echo (int)$acct->group_id ?></td>
                         <td><?php echo (int)$acct->logincount ?></td>
-                        <td><?php echo $acct->lastlogin ? date(Flux::config('DateTimeFormat'), $acct->lastlogin) : null ?></td>
+                        <td><?php echo $acct->lastlogin ? date(Flux::config('DateTimeFormat'), strtotime($acct->lastlogin)) : null ?></td>
                         <td><?php echo $acct->last_ip ?></td>
                         <td>
                             <?php if (!$acct->confirmed && $acct->confirm_code): ?>
