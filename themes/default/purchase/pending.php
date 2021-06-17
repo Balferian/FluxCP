@@ -4,6 +4,7 @@
 <p>You have <?php echo number_format($total) ?> item(s) pending redemption.</p>
 <table class="vertical-table">
 	<tr>
+		<th>Account</th>
 		<th>Item Name</th>
 		<th>Quantity</th>
 		<th>Cost</th>
@@ -13,6 +14,7 @@
 	</tr>
 	<?php foreach ($items as $item): ?>
 	<tr>
+		<td><?php echo $item->userid ?></td>
 		<td align="right">
 			<?php if ($item->item_name): ?>
 				<?php if ($auth->actionAllowed('item', 'view')): ?>
