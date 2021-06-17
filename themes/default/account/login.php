@@ -5,7 +5,6 @@
 <p><?php printf(Flux::message('LoginPageMakeAccount'), $this->url('account', 'create')); ?></p>
 <?php endif ?>
 
-<?php endif ?>
 <form action="<?php echo $this->url('account', 'login', array('return_url' => $params->get('return_url'))) ?>" method="post" class="generic-form">
 	<?php if (count($serverNames) === 1): ?>
 	<input type="hidden" name="server" value="<?php echo htmlspecialchars($session->loginAthenaGroup->serverName) ?>">
