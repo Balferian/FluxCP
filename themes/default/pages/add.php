@@ -15,9 +15,6 @@ $this->loginRequired();
 	});
 </script>
 <h2><?php echo htmlspecialchars(Flux::message('CMSPageAddTitle')) ?></h2>
-<?php if (!empty($errorMessage)): ?>
-    <p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-<?php endif ?>
 <form action="<?php echo $this->urlWithQs ?>" method="post" class="generic-form">
 	<table width="100%">
 		<tr>

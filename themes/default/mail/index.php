@@ -2,9 +2,7 @@
 if (!defined('FLUX_ROOT')) exit;
 ?>
 <h2><?php echo htmlspecialchars(Flux::message('MailerHeading')) ?></h2>
-<?php if (!empty($errorMessage)): ?>
-<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-<?php else: ?>
+<?php if (empty($errorMessage)): ?>
 <p><?php echo htmlspecialchars(Flux::message('MailerInfo')) ?></p>
 <?php endif ?>
 <form action="<?php echo $this->urlWithQs ?>" method="post" name="mailerform" class="generic-form">

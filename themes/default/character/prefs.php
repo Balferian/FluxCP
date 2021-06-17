@@ -1,9 +1,6 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
 <h2>Preferences</h2>
 <?php if ($char): ?>
-<?php if (!empty($errorMessage)): ?>
-<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-<?php endif ?>
 <h3>Viewing character preferences for “<?php echo ($charName=htmlspecialchars($char->name))  ?>” on <?php echo htmlspecialchars($server->serverName) ?></h3>
 <form action="<?php echo $this->urlWithQs ?>" method="post" class="generic-form">
 	<input type="hidden" name="charprefs" value="1" />

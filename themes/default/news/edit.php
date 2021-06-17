@@ -14,9 +14,6 @@ if (!defined('FLUX_ROOT')) exit;
 	});
 </script>
 <h2><?php echo htmlspecialchars(Flux::message('CMSNewsEditTitle')) ?></h2>
-<?php if (!empty($errorMessage)): ?>
-    <p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-<?php endif ?>
 <?php if ($new): ?>
 <form action="<?php echo $this->urlWithQs ?>" method="post" class="generic-form">
 	<table width="100%"> 

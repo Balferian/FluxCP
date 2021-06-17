@@ -1,9 +1,7 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
 <h2>Duplicate Item</h2>
 <?php if ($item): ?>
-<?php if (!empty($errorMessage)): ?>
-<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-<?php else: ?>
+<?php if (empty($errorMessage)): ?>
 <p>Here you can copy an item into <em>item_db2</em> with a new item ID.</p>
 <?php endif ?>
 <form action="<?php echo $this->urlWithQs ?>" method="post" class="generic-form">

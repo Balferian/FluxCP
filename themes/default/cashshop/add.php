@@ -2,9 +2,6 @@
 <h2>CashShop</h2>
 <h3>Add Item to the CashShop</h3>
 <?php if ($item): ?>
-<?php if (!empty($errorMessage)): ?>
-<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-<?php endif ?>
 <form action="<?php echo $this->urlWithQs ?>" method="post" enctype="multipart/form-data">
 <table class="vertical-table">
 	<tr>

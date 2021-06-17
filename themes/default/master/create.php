@@ -17,9 +17,6 @@
 <?php if (!Flux::config('AllowUserInPassword')): ?>
 <p><strong>Note:</strong> <?php echo Flux::message('PasswordContainsUser') ?></p>
 <?php endif ?>
-<?php if (isset($errorMessage)): ?>
-<p class="red" style="font-weight: bold"><?php echo htmlspecialchars($errorMessage) ?></p>
-<?php endif ?>
 <form action="<?php echo $this->url ?>" method="post" class="generic-form">
 	<?php if (count($serverNames) === 1): ?>
 	<input type="hidden" name="server" value="<?php echo htmlspecialchars($session->loginAthenaGroup->serverName) ?>">

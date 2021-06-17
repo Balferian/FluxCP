@@ -1,9 +1,6 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
 <h2><?php echo htmlspecialchars(Flux::message('IpbanRemoveHeading')) ?></h2>
 <?php if ($ipban): ?>
-	<?php if (!empty($errorMessage)): ?>
-		<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-	<?php endif ?>
 	<form action="<?php echo $this->urlWithQs ?>" method="post" class="generic-form">
 		<input type="hidden" name="remipban" value="1" />
 		<table class="generic-form-table">

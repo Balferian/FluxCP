@@ -1,8 +1,5 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
 <h2><?php echo htmlspecialchars(Flux::message('ResetPassTitle')) ?></h2>
-<?php if (!empty($errorMessage)): ?>
-<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-<?php endif ?>
 
 <?php if (!Flux::config('MasterAccount') || Flux::config('MasterAccount') && !$session->isLoggedIn()): ?>
 <p><?php echo htmlspecialchars(Flux::message('ResetPassInfo')) ?></p>

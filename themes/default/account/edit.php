@@ -1,9 +1,6 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
 <h2><?php echo htmlspecialchars(Flux::message('AccountEditHeading')) ?></h2>
 <?php if ($account): ?>
-	<?php if (!empty($errorMessage)): ?>
-		<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-	<?php endif ?>
 	<form action="<?php echo $this->urlWithQs ?>" method="post">
 		<table class="vertical-table">
 			<tr>

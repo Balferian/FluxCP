@@ -1,9 +1,6 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
 <h2>Donate</h2>
 <?php if (Flux::config('AcceptDonations')): ?>
-	<?php if (!empty($errorMessage)): ?>
-		<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-	<?php endif ?>
 	
 	<p>By donating, you're supporting the costs of <em>running</em> this server and <em>maintaining</em> it.  In return, you will be rewarded <span class="keyword">donation credits</span> that you may use to purchase items from our <a href="<?php echo $this->url('purchase') ?>">item shop</a>.</p>
 	<h3>Are you ready to donate?</h3>

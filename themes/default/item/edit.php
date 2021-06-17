@@ -3,9 +3,6 @@
 <?php if ($item): ?>
 <p>The only required fields are the <em>Item ID</em>, <em>Identifier</em>, <em>Name</em> and <em>Type</em> fields.</p>
 <p><strong>Note:</strong> An empty <em>NPC Sell</em> price defaults to half of the buy price in-game.</p>
-<?php if (!empty($errorMessage)): ?>
-<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-<?php endif ?>
 <form action="<?php echo $this->urlWithQs ?>" method="post" name="edit_item_form">
 	<input type="hidden" name="edititem" value="1" />
 	<table class="vertical-table">

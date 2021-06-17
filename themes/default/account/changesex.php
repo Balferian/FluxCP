@@ -16,8 +16,6 @@
 <?php if (empty($errorMessage)): ?>
 <p><strong><?php echo htmlspecialchars(Flux::message('NoteLabel')) ?>:</strong> <?php printf(Flux::message('GenderChangeCharInfo'), '<em>'.implode(', ', array_values($badJobs)).'</em>') ?>.</p>
 <h3><?php echo htmlspecialchars(Flux::message('GenderChangeSubHeading')) ?></h3>
-<?php else: ?>
-<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
 <?php endif ?>
 <form action="<?php echo $this->urlWithQs ?>" method="post" class="generic-form">
 	<input type="hidden" name="changegender" value="1" />

@@ -15,9 +15,6 @@ $this->loginRequired();
 	});
 </script>
 <h2><?php echo htmlspecialchars(Flux::message('CMSPageEditTitle')) ?></h2>
-<?php if (!empty($errorMessage)): ?>
-    <p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-<?php endif ?>
 <?php if ($page): ?>
 <form action="<?php echo $this->urlWithQs ?>" method="post" class="generic-form">
 	<input type="hidden" name="page_id" value="<?php echo $id?>" />

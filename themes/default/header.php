@@ -174,6 +174,16 @@
 									<p class="message"><?php echo htmlspecialchars($message) ?></p>
 								<?php endif ?>
 								
+								<!-- Error Messages -->
+								<?php if (!empty($errorMessage)): ?>
+								<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
+								<?php endif ?>
+								
+								<!-- Success Messages -->
+								<?php if (!empty($successMessage)): ?>
+									<p class="green"><?php echo htmlspecialchars($successMessage) ?></p>
+								<?php endif ?>
+								
 								<!-- Sub menu -->
 								<?php include $this->themePath('main/submenu.php', true) ?>
 								

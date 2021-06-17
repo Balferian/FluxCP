@@ -4,9 +4,6 @@ if (!defined('FLUX_ROOT')) exit;
 <h2>Item Shop</h2>
 <h3>Add Item to the Shop</h3>
 <?php if ($item): ?>
-<?php if (!empty($errorMessage)): ?>
-<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-<?php endif ?>
 <form action="<?php echo $this->urlWithQs ?>" method="post" enctype="multipart/form-data">
 <?php if (!$stackable): ?>
 <input type="hidden" name="qty" value="1" />

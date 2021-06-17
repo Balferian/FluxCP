@@ -1,10 +1,3 @@
-<?php if (!empty($errorMessage)): ?>
-    <p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-<?php endif ?>
-<?php if (!empty($successMessage)): ?>
-    <p class="green"><?php echo htmlspecialchars($successMessage) ?></p>
-<?php endif ?>
-
 <h3>PHP Configuration</h3>
 <p>These values must be larger than the size of your itemInfo file.</p>
 <table class="vertical-table">

@@ -1,8 +1,5 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
 <h2><?php echo htmlspecialchars(Flux::message('TransferHeading')) ?></h2>
-<?php if (!empty($errorMessage)): ?>
-	<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-<?php endif ?>
 <?php if ($session->account->balance): ?>
 <h3><?php printf(htmlspecialchars(Flux::message('TransferSubHeading')), $server->serverName) ?></h3>
 <p><?php printf(Flux::message('TransferInfo'), '<span class="remaining-balance">'.number_format($session->account->balance).'</span>') ?></p>

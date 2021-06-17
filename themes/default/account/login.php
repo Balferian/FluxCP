@@ -1,8 +1,5 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
 <h2><?php echo htmlspecialchars(Flux::message('LoginHeading')) ?></h2>
-<?php if (isset($errorMessage)): ?>
-<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-<?php else: ?>
 
 <?php if ($auth->actionAllowed('account', 'create')): ?>
 <p><?php printf(Flux::message('LoginPageMakeAccount'), $this->url('account', 'create')); ?></p>
