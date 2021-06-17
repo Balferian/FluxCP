@@ -15,6 +15,7 @@ if($server->isRenewal) {
 $tableName = "{$server->charMapDatabase}.items";
 $tempTable = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
 
+$usersTable    = Flux::config('FluxTables.MasterUserTable');
 $creditsTable  = Flux::config('MasterAccount') ? Flux::config('FluxTables.MasterCreditsTable') : Flux::config('FluxTables.CreditsTable');
 $creditColumns = "$creditsTable.balance, $creditsTable.last_donation_date, $creditsTable.last_donation_amount";
 $createTable   = Flux::config('FluxTables.AccountCreateTable');
@@ -48,8 +49,8 @@ if (!$isMine) {
 	$sql .= "(SELECT value FROM {$server->charMapDatabase}.`acc_reg_num` WHERE account_id = ".$accountID." AND `key` = '#CASHPOINTS') as 'cashpoints' ";
 	$sql .= "FROM {$server->loginDatabase}.login ";
 	if(Flux::config('MasterAccount')) {
-		$sql .= "LEFT OUTER JOIN cp_users ON login.email = cp_users.email ";
-		$sql .= "LEFT OUTER JOIN cp_credits_master ON cp_users.id = cp_credits_master.master_id ";
+		$sql .= "LEFT OUTER JOIN $usersTable ON login.email = $usersTable.email ";
+		$sql .= "LEFT OUTER JOIN cp_credits_master ON $usersTable.id = cp_credits_master.master_id ";
 	} else
 		$sql .= "LEFT OUTER JOIN {$server->loginDatabase}.{$creditsTable} AS credits ON login.account_id = credits.account_id ";
 	$sql .= "LEFT OUTER JOIN {$server->loginDatabase}.{$createTable} AS created ON login.account_id = created.account_id ";
