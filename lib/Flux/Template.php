@@ -1528,5 +1528,28 @@ class Flux_Template {
 	{
 		return $this->themeName;
 	}
+
+	public function DP_Item_description($itemID)
+	{
+		if(!$itemID)
+			return false;
+		
+		$url = 'https://www.divine-pride.net/api/database/Item/'.$itemID.'?apiKey='.Flux::config('DivinePrideAPI');
+		if(Flux::config('DivinePrideServer'))
+			$url .= '&server='.Flux::config('DivinePrideServer');
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$data = curl_exec($curl);
+		$Data = json_decode($data, true);
+		curl_close($curl);
+
+		$find = array('~\^000000~is', '~\^([A-Z0-9]{6})~is');
+		$replace = array("</font>", "<font color='#$1'>");
+
+		if($Data)
+			return preg_replace($find, $replace, str_replace("\n",'<br />',$Data[description]));
+		else
+			return false;
+	}
 }
 ?>

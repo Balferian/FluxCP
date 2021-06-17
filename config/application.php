@@ -18,6 +18,10 @@ return array(
 	'ItemImageNameFormat'		=> '%d.png',				// The filename format for item images (defaults to {itemid}.png).
 	'MonsterImageNameFormat'	=> '%d.gif',				// The filename format for monster images (defaults to {monsterid}.gif).
 	'JobImageNameFormat'		=> '%d.gif',				// The filename format for job images (defaults to {jobid}.gif).
+	'DivinePrideAPI'			=> '',	// https://www.divine-pride.net/api.
+	'UseDivinePrideItemDesc'	=> true,								// Use items description from divine pride.
+	'DivinePrideServer'			=> '',					// What language use for Divine-Pride results.
+															// List of servers: aRO, bRO, fRO, idRO, iRO, jRO, kRO, kROZ, mRO, pRO, ruRO, thRO, twRO, cRO, iROC
 	'DivinePrideIntegration'	=> true,					// Dowload monsters and items images from https://www.divine-pride.net if it's not exist.
 	'ForceEmptyEmblem'			=> false,					// Forcefully display empty guild emblems, helpful when you don't have GD2 installed.
 	'EmblemCacheInterval'		=> 12,						// Hourly interval to re-cache guild emblems (set to 0 to disable emblem cache).
@@ -121,6 +125,7 @@ return array(
 	'ItemShopMaxQuantity'		=> 99,						// Max quantity the item may be sold at once for.
 	'ItemShopItemPerPage'		=> 5,						// The number of items to display per page in the "Item Shop" page.
     'ShowItemDesc'              => false,                   // Displays generated item descs from parsed itemInfo.lua
+    'ShowItemDesc'              => true,                   // Displays generated item descs from parsed itemInfo.lua
 	'HideFromWhosOnline'		=> AccountLevel::LOWGM,		// Levels greater than or equal to this will be hidden from the "Who's Online" page.
 	'HideFromMapStats'			=> AccountLevel::LOWGM,		// Levels greater than or equal to this will be hidden from the "Map Stats" page.
 	'EnableGMPassSecurity'		=> AccountLevel::LOWGM,		// Levels greater than or equal to this will be required to use passwords that meet the earlier GM Password settings.

@@ -198,8 +198,8 @@
 	<tr>
 		<th>Description</th>
 		<td colspan="<?php echo $image ? 4 : 3 ?>">
-			<?php if($item->itemdesc): ?>
-                <?php echo $item->itemdesc ?>
+			<?php if($description = Flux::config('UseDivinePrideItemDesc') ? $this->DP_Item_description($item->item_id) : $item->itemdesc): ?>
+                <?php echo $description ?>
             <?php else: ?>
                 <span class="not-applicable">None</span>
 			<?php endif ?>
