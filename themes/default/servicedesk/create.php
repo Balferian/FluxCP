@@ -4,14 +4,15 @@ $this->loginRequired();
 ?>
 <h2><?php echo htmlspecialchars(Flux::message('SDCreateNew')) ?></h2>
 	<h3>Required Information</h3>
+	<form action="<?php echo $this->urlWithQs ?>" method="post">
 	<table class="vertical-table" width="100%">
 		<tr>
 			<?php if (Flux::config('MasterAccount')): ?>
-            <form action="<?php echo $this->urlWithQs ?>" method="post">
-                <th>Account</th>
-                <td><select name="select_account_id" onchange="this.form.submit()"><?php echo $accountList ?></select></td>
-            </form>
-            <?php else: ?>
+					<th>Account</th>
+					<td><select name="select_account_id" onchange="this.form.submit()"><?php echo $accountList ?></select></td>
+				</form>
+ 				<form action="<?php echo $this->urlWithQs ?>" method="post">
+           <?php else: ?>
                 <th>Account ID</th>
 			    <td><input type="text" name="account_id" id="account_id" value="<?php echo $session->account->account_id ?>" readonly="readonly" /></td>
             <?php endif; ?>
