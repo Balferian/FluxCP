@@ -9,7 +9,7 @@ $title = Flux::message('AccountViewTitle');
 
 require_once 'Flux/TemporaryTable.php';
 $account   = $session->account;
-$userId = $params->get('id');
+$userId = $params->get('user_id');
 $isMine = false;
 $headerTitle = Flux::message('MasterAccountViewHeading');
 
@@ -28,7 +28,7 @@ if (!$isMine) {
     }
     $usersTable = Flux::config('FluxTables.MasterUserTable');
 
-    $sql = "SELECT * FROM {$server->loginDatabase}.{$usersTable} WHERE id = ? LIMIT 1";
+    $sql = "SELECT * FROM {$server->loginDatabase}.{$usersTable} WHERE user_id = ? LIMIT 1";
     $sth = $server->connection->getStatement($sql);
     $sth->execute(array($userId));
     $account = $sth->fetch();
@@ -37,7 +37,7 @@ if (!$isMine) {
 
 $banInfo = false;
 if ($account) {
-	$banInfo = $server->loginServer->getBanInfoMaster($session->account->id);
+	$banInfo = $server->loginServer->getBanInfoMaster($account->id);
 }
 
 $userAccounts = array();
