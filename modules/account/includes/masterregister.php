@@ -52,7 +52,7 @@ try {
             $sth  = $server->connection->getStatement($sql);
             $sth->execute($bind);
 
-            $session->loginServer->permanentlyBan(null, sprintf(Flux::message('AccountConfirmBan'), $code), $result);
+            $session->loginServer->permanentlyBanMaster(null, sprintf(Flux::message('AccountConfirmBan'), $code), $result);
 
             if ($sent) {
                 $message  = Flux::message('AccountCreateEmailSent');
