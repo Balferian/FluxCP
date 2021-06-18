@@ -59,6 +59,7 @@
             <tr>
                 <th><?php echo htmlspecialchars(Flux::message('BanLogBanTypeLabel')) ?></th>
                 <th><?php echo htmlspecialchars(Flux::message('BanLogBanDateLabel')) ?></th>
+                <th><?php echo htmlspecialchars(Flux::message('BanLogBanDateUntilLabel')) ?></th>
                 <th><?php echo htmlspecialchars(Flux::message('BanLogBanReasonLabel')) ?></th>
                 <th><?php echo htmlspecialchars(Flux::message('BanLogBannedByLabel')) ?></th>
             </tr>
@@ -66,6 +67,7 @@
                 <tr>
                     <td align="right"><?php echo htmlspecialchars($this->banTypeText($ban->ban_type)) ?></td>
                     <td><?php echo $ban->ban_date ?></td>
+                    <td><?php echo $ban->ban_until ?></td>
                     <td><?php echo nl2br(htmlspecialchars($ban->ban_reason)) ?></td>
                     <td>
                         <?php if ($ban->userid): ?>

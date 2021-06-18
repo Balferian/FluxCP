@@ -333,6 +333,7 @@ return array(
 	'AccountBanLogSubHeading' => 'Ban Log for %s (recent to oldest)',
 	'BanLogBanTypeLabel'      => 'Ban Type',
 	'BanLogBanDateLabel'      => 'Ban Date',
+	'BanLogBanDateUntilLabel' => 'Ban Until',
 	'BanLogBanReasonLabel'    => 'Ban Reason',
 	'BanLogBannedByLabel'     => 'Banned By',
 	'BanLogBannedByCP'        => 'Control Panel',
