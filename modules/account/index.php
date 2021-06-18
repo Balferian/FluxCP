@@ -17,20 +17,20 @@ $searchPassword = (($useMD5 && $searchMD5) || !$useMD5) && $auth->allowedToSeeAc
 $showPassword   = !$useMD5 && $auth->allowedToSeeAccountPassword;
 $bind           = array();
 $usersTable     = Flux::config('FluxTables.MasterUserTable');
+$userColumns = Flux::config('FluxTables.MasterUserTableColumns');
 $creditsTable   = Flux::config('MasterAccount') ? Flux::config('FluxTables.MasterCreditsTable') : Flux::config('FluxTables.CreditsTable');
 $creditColumns  = 'credits.balance, credits.last_donation_date, credits.last_donation_amount';
 $createTable    = Flux::config('FluxTables.AccountCreateTable');
 $createColumns  = 'created.confirmed, created.confirm_code, created.reg_date';
 if(Flux::config('MasterAccount')) {
 	$sqlpartial  = "LEFT OUTER JOIN $usersTable ON login.email = $usersTable.email ";
-	$sqlpartial .= "LEFT OUTER JOIN $creditsTable AS credits ON $usersTable.id = credits.master_id ";
+	$sqlpartial .= "LEFT OUTER JOIN $creditsTable AS credits ON $usersTable.{$userColumns->get('id')} = credits.user_id ";
 } else
 	$sqlpartial     = "LEFT OUTER JOIN {$server->loginDatabase}.{$creditsTable} AS credits ON login.account_id = credits.account_id ";
 $sqlpartial    .= "LEFT OUTER JOIN {$server->loginDatabase}.{$createTable} AS created ON login.account_id = created.account_id ";
 
 if (Flux::config('MasterAccount')) {
 	$userAccountTable = Flux::config('FluxTables.MasterUserAccountTable');
-	$userColumns = Flux::config('FluxTables.MasterUserTableColumns');
 	$userAccountColumns = ", useraccounts.user_id";
 	$sqlpartial .= "LEFT OUTER JOIN {$server->loginDatabase}.{$userAccountTable} AS useraccounts ON login.account_id = useraccounts.account_id ";
 	$sqlpartial .= "LEFT OUTER JOIN {$server->loginDatabase}.{$usersTable} AS master ON useraccounts.user_id = master.{$userColumns->get('id')} ";

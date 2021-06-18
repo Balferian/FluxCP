@@ -915,7 +915,7 @@ class Flux_Template {
 	public function linkToMasterAccount($userId, $text)
 	{
 		if ($userId) {
-			$url = $this->url('master', 'view', array('id' => $userId));
+			$url = $this->url('master', 'view', array('user_id' => $userId));
 			return sprintf(
 				'<a href="%s" class="link-to-account">%s</a>',
 				$url, htmlspecialchars($this->getMasterId($text))

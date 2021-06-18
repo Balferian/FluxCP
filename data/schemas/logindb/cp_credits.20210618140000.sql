@@ -1,0 +1,1 @@
+ALTER TABLE `cp_credits_master` CHANGE COLUMN `master_id` `user_id` int(11) unsigned NOT NULL;

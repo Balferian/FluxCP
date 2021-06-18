@@ -213,9 +213,9 @@ class Flux_MasterSessionData extends Flux_SessionData {
         $userColumns = Flux::config('FluxTables.MasterUserTableColumns');
 		$creditsTable  = Flux::config('FluxTables.MasterCreditsTable');
 
-        $sql  = "SELECT *, {$userColumns->get('id')} as id, {$userColumns->get('email')} as userid ";
-        $sql .= "FROM {$loginAthenaGroup->loginDatabase}.{$usersTable} ";
- 		$sql .= "LEFT OUTER JOIN $creditsTable AS credits ON id = credits.master_id ";
+        $sql  = "SELECT *, login.{$userColumns->get('id')} as id, login.{$userColumns->get('email')} as userid ";
+        $sql .= "FROM {$loginAthenaGroup->loginDatabase}.{$usersTable} as login ";
+ 		$sql .= "LEFT OUTER JOIN $creditsTable AS credits ON login.{$userColumns->get('id')} = credits.user_id ";
 		$sql .= "WHERE {$userColumns->get('group_id')} >= 0 AND {$userColumns->get('email')} = ? LIMIT 1";
         $smt  = $loginAthenaGroup->connection->getStatement($sql);
         $res  = $smt->execute(array($email));

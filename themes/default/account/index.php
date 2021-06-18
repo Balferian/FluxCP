@@ -87,7 +87,7 @@
 <table class="horizontal-table">
 	<tr>
         <?php if (Flux::config('MasterAccount')): ?>
-		    <th><?php echo $paginator->sortableColumn('login.master_id', Flux::message('MasterAccountIdLabel')) ?></th>
+		    <th><?php echo $paginator->sortableColumn('login.user_id', Flux::message('MasterAccountIdLabel')) ?></th>
         <?php endif; ?>
 		<th><?php echo $paginator->sortableColumn('login.account_id', Flux::message('AccountIdLabel')) ?></th>
 		<th><?php echo $paginator->sortableColumn('login.userid', Flux::message('UsernameLabel')) ?></th>

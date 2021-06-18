@@ -4,16 +4,17 @@
 <form action="<?php echo $this->url ?>" method="get" class="search-form">
     <?php echo $this->moduleActionFormInputs($params->get('module')) ?>
     <p>
+        <label for="user_id"><?php echo htmlspecialchars(Flux::message('MasterAccountIdLabel')) ?>:</label>
+        <input type="text" name="user_id" id="user_id" value="<?php echo htmlspecialchars($params->get('user_id')) ?>" />
+        ...
+        <label for="mastername"><?php echo htmlspecialchars(Flux::message('MasterNameAccountLabel')) ?>:</label>
+        <input type="text" name="mastername" id="mastername" value="<?php echo htmlspecialchars($params->get('mastername')) ?>" />
+        ...
         <label for="account_id"><?php echo htmlspecialchars(Flux::message('AccountIdLabel')) ?>:</label>
         <input type="text" name="account_id" id="account_id" value="<?php echo htmlspecialchars($params->get('account_id')) ?>" />
         ...
         <label for="username"><?php echo htmlspecialchars(Flux::message('UsernameLabel')) ?>:</label>
         <input type="text" name="username" id="username" value="<?php echo htmlspecialchars($params->get('username')) ?>" />
-        <?php if ($searchPassword): ?>
-            ...
-            <label for="password"><?php echo htmlspecialchars(Flux::message('PasswordLabel')) ?>:</label>
-            <input type="text" name="password" id="password" value="<?php echo htmlspecialchars($params->get('password')) ?>" />
-        <?php endif ?>
         ...
         <label for="email"><?php echo htmlspecialchars(Flux::message('EmailAddressLabel')) ?>:</label>
         <input type="text" name="email" id="email" value="<?php echo htmlspecialchars($params->get('email')) ?>" />
@@ -86,9 +87,11 @@
     <?php echo $paginator->infoText() ?>
     <table class="horizontal-table">
         <tr>
-            <th><?php echo $paginator->sortableColumn('login.master_id', Flux::message('MasterAccountIdLabel')) ?></th>
+            <th><?php echo Flux::message('MasterAccountIdLabel') ?></th>
+            <th><?php echo Flux::message('MasterNameAccountLabel') ?></th>
             <th><?php echo $paginator->sortableColumn('login.email', Flux::message('EmailAddressLabel')) ?></th>
             <th><?php echo $paginator->sortableColumn('group_id', Flux::message('AccountGroupIDLabel')) ?></th>
+            <th><?php echo $paginator->sortableColumn('balance', Flux::message('CreditBalanceLabel')) ?></th>
             <th><?php echo $paginator->sortableColumn('totalaccounts', Flux::message('MasterTotalAccountsLabel')) ?></th>
             <th><?php echo $paginator->sortableColumn('birthdate', Flux::message('AccountBirthdateLabel')) ?></th>
             <th><?php echo $paginator->sortableColumn('last_ip', Flux::message('LastUsedIpLabel')) ?></th>
@@ -98,11 +101,12 @@
             <tr>
                 <td align="right">
                     <?php if ($auth->actionAllowed('master', 'view') && $auth->allowedToViewAccount): ?>
-                        <?php echo $this->linkToMasterAccount($account->id, $account->id) ?>
+                        <?php echo $this->linkToMasterAccount($account->user_id, $account->user_id) ?>
                     <?php else: ?>
-                        <?php echo htmlspecialchars($account->id) ?>
+                        <?php echo htmlspecialchars($account->user_id) ?>
                     <?php endif ?>
                 </td>
+                <td><?php echo $account->name ?></td>
                 <td>
                     <?php if ($account->email): ?>
                         <?php echo $this->linkToAccountSearch(array('email' => $account->email), $account->email) ?>
@@ -111,6 +115,7 @@
                     <?php endif ?>
                 </td>
                 <td><?php echo (int)$account->group_id ?></td>
+                <td><?php echo number_format((int)$account->balance) ?></td>
                 <td><?php echo number_format((int)$account->totalAccounts) ?></td>
                 <td><?php echo $account->birth_date ?></td>
                 <td>

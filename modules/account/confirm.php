@@ -17,10 +17,10 @@ if (!$loginAthenaGroup) {
 }
 
 if (Flux::config('MasterAccount')) {
-	$userTable = Flux::config('FluxTables.MasterUserTable');
+	$usersTable = Flux::config('FluxTables.MasterUserTable');
 	$userColumns = Flux::config('FluxTables.MasterUserTableColumns');
 
-	$sql = "SELECT {$userColumns->get('id')} as account_id FROM {$loginAthenaGroup->loginDatabase}.$userTable WHERE ";
+	$sql = "SELECT {$userColumns->get('id')} as account_id FROM {$loginAthenaGroup->loginDatabase}.$usersTable WHERE ";
 	$sql .= "{$userColumns->get('email')} = ? AND confirm_code = ? AND confirmed_date IS NULL AND confirm_expire > NOW() LIMIT 1";
 	$sth = $loginAthenaGroup->connection->getStatement($sql);
 
@@ -28,7 +28,7 @@ if (Flux::config('MasterAccount')) {
 		$this->deny();
 	}
 
-	$sql = "UPDATE {$loginAthenaGroup->loginDatabase}.$userTable SET ";
+	$sql = "UPDATE {$loginAthenaGroup->loginDatabase}.$usersTable SET ";
 	$sql .= "confirmed_date = NOW(), confirm_expire = NULL WHERE id = ?";
 
 	$loginAthenaGroup->loginServer->unban(null, Flux::message('AccountConfirmUnban'), $account->account_id);

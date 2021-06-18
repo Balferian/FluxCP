@@ -13,9 +13,13 @@ $userAccountTable = Flux::config('FluxTables.MasterUserAccountTable');
 $userColumns = Flux::config('FluxTables.MasterUserTableColumns');
 $bind = [];
 
-$sql .= "LEFT OUTER JOIN {$server->loginDatabase}.{$userAccountTable} AS useraccounts ON {$usersTable}.{$userColumns->get('id')} = useraccounts.user_id ";
+$creditsTable   = Flux::config('MasterAccount') ? Flux::config('FluxTables.MasterCreditsTable') : Flux::config('FluxTables.CreditsTable');
+$creditColumns  = 'credits.balance as balance, credits.last_donation_date, credits.last_donation_amount';
+
+$sql  = "LEFT OUTER JOIN {$server->loginDatabase}.{$userAccountTable} AS useraccounts ON {$usersTable}.{$userColumns->get('id')} = useraccounts.user_id ";
+$sql .= "LEFT OUTER JOIN $creditsTable AS credits ON {$usersTable}.{$userColumns->get('id')} = credits.user_id ";
 $sql .= "WHERE {$userColumns->get('group_id')} >= 0 ";
-$userId = $params->get('master_id');
+$userId = $params->get('user_id');
 if ($userId) {
     $sql .= "AND {$usersTable}.{$userColumns->get('id')} = ?";
     $bind[]      = $userId;
@@ -23,6 +27,8 @@ if ($userId) {
 else {
     $opMapping        = array('eq' => '=', 'gt' => '>', 'lt' => '<');
     $opValues         = array_keys($opMapping);
+    $user_id          = $params->get('user_id');
+    $mastername       = $params->get('mastername');
     $name             = $params->get('name');
     $email            = $params->get('email');
     $lastIP           = $params->get('last_ip');
@@ -32,6 +38,18 @@ else {
     $accountGroupID   = $params->get('account_group_id');
     $birthdateA       = $params->get('birthdate_after_date');
     $birthdateB       = $params->get('birthdate_before_date');
+
+    if ($user_id) {
+        $sql .= "AND (useraccounts.user_id LIKE ? OR useraccounts.user_id = ?) ";
+        $bind[]      = "%$user_id%";
+        $bind[]      = $user_id;
+    }
+
+    if ($mastername) {
+        $sql .= "AND ({$usersTable}.`name` LIKE ? OR {$usersTable}.`name` = ?) ";
+        $bind[]      = "%$mastername%";
+        $bind[]      = $mastername;
+    }
 
     if ($email) {
         $sql .= "AND (login.email LIKE ? OR login.email = ?) ";
@@ -67,14 +85,13 @@ $sth->execute($bind);
 
 $paginator = $this->getPaginator($sth->fetch()->total);
 $paginator->setSortableColumns(array(
-    'login.account_id' => 'asc', 'login.userid', 'login.user_pass',
-    'login.sex', 'group_id', 'state', 'balance',
+    'login.user_id' => 'asc', 'login.userid', 'group_id', 'balance',
     'login.email', 'logincount', 'lastlogin', 'last_ip',
     'reg_date'
 ));
 
 $columns = implode(", {$usersTable}.",$userColumns->toArray());
-$sql = "SELECT {$usersTable}.{$columns}, count(useraccounts.id) as totalAccounts FROM {$server->loginDatabase}.{$usersTable} $sql";
+$sql = "SELECT {$usersTable}.{$columns}, count(useraccounts.user_id) as totalAccounts, {$creditColumns} FROM {$server->loginDatabase}.{$usersTable} $sql";
 $sql .= "GROUP BY {$usersTable}.{$columns}";
 $sth  = $server->connection->getStatement($sql);
 $sth->execute($bind);
@@ -82,7 +99,4 @@ $accounts   = $sth->fetchAll();
 
 $authorized = $auth->actionAllowed('master', 'view') && $auth->allowedToViewAccount;
 
-if ($accounts && count($accounts) === 1 && $authorized && Flux::config('SingleMatchRedirect')) {
-    $this->redirect($this->url('master', 'view', array('id' => $accounts[0]->account_id)));
-}
 ?>

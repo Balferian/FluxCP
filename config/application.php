@@ -552,7 +552,7 @@ return array(
 		'MasterUserBanTable'		=> 'cp_user_banlog',
 		'MasterCreditsTable'		=> 'cp_credits_master',
 		'MasterUserTableColumns'	=> array (
-			'id' => 'id',
+			'id' => 'user_id',
 			'name' => 'name',
 			'email' => 'email',
 			'password' => 'password',
