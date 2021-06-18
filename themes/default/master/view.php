@@ -49,7 +49,7 @@
         </tr>
         <tr>
             <th><?php echo htmlspecialchars(Flux::message('CreditBalanceLabel')) ?></th>
-            <td colspan="3"><?php echo htmlspecialchars($account->balance) ?></td>
+            <td colspan="3"><?php echo (int)$account->balance ?></td>
         </tr>
     </table>
 
