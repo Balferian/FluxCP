@@ -30,7 +30,7 @@ if ($username) {
 }
 
 if ($ipAddress) {
-	$sqlpartial .= 'AND ip LIKE ? ';
+	$sqlpartial .= 'AND reg_ip LIKE ? ';
 	$bind[]      = "%$ipAddress%";
 }
 
