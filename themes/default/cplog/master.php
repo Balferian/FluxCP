@@ -71,7 +71,7 @@
 		<?php endif ?>
 		<td>
 			<?php if ($auth->actionAllowed('master', 'index')): ?>
-				<?php echo $this->linkToAccountSearch(array('reg_ip' => $login->reg_ip), $login->reg_ip) ?>
+				<?php echo $this->linkToMasterAccountSearch(array('ip' => $login->reg_ip), $login->reg_ip) ?>
 			<?php else: ?>
 				<?php echo htmlspecialchars($login->reg_ip) ?>
 			<?php endif ?>
