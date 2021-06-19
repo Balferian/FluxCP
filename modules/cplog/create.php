@@ -4,6 +4,8 @@ if (!defined('FLUX_ROOT')) exit;
 $title = 'Account Registrations';
 
 $loginLogTable = Flux::config('FluxTables.AccountCreateTable');
+$usersTable    = Flux::config('FluxTables.MasterUserAccountTable');
+
 $sqlpartial    = "WHERE 1=1 ";
 $bind          = array();
 
@@ -50,13 +52,15 @@ $sth->execute($bind);
 
 $paginator = $this->getPaginator($sth->fetch()->total);
 $paginator->setSortableColumns(array(
-	'account_id', 'user_id', 'user_pass', 'reg_ip',
+	'account_id', 'userid', 'user_pass', 'reg_ip',
 	'reg_date' => 'desc'
 ));
 
-$sql = "SELECT account_id, userid, user_pass, reg_ip, reg_date FROM {$server->loginDatabase}.$loginLogTable $sqlpartial";
-$sql = $paginator->getSQL($sql);
-$sth = $server->connection->getStatement($sql);
+$sql  = "SELECT login.account_id, login.userid, login.user_pass, login.reg_ip, login.reg_date, users.user_id FROM {$server->loginDatabase}.$loginLogTable as login ";
+$sql .= "LEFT JOIN {$server->loginDatabase}.{$usersTable} AS users ON login.account_id = users.account_id ";
+$sql .= "$sqlpartial";
+$sql  = $paginator->getSQL($sql);
+$sth  = $server->connection->getStatement($sql);
 $sth->execute($bind);
 
 $accounts = $sth->fetchAll();

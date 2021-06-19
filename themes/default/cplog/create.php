@@ -36,6 +36,7 @@
 <?php echo $paginator->infoText() ?>
 <table class="horizontal-table">
 	<tr>
+		<th><?php echo $paginator->sortableColumn('user_id', 'Master ID') ?></th>
 		<th><?php echo $paginator->sortableColumn('account_id', 'Account ID') ?></th>
 		<th><?php echo $paginator->sortableColumn('user_id', 'Username') ?></th>
 		<?php if (($showPassword=Flux::config('CpLoginLogShowPassword')) && ($seePassword=$auth->allowedToSeeCpLoginLogPass)): ?>
@@ -47,6 +48,13 @@
 	</tr>
 	<?php foreach ($accounts as $account): ?>
 	<tr>
+		<td align="right">
+			<?php if ($auth->actionAllowed('master', 'view') && $auth->allowedToViewAccount): ?>
+				<?php echo $this->linkToMasterAccount($account->user_id, $account->user_id) ?>
+			<?php else: ?>
+				<?php echo $account->user_id ?>
+			<?php endif ?>
+		</td>
 		<td align="right">
 			<?php if ($auth->actionAllowed('account', 'view') && $auth->allowedToViewAccount): ?>
 				<?php echo $this->linkToAccount($account->account_id, $account->account_id) ?>
