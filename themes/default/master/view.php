@@ -34,23 +34,25 @@
         <tr>
             <th><?php echo htmlspecialchars(Flux::message('AccountBirthdateLabel')) ?></th>
             <td><?php echo $account->birth_date ?></td>
-            <th><?php echo htmlspecialchars(Flux::message('LastUsedIpLabel')) ?></th>
-            <td colspan="3">
-                <?php if ($account->last_ip): ?>
-                    <?php if ($auth->actionAllowed('account', 'index')): ?>
-                        <?php echo $this->linkToAccountSearch(array('last_ip' => $account->last_ip), $account->last_ip) ?>
-                    <?php else: ?>
-                        <?php echo htmlspecialchars($account->last_ip) ?>
-                    <?php endif ?>
-                <?php else: ?>
-                    <span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
-                <?php endif ?>
-            </td>
+			<th><?php echo htmlspecialchars(Flux::message('CreditBalanceLabel')) ?></th>
+			<td><?php echo (int)$account->balance ?></td>
         </tr>
         <tr>
-            <th><?php echo htmlspecialchars(Flux::message('CreditBalanceLabel')) ?></th>
-            <td colspan="3"><?php echo (int)$account->balance ?></td>
-        </tr>
+			<th><?php echo htmlspecialchars(Flux::message('LastLoginDateLabel')) ?></th>
+			<td><?php echo htmlspecialchars($account->last_login) ?></td>
+			<th><?php echo htmlspecialchars(Flux::message('LastUsedIpLabel')) ?></th>
+			<td>
+				<?php if ($account->last_ip): ?>
+					<?php if ($auth->actionAllowed('account', 'index')): ?>
+						<?php echo $this->linkToAccountSearch(array('last_ip' => $account->last_ip), $account->last_ip) ?>
+					<?php else: ?>
+						<?php echo htmlspecialchars($account->last_ip) ?>
+					<?php endif ?>
+				<?php else: ?>
+					<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+				<?php endif ?>
+			</td>
+       </tr>
     </table>
 
     <?php if ($auth->allowedToViewAccountBanLog && $banInfo): ?>
@@ -95,7 +97,8 @@
                     <th><?php echo htmlspecialchars(Flux::message('LoginCountLabel')) ?></th>
                     <th><?php echo htmlspecialchars(Flux::message('LastLoginDateLabel')) ?></th>
                     <th><?php echo htmlspecialchars(Flux::message('LastUsedIpLabel')) ?></th>
-                    <th><?php echo htmlspecialchars(Flux::message('AccountStateLabel')) ?></th>
+					<th><?php echo htmlspecialchars(Flux::message('CashPointLabel')) ?></th>
+					<th><?php echo htmlspecialchars(Flux::message('AccountStateLabel')) ?></th>
                 </tr>
                 <?php foreach ($userAccount as $acct):?>
                     <tr>
@@ -108,6 +111,7 @@
                         <td><?php echo (int)$acct->logincount ?></td>
                         <td><?php echo $acct->lastlogin ? date(Flux::config('DateTimeFormat'), strtotime($acct->lastlogin)) : null ?></td>
                         <td><?php echo $acct->last_ip ?></td>
+                        <td><?php echo (int)$acct->cashpoints ?></td>
                         <td>
                             <?php if (!$acct->confirmed && $acct->confirm_code): ?>
                                 <span class="account-state state-pending">

@@ -131,6 +131,7 @@ return array(
 			'index'			=> AccountLevel::ADMIN,
 			'create'		=> AccountLevel::ADMIN,
 			'paypal'		=> AccountLevel::ADMIN,
+			'master'		=> AccountLevel::ADMIN,
 			'login'			=> AccountLevel::ADMIN,
 			'resetpass'		=> AccountLevel::ADMIN,
 			'changepass'	=> AccountLevel::ADMIN,
@@ -207,6 +208,7 @@ return array(
 		),
 		'master'		=> array(
 			'index'			=> AccountLevel::LOWGM,
+			'edit'			=> AccountLevel::ADMIN,
 			'view'			=> AccountLevel::NORMAL,
 			'create'		=> AccountLevel::NORMAL,
 			'changepass' 	=> AccountLevel::NORMAL,

@@ -361,6 +361,7 @@ return array(
 		),
 		'cplog'			=> array(
 			'paypal'		=> 'PayPal Transactions',
+			'master'		=> 'Master Account Registrations',
 			'create'		=> 'Account Registrations',
 			'login'			=> 'Logins',
 			'resetpass'		=> 'Password Resets',
@@ -550,6 +551,7 @@ return array(
 		'MasterUserAccountTable'	=> 'cp_user_accounts',
 		'MasterUserBanTable'		=> 'cp_user_banlog',
 		'MasterCreditsTable'		=> 'cp_credits_master',
+		'MasterAccountCreateTable'	=> 'cp_create_master_log',
 		'MasterUserTableColumns'	=> array (
 			'id' => 'user_id',
 			'name' => 'name',

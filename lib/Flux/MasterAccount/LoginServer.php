@@ -151,7 +151,16 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
             $idsth = $this->connection->getStatement("SELECT LAST_INSERT_ID() AS id");
             $idsth->execute();
 
-            return $idsth->fetch()->id;
+			$idsth = $idsth->fetch();
+			$MasterCreateTable = Flux::config('FluxTables.MasterAccountCreateTable');
+			
+			$sql  = "INSERT INTO {$this->loginDatabase}.{$MasterCreateTable} (user_id, name, user_pass, email, reg_date, reg_ip, confirmed) ";
+			$sql .= "VALUES (?, ?, ?, ?, NOW(), ?, 1)";
+			$sth  = $this->connection->getStatement($sql);
+			
+			$sth->execute(array($idsth->id, $name, $password, $email, $_SERVER['REMOTE_ADDR']));
+
+            return $idsth->id;
         }
 
         return false;

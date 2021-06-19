@@ -31,7 +31,7 @@ else {
     $mastername       = $params->get('mastername');
     $name             = $params->get('name');
     $email            = $params->get('email');
-    $lastIP           = $params->get('last_ip');
+    $lastIP           = $params->get('ip');
     $gender           = $params->get('gender');
     $accountState     = $params->get('account_state');
     $accountGroupIdOp = $params->get('account_group_id_op');

@@ -36,7 +36,8 @@ try {
                 array('AccountUsername' => $email, 'ConfirmationLink' => htmlspecialchars($link)));
 
             $usersTable = Flux::config('FluxTables.MasterUserTable');
-            $bind = array($code);
+            $MasterCreateTable = Flux::config('FluxTables.MasterAccountCreateTable');
+			$bind = array($code);
 
             // Insert confirmation code.
             $sql  = "UPDATE {$server->loginDatabase}.{$usersTable} SET ";
@@ -46,6 +47,20 @@ try {
                 $bind[] = date('Y-m-d H:i:s', time() + (60 * 60 * $expire));
             }
 
+            $sql .= " WHERE user_id = ?";
+            $bind[] = $result;
+
+            $sth  = $server->connection->getStatement($sql);
+            $sth->execute($bind);
+
+            // Insert confirmation code.
+			$bind = array($code);
+            $sql  = "UPDATE {$server->loginDatabase}.{$MasterCreateTable} SET ";
+            $sql .= "confirm_code = ? ";
+            if ($expire=Flux::config('EmailConfirmExpire')) {
+                $sql .= ", confirm_expire = ? ";
+                $bind[] = date('Y-m-d H:i:s', time() + (60 * 60 * $expire));
+            }
             $sql .= " WHERE user_id = ?";
             $bind[] = $result;
 

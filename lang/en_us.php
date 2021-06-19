@@ -854,6 +854,7 @@ return array(
 	'MasterAccountIdLabel'			 => 'Master ID',
 	'MasterAccountLabel'			 => 'Master Account',
 	'MasterNameAccountLabel'		=> 'Master Name',
+	'MasterAccountEditHeading'      => 'Modify Master Account',
 	'GameAccountLabel'			 	 => 'Game Accounts',
 	'MasterAccountViewHeading'      => 'Viewing Master Account',
 	'MasterAccountViewHeading2'    	 => 'Viewing Master Account (%s)',

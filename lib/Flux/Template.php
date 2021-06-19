@@ -969,6 +969,17 @@ class Flux_Template {
 		}
 	}
 	
+	public function linkToMasterAccountSearch($params, $text)
+	{
+		if (is_array($params) && count($params)) {
+			$url = $this->url('master', 'index', $params);
+			return sprintf('<a href="%s" class="link-to-account-search">%s</a>', $url, htmlspecialchars($text));
+		}
+		else {
+			return false;
+		}
+	}
+	
 	/**
 	 * Link to a character view page.
 	 *
