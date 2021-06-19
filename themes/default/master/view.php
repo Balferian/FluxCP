@@ -9,7 +9,7 @@
             <th><?php echo htmlspecialchars(Flux::message('MasterAccountIdLabel')) ?></th>
             <td>
                 <?php if ($auth->allowedToSeeAccountID): ?>
-                    <?php echo $this->getMasterId($account->user_id) ?>
+                    <?php echo $this->getMasterId($account->id) ?>
                 <?php else: ?>
                     <span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NotApplicableLabel')) ?></span>
                 <?php endif ?>
