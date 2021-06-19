@@ -309,13 +309,13 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
         $creditColumns = 'credits.balance, credits.last_donation_date, credits.last_donation_amount';
 
         $sql  = "SELECT *, {$creditColumns}, login.account_id, login.userid, login.logincount, login.lastlogin, login.last_ip, login.sex";
-		$sql .= "(SELECT value FROM {$this->loginDatabase}.`acc_reg_num` WHERE account_id = 2000000 AND `key` = '#CASHPOINTS') as 'cashpoints' ";
+		$sql .= "(SELECT value FROM {$this->loginDatabase}.`acc_reg_num` WHERE account_id = ? AND `key` = '#CASHPOINTS') as 'cashpoints' ";
         $sql .= " FROM {$this->loginDatabase}.{$userAccountTable} AS ua";
         $sql .= " JOIN {$this->loginDatabase}.login ON login.account_id = ua.account_id";
         $sql .= " LEFT JOIN {$this->loginDatabase}.{$creditsTable} AS credits ON ua.id = credits.user_id ";
         $sql .= " WHERE ua.user_id = ? and login.account_id = ? ORDER BY ua.id ASC";
         $sth  = $this->connection->getStatement($sql);
-        $res = $sth->execute(array($userId, $accountID));
+        $res = $sth->execute(array($accountID, $userId, $accountID));
 
         if ($res) {
             return $sth->fetch();
