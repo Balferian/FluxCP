@@ -15,7 +15,11 @@ try {
     $session->login($serverGroupName, $email, $password, $code);
     $returnURL = $params->get('return_url');
 
-    $password = Flux::hashPassword($password, Flux::config('MasterAccountPasswordHash'));
+	if ($session->loginAthenaGroup->loginServer->config->getUseMD5()) {
+		$password = Flux::hashPassword($password);
+	} else {
+		$password = Flux::hashPassword($password, Flux::config('MasterAccountPasswordHash'));
+	}
 
     $sql  = "INSERT INTO {$session->loginAthenaGroup->loginDatabase}.$loginLogTable ";
     $sql .= "(user_id, username, password, ip, error_code, login_date) ";
@@ -42,7 +46,11 @@ catch (Flux_LoginError $e) {
         $row = $sth->fetch();
 
         if ($row) {
-            $password = Flux::hashPassword($password, Flux::config('MasterAccountPasswordHash'));
+			if ($session->loginAthenaGroup->loginServer->config->getUseMD5()) {
+				$password = Flux::hashPassword($password);
+			} else {
+				$password = Flux::hashPassword($password, Flux::config('MasterAccountPasswordHash'));
+			}
 
             $sql  = "INSERT INTO {$loginAthenaGroup->loginDatabase}.$loginLogTable ";
             $sql .= "(user_id, username, password, ip, error_code, login_date) ";

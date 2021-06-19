@@ -23,13 +23,18 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
      * @param $password
      * @return boolean
      */
-    public function isAuth($email, $password)
+    public function isAuthMaster($email, $password)
     {
         if (!Flux::config('MasterAccount')) return false;
 
         if (trim($email) == '' || trim($password) == '') {
             return false;
         }
+
+     	if ($this->config->get('UseMD5')) {
+			$password = Flux::hashPassword($password);
+		}
+
         $usersTable = Flux::config('FluxTables.MasterUserTable');
         $userColumns = Flux::config('FluxTables.MasterUserTableColumns');
         $sql  = "SELECT {$userColumns->get('id')},{$userColumns->get('password')} FROM {$this->loginDatabase}.{$usersTable}";
@@ -39,7 +44,12 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
         $sth->execute(array($email));
         $res = $sth->fetch();
 
-        return password_verify($password, $res->password);
+		if($password == $res->password) {
+			return true;
+		}
+		else {
+			return false;
+		}
     }
 
     public function register($username, $password, $confirmPassword, $birthDate, $securityCode, $email, $email2, $gender)
@@ -108,7 +118,11 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
             throw new Flux_RegisterError('E-mail address is already in use', Flux_RegisterError::EMAIL_ADDRESS_IN_USE);
         }
 
-        $password = Flux::hashPassword($password, Flux::config('MasterAccountPasswordHash'));
+		if ($this->config->getUseMD5()) {
+			$password = Flux::hashPassword($password);
+		} else {
+			$password = Flux::hashPassword($password, Flux::config('MasterAccountPasswordHash'));
+		}
         $withDates = !empty($userColumns->get('created_at')) && !empty($userColumns->get('updated_at'));
 
         $sql = "INSERT INTO {$this->loginDatabase}.{$usersTable} ";
