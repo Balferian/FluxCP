@@ -6,16 +6,17 @@ $this->loginRequired();
 $title = Flux::message('PasswordChangeTitle');
 
 $accountID = $params->get('id');
-$account = $session->account;
+$account       = false;
 
 if (!$accountID && Flux::config('MasterAccount')) {
 	$this->deny();
 }
 if ($accountID && Flux::config('MasterAccount')) {
-	if (!($account = $session->loginServer->getGameAccount($account->id, $accountID))) {
-		$this->deny();
-	}
+	$account = $session->loginServer->getGameAccount($session->account->id, $accountID);
+	$isMine = !empty($account);
 }
+$current_id = $account->id;
+$current_account_id = $account->account_id;
 
 if (count($_POST)) {
 	$currentPassword    = $params->get('currentpass');
@@ -70,7 +71,7 @@ if (count($_POST)) {
 	else {
 		$sql = "SELECT user_pass AS currentPassword FROM {$server->loginDatabase}.login WHERE account_id = ?";
 		$sth = $server->connection->getStatement($sql);
-		$sth->execute(array($account->account_id));
+		$sth->execute(array($current_account_id));
 		
 		$account         = $sth->fetch();
 		$useMD5          = $session->loginServer->config->getUseMD5();
@@ -84,18 +85,23 @@ if (count($_POST)) {
 			$sql = "UPDATE {$server->loginDatabase}.login SET user_pass = ? WHERE account_id = ?";
 			$sth = $server->connection->getStatement($sql);
 			
-			if ($sth->execute(array($newPassword, $account->account_id))) {
+			if ($sth->execute(array($newPassword, $current_account_id))) {
 				$pwChangeTable = Flux::config('FluxTables.ChangePasswordTable');
-				
+
 				$sql  = "INSERT INTO {$server->loginDatabase}.$pwChangeTable ";
-				$sql .= "(account_id, old_password, new_password, change_ip, change_date) ";
-				$sql .= "VALUES (?, ?, ?, ?, NOW())";
-				$sth  = $server->connection->getStatement($sql);
-				$sth->execute(array($account->account_id, $currentPassword, $newPassword, $_SERVER['REMOTE_ADDR']));
-				
-				$session->setMessageData(Flux::message('PasswordHasBeenChanged'));
-				$session->logout();
-				if (!Flux::config('MasterAccount')) {
+				if (Flux::config('MasterAccount')) {
+					$sql .= "(user_id, account_id, old_password, new_password, change_ip, change_date) ";
+					$sql .= "VALUES (?, ?, ?, ?, ?, NOW())";
+					$sth  = $server->connection->getStatement($sql);
+					$sth->execute(array($current_id, $current_account_id, $currentPassword, $newPassword, $_SERVER['REMOTE_ADDR']));
+					$session->setMessageData(Flux::message('PasswordHasBeenChanged2'));
+					$this->redirect($this->url('master', 'view'));
+				} else {
+					$sql .= "(account_id, old_password, new_password, change_ip, change_date) ";
+					$sql .= "VALUES (?, ?, ?, ?, NOW())";
+					$sth  = $server->connection->getStatement($sql);
+					$sth->execute(array($current_account_id, $currentPassword, $newPassword, $_SERVER['REMOTE_ADDR']));
+					$session->setMessageData(Flux::message('PasswordHasBeenChanged'));
 					$session->logout();
 					$this->redirect($this->url('account', 'login'));
 				}

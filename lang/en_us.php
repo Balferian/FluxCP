@@ -133,6 +133,7 @@ return array(
 	'NewPasswordNeedNumber'   => 'Your new password must contain at least %d number(s).',
 	'NewPasswordNeedSymbol'   => 'Your new password must contain at least %d symbol(s).',
 	'PasswordHasBeenChanged'  => 'Your password has been changed, please log-in again.',
+	'PasswordHasBeenChanged2' => 'Your password has been changed.',
 	'FailedToChangePassword'  => 'Failed to change your password.  Please contact an admin.',
 	'PasswordChangeHeading'   => 'Change Your Password',
 	'PasswordChangeInfo'      => 'Please enter your current password, then enter the new password you would like to use and re-enter it to confirm.',
