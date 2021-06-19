@@ -79,7 +79,11 @@ if (count($_POST)) {
 		$currentPassword = $useMD5 ? Flux::hashPassword($currentPassword) : $currentPassword;
 		$newPassword     = $useMD5 ? Flux::hashPassword($newPassword) : $newPassword;
 
-        if (!password_verify($currentPassword, $account->currentPassword)) {
+echo $currentPassword ." / ". $account->currentPassword;
+		if($useMD5 && $currentPassword != $account->currentPassword) {
+			$errorMessage = Flux::message('OldPasswordInvalid');
+		}
+        elseif (!$useMD5 && !password_verify($currentPassword, $account->currentPassword)) {
             $errorMessage = Flux::message('OldPasswordInvalid');
         } else {
 			$sql = "UPDATE {$server->loginDatabase}.{$usersTable} SET {$userColumns->get('password')} = ? WHERE {$userColumns->get('id')} = ?";
@@ -94,7 +98,8 @@ if (count($_POST)) {
 				$sth  = $server->connection->getStatement($sql);
 				$sth->execute(array($current_id, $currentPassword, $newPassword, $_SERVER['REMOTE_ADDR']));
 				$session->setMessageData(Flux::message('PasswordHasBeenChanged2'));
-				$this->redirect($this->url('master', 'view'));
+				$session->logout();
+				$this->redirect($this->url('account', 'login'));
 			}
 			else {
 				$errorMessage = Flux::message('FailedToChangePassword');
