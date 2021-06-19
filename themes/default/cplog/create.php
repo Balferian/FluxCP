@@ -1,5 +1,5 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2>Logins</h2>
+<h2>Account Registration</h2>
 <p class="toggler"><a href="javascript:toggleSearchForm()">Search...</a></p>
 <form action="<?php echo $this->url ?>" method="get" class="search-form">
 	<?php echo $this->moduleActionFormInputs($params->get('module'), $params->get('action')) ?>
@@ -32,7 +32,7 @@
 		<input type="button" value="Reset" onclick="reload()" />
 	</p>
 </form>
-<?php if ($logins): ?>
+<?php if ($accounts): ?>
 <?php echo $paginator->infoText() ?>
 <table class="horizontal-table">
 	<tr>
@@ -45,27 +45,27 @@
 		<th><?php echo $paginator->sortableColumn('reg_date', 'Login Date') ?></th>
 
 	</tr>
-	<?php foreach ($logins as $login): ?>
+	<?php foreach ($accounts as $account): ?>
 	<tr>
 		<td align="right">
 			<?php if ($auth->actionAllowed('account', 'view') && $auth->allowedToViewAccount): ?>
-				<?php echo $this->linkToAccount($login->account_id, $login->account_id) ?>
+				<?php echo $this->linkToAccount($account->account_id, $account->account_id) ?>
 			<?php else: ?>
-				<?php echo $login->account_id ?>
+				<?php echo $account->account_id ?>
 			<?php endif ?>
 		</td>
-		<td><?php echo htmlspecialchars($login->userid) ?></td>
+		<td><?php echo htmlspecialchars($account->userid) ?></td>
 		<?php if ($showPassword && $seePassword): ?>
-		<td><?php echo htmlspecialchars($login->user_pass) ?></td>
+		<td><?php echo htmlspecialchars($account->user_pass) ?></td>
 		<?php endif ?>
 		<td>
 			<?php if ($auth->actionAllowed('account', 'index')): ?>
-				<?php echo $this->linkToAccountSearch(array('reg_ip' => $login->reg_ip), $login->reg_ip) ?>
+				<?php echo $this->linkToAccountSearch(array('reg_ip' => $account->reg_ip), $account->reg_ip) ?>
 			<?php else: ?>
-				<?php echo htmlspecialchars($login->reg_ip) ?>
+				<?php echo htmlspecialchars($account->reg_ip) ?>
 			<?php endif ?>
 		</td>
-		<td><?php echo $this->formatDateTime($login->reg_date) ?></td>
+		<td><?php echo $this->formatDateTime($account->reg_date) ?></td>
 	</tr>
 	<?php endforeach ?>
 </table>
