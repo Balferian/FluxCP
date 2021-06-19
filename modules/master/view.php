@@ -50,7 +50,7 @@ foreach ($session->getAthenaServerNames() as $serverName) {
     $sql .= " JOIN {$athena->charMapDatabase}.login ON login.account_id = ua.account_id ";
     $sql .= " WHERE ua.user_id = ? ORDER BY ua.id ASC";
     $sth  = $server->connection->getStatement($sql);
-    $sth->execute(array($account->user_id));
+    $sth->execute(array($account->id));
 
     $userAccount = $sth->fetchAll();
     $userAccounts[$athena->serverName] = $userAccount;
