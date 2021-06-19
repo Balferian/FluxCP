@@ -28,9 +28,12 @@ if (!$isMine) {
     }
     $usersTable = Flux::config('FluxTables.MasterUserTable');
 
-    $sql = "SELECT * FROM {$server->loginDatabase}.{$usersTable} WHERE user_id = ? LIMIT 1";
-    $sth = $server->connection->getStatement($sql);
-    $sth->execute(array($userId));
+    $sql  = "SELECT *, ";
+	$sql .= "(SELECT balance FROM {$server->loginDatabase}.cp_credits_master WHERE user_id = ?) as balance "; 
+	$sql .= "FROM {$server->loginDatabase}.{$usersTable} ";
+	$sql .= "WHERE user_id = ? LIMIT 1";
+    $sth  = $server->connection->getStatement($sql);
+    $sth->execute(array($userId, $userId));
     $account = $sth->fetch();
     $headerTitle = $title = sprintf(Flux::message('MasterAccountViewHeading2'), $account->email);
 }
