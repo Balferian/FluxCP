@@ -26,8 +26,8 @@ try {
 	// JOINs, conditions etc
 	$sqlpartial  = "LEFT OUTER JOIN $tableName ON items.id = $redeemTable.nameid ";
 	$sqlpartial .= "LEFT OUTER JOIN {$server->loginDatabase}.login ON {$server->charMapDatabase}.$redeemTable.account_id = {$server->loginDatabase}.login.account_id ";
-	$sqlpartial .= "WHERE ".implode('OR', $account_list);
-	$sqlpartial .= "AND redeemed < 1 ORDER BY purchase_date DESC";
+    $sqlpartial .= "WHERE (".implode('OR', $account_list).") ";
+    $sqlpartial .= "AND redeemed < 1 ORDER BY purchase_date DESC";
 	
 	// Fetch item count.
 	$sql = "SELECT COUNT($redeemTable.id) AS total FROM {$server->charMapDatabase}.$redeemTable $sqlpartial";
