@@ -374,7 +374,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 		$creditsTable = Flux::config('MasterAccount') ? Flux::config('FluxTables.MasterCreditsTable') : Flux::config('FluxTables.CreditsTable');
 		
 		if(Flux::config('MasterAccount'))
-			$sql = "SELECT COUNT(master_id) AS hasRecord FROM {$this->loginDatabase}.$creditsTable WHERE master_id = ?";
+			$sql = "SELECT COUNT(user_id) AS hasRecord FROM {$this->loginDatabase}.$creditsTable WHERE user_id = ?";
 		else
 			$sql = "SELECT COUNT(account_id) AS hasRecord FROM {$this->loginDatabase}.$creditsTable WHERE account_id = ?";
 		$sth = $this->connection->getStatement($sql);
@@ -396,7 +396,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 	{
 		if(Flux::config('MasterAccount')) {
 			$usersTable = Flux::config('FluxTables.MasterUserTable');
-			$sql = "SELECT COUNT(id) AS accountExists FROM {$this->loginDatabase}.$usersTable WHERE id = ?";
+			$sql = "SELECT COUNT(user_id) AS accountExists FROM {$this->loginDatabase}.$usersTable WHERE user_id = ?";
 			$sth = $this->connection->getStatement($sql);
 			
 			if (!$sth->execute(array($targetAccountID)) || !$sth->fetch()->accountExists) {
@@ -414,7 +414,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 		$creditsTable = Flux::config('MasterAccount') ? Flux::config('FluxTables.MasterCreditsTable') : Flux::config('FluxTables.CreditsTable');
 		
 		if (!$this->hasCreditsRecord($targetAccountID)) {
-			$fields = (Flux::config('MasterAccount') ? 'master_id' : 'account_id').', balance';
+			$fields = (Flux::config('MasterAccount') ? 'user_id' : 'account_id').', balance';
 			$values = '?, ?';
 			
 			if (!is_null($donationAmount)) {
@@ -446,7 +446,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 			}
 			$vals[] = $targetAccountID;
 			
-			$sql .= Flux::config('MasterAccount') ? "WHERE master_id = ?" : "WHERE account_id = ?";
+			$sql .= Flux::config('MasterAccount') ? "WHERE user_id = ?" : "WHERE account_id = ?";
 			$sth  = $this->connection->getStatement($sql);
 			
 			return $sth->execute($vals);

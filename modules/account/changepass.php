@@ -15,7 +15,7 @@ if ($accountID && Flux::config('MasterAccount')) {
 	$account = $session->loginServer->getGameAccount($session->account->id, $accountID);
 	$isMine = !empty($account);
 }
-$current_id = $account->id;
+$current_id = $session->account->id;
 $current_account_id = $account->account_id;
 
 if (count($_POST)) {

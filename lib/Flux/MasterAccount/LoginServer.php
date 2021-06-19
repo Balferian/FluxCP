@@ -221,7 +221,7 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
         $sth  = $this->connection->getStatement($sql);
 
         if ($sth->execute(array($userId, $bannedBy, $banReason)) && !empty($userColumns->get('unban_at'))) {
-            $sql = "UPDATE {$this->loginDatabase}.{$usersTable} SET {$userColumns->get('unban_at')} = NOW() WHERE id = ?";
+            $sql = "UPDATE {$this->loginDatabase}.{$usersTable} SET {$userColumns->get('unban_at')} = NOW() WHERE user_id = ?";
             $sth = $this->connection->getStatement($sql);
             return $sth->execute(array($userId));
         }
@@ -245,7 +245,7 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
             if (!$unbannedBy) {
                 $sql .= "confirmed_date = NOW(), confirm_expire = NULL, ";
             }
-            $sql .= "{$userColumns->get('unban_at')} = NULL WHERE id = ?";
+            $sql .= "{$userColumns->get('unban_at')} = NULL WHERE user_id = ?";
             $sth  = $this->connection->getStatement($sql);
             $sth->execute(array($userId));
         }
@@ -276,6 +276,31 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
             return false;
         }
     }
+	
+	/**
+	 *
+	 */
+	public function getBanInfoGameAccount($accountID)
+	{
+		$table = Flux::config('FluxTables.AccountBanTable');
+		$usersTable = Flux::config('FluxTables.MasterUserTable');
+		$col   = "$table.id, $table.account_id, $table.banned_by, $table.ban_type, ";
+		$col  .= "$table.ban_until, $table.ban_date, $table.ban_reason, ";
+		$col  .= "$usersTable.user_id, $usersTable.email, $usersTable.name";
+		$sql   = "SELECT $col FROM {$this->loginDatabase}.$table ";
+		$sql  .= "LEFT OUTER JOIN {$this->loginDatabase}.$usersTable ON $usersTable.user_id = $table.banned_by ";
+		$sql  .= "WHERE $table.account_id = ? ORDER BY $table.ban_date DESC ";
+		$sth   = $this->connection->getStatement($sql);
+		$res   = $sth->execute(array($accountID));
+		
+		if ($res) {
+			$ban = $sth->fetchAll();
+			return $ban;
+		}
+		else {
+			return false;
+		}
+	}
 
     public function getGameAccount($userId, $accountID)
     {

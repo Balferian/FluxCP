@@ -37,7 +37,7 @@ if (!$isMine) {
 
 $banInfo = false;
 if ($account) {
-	$banInfo = $server->loginServer->getBanInfoMaster($account->id);
+	$banInfo = $server->loginServer->getBanInfoMaster($account->user_id);
 }
 
 $userAccounts = array();
@@ -50,7 +50,7 @@ foreach ($session->getAthenaServerNames() as $serverName) {
     $sql .= " JOIN {$athena->charMapDatabase}.login ON login.account_id = ua.account_id ";
     $sql .= " WHERE ua.user_id = ? ORDER BY ua.id ASC";
     $sth  = $server->connection->getStatement($sql);
-    $sth->execute(array($account->id));
+    $sth->execute(array($account->user_id));
 
     $userAccount = $sth->fetchAll();
     $userAccounts[$athena->serverName] = $userAccount;

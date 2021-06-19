@@ -59,7 +59,7 @@ $sql = $paginator->getSQL($sql);
 $sth = $server->connection->getStatement($sql);
 $sth->execute($bind);
 
-$logins = $sth->fetchAll();
-if ($logins) {
+$accounts = $sth->fetchAll();
+if ($accounts) {
 }
 ?>

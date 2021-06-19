@@ -7,21 +7,16 @@ $loginLogTable = Flux::config('FluxTables.LoginLogTable');
 $sqlpartial    = "WHERE 1=1 ";
 $bind          = array();
 
-$password    = $params->get('password');
 $accountID   = (int)$params->get('account_id');
 $username    = trim($params->get('username'));
 $ipAddress   = trim($params->get('ip'));
-$loginAfter  = $params->get('login_after_date');
-$loginBefore = $params->get('login_before_date');
 $errorCode   = $params->get('error_code');
 
-if ($password && $auth->allowedToSearchCpLoginLogPw) {
-	$sqlpartial .= 'AND password = ? ';
-	$bind[]      = $session->loginAthenaGroup->loginServer->config->getUseMD5() ? md5($password) : $password;
-}
-
 if ($accountID) {
-	$sqlpartial .= 'AND account_id = ? ';
+	if (Flux::config('MasterAccount'))
+		$sqlpartial .= 'AND user_id = ? ';
+	else
+		$sqlpartial .= 'AND account_id = ? ';
 	$bind[]      = $accountID;
 }
 
@@ -33,16 +28,6 @@ if ($username) {
 if ($ipAddress) {
 	$sqlpartial .= 'AND ip LIKE ? ';
 	$bind[]      = "%$ipAddress%";
-}
-
-if ($loginAfter) {
-	$sqlpartial .= 'AND login_date >= ? ';
-	$bind[]      = $loginAfter;
-}
-
-if ($loginBefore) {
-	$sqlpartial .= 'AND login_date <= ? ';
-	$bind[]      = $loginBefore;
 }
 
 if (!is_null($errorCode) && strtolower($errorCode) != 'all') {
@@ -61,11 +46,11 @@ $sth->execute($bind);
 
 $paginator = $this->getPaginator($sth->fetch()->total);
 $paginator->setSortableColumns(array(
-	'account_id', 'username', 'password', 'ip',
+	'user_id', 'account_id', 'username', 'ip',
 	'login_date' => 'desc', 'error_code'
 ));
 
-$sql = "SELECT account_id, username, password, ip, login_date, error_code FROM {$server->loginDatabase}.$loginLogTable $sqlpartial";
+$sql = "SELECT user_id, account_id, username, ip, login_date, error_code FROM {$server->loginDatabase}.$loginLogTable $sqlpartial";
 $sql = $paginator->getSQL($sql);
 $sth = $server->connection->getStatement($sql);
 $sth->execute($bind);

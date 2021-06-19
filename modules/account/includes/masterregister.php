@@ -46,7 +46,7 @@ try {
                 $bind[] = date('Y-m-d H:i:s', time() + (60 * 60 * $expire));
             }
 
-            $sql .= " WHERE id = ?";
+            $sql .= " WHERE user_id = ?";
             $bind[] = $result;
 
             $sth  = $server->connection->getStatement($sql);

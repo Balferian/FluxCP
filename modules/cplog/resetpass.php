@@ -5,6 +5,7 @@ $title = 'Password Resets';
 
 $resetTable  = Flux::config('FluxTables.ResetPasswordTable');
 $sqlpartial  = "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = log.account_id ";
+$sqlpartial .= "LEFT JOIN {$server->loginDatabase}.cp_users ON cp_users.user_id = log.user_id ";
 $sqlpartial .= 'WHERE 1=1 ';
 $bind        = array();
 
@@ -76,7 +77,8 @@ $paginator->setSortableColumns(array(
 ));
 
 $col  = 'id, code, log.account_id, old_password, new_password, userid, ';
-$col .= 'request_date, request_ip, reset_date, reset_ip, reset_done';
+$col .= 'request_date, request_ip, reset_date, reset_ip, reset_done, ';
+$col .= 'cp_users.user_id, cp_users.name, cp_users.email';
 $sql  = $paginator->getSQL("SELECT $col FROM {$server->loginDatabase}.$resetTable AS log $sqlpartial");
 $sth  = $server->connection->getStatement($sql);
 $sth->execute($bind);
