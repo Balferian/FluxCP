@@ -30,7 +30,7 @@ if (!$isMine) {
 	$creditsTable  = Flux::config('FluxTables.MasterCreditsTable');
 	$creditColumns = 'credits.balance';
 
-    $sql  = "SELECT *, {$server->loginDatabase}.{$usersTable}.user_id as id FROM {$server->loginDatabase}.{$usersTable} ";
+    $sql  = "SELECT *, {$server->loginDatabase}.{$usersTable}.user_id as id, $creditColumns FROM {$server->loginDatabase}.{$usersTable} ";
     $sql .= "LEFT JOIN {$server->loginDatabase}.{$creditsTable} AS credits ON {$server->loginDatabase}.{$usersTable}.user_id = credits.user_id ";
 	$sql .= "WHERE {$server->loginDatabase}.{$usersTable}.user_id = ? LIMIT 1";
     $sth = $server->connection->getStatement($sql);
