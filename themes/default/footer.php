@@ -1,12 +1,6 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
+								</div>
 							</td>
-							<td bgcolor="#f5f5f5"></td>
-						</tr>
-
-						<tr>
-							<td><img src="<?php echo $this->themePath('img/content_bl.gif') ?>" style="display: block" /></td>
-							<td bgcolor="#f5f5f5"></td>
-							<td><img src="<?php echo $this->themePath('img/content_br.gif') ?>" style="display: block" /></td>
 						</tr>
 					</table>
 				</td>

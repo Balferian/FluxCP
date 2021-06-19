@@ -41,16 +41,6 @@
 						'color': '#444444'
 					}, 500);
 				});
-				$('.menuitem a').hover(
-					function(){
-						$(this).fadeTo(200, 0.85);
-						$(this).css('cursor', 'pointer');
-					},
-					function(){
-						$(this).fadeTo(150, 1.00);
-						$(this).css('cursor', 'normal');
-					}
-				);
 				$('.money-input').keyup(function() {
 					var creditValue = parseInt($(this).val() / <?php echo Flux::config('CreditExchangeRate') ?>, 10);
 					if (isNaN(creditValue))
@@ -128,15 +118,19 @@
 	</head>
 	<body>
 		<table cellspacing="0" cellpadding="0" width="100%">
-			<tr>
+			<tr id="header_bg">
 				<!-- Header -->
-				<td bgcolor="#8ebceb" width="20"></td>
-				<td bgcolor="#8ebceb" colspan="3">
+				<td width="20"></td>
+				<td colspan="3">
 					<a href="<?php echo $this->basePath ?>">
-						<img src="<?php echo $this->themePath($session->account->group_level >= Flux::config('AdminMenuGroupLevel') ? 'img/logo_admin.gif' : 'img/logo.gif') ?>" id="logo" />
+						<img src="<?php echo $this->themePath($session->account->group_level >= Flux::config('AdminMenuGroupLevel') ? 'img/logo_admin.png' : 'img/logo.png') ?>" id="logo" />
 					</a>
+					<div id="MainTitle">
+						<servername><?php echo $server->serverName;?></servername>
+						<?php if($title):?><pagetitle><?php echo $title;?></pagetitle><?php endif; ?>
+					</div>
 				</td>
-				<td bgcolor="#8ebceb" width="20"></td>
+				<td width="20"></td>
 			</tr>
 			<tr>
 				<!-- Spacing between header and content -->
@@ -155,40 +149,34 @@
 					<?php include $this->themePath('main/loginbox.php', true) ?>
 					
 					<!-- Content -->
-					<table cellspacing="0" cellpadding="0" width="100%" id="content">
+					<table cellspacing="0" cellpadding="0" width="100%">
 						<tr>
-							<td width="18"><img src="<?php echo $this->themePath('img/content_tl.gif') ?>" style="display: block"  /></td>
-							<td bgcolor="#f5f5f5"></td>
-							<td width="18"><img src="<?php echo $this->themePath('img/content_tr.gif') ?>" style="display: block" /></td>
-						</tr>
-						
-						<tr>
-							<td bgcolor="#f5f5f5"></td>
-							<td bgcolor="#f5f5f5">
-								<?php if (Flux::config('DebugMode') && @gethostbyname(Flux::config('ServerAddress')) == '127.0.0.1'): ?>
-									<p class="notice">Please change your <strong>ServerAddress</strong> directive in your application config to your server's real address (e.g., myserver.com).</p>
-								<?php endif ?>
-								
-								<!-- Messages -->
-								<?php if ($message=$session->getMessage()): ?>
-									<p class="message"><?php echo htmlspecialchars($message) ?></p>
-								<?php endif ?>
-								
-								<!-- Error Messages -->
-								<?php if (!empty($errorMessage)): ?>
-								<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
-								<?php endif ?>
-								
-								<!-- Success Messages -->
-								<?php if (!empty($successMessage)): ?>
-									<p class="green"><?php echo htmlspecialchars($successMessage) ?></p>
-								<?php endif ?>
-								
-								<!-- Sub menu -->
-								<?php include $this->themePath('main/submenu.php', true) ?>
-								
-								<!-- Page menu -->
-								<?php include $this->themePath('main/pagemenu.php', true) ?>
-								
-								<!-- Credit balance -->
-								<?php if (in_array($params->get('module'), array('donate', 'purchase'))) include $this->themePath('main/balance.php', true) ?>
+							<td>
+								<div id="content">
+									<?php if (Flux::config('DebugMode') && @gethostbyname(Flux::config('ServerAddress')) == '127.0.0.1'): ?>
+										<p class="notice">Please change your <strong>ServerAddress</strong> directive in your application config to your server's real address (e.g., myserver.com).</p>
+									<?php endif ?>
+									
+									<!-- Messages -->
+									<?php if ($message=$session->getMessage()): ?>
+										<p class="message"><?php echo htmlspecialchars($message) ?></p>
+									<?php endif ?>
+									
+									<!-- Error Messages -->
+									<?php if (!empty($errorMessage)): ?>
+									<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
+									<?php endif ?>
+									
+									<!-- Success Messages -->
+									<?php if (!empty($successMessage)): ?>
+										<p class="green"><?php echo htmlspecialchars($successMessage) ?></p>
+									<?php endif ?>
+									
+									<!-- Sub menu -->
+									<?php include $this->themePath('main/submenu.php', true) ?>
+									
+									<!-- Page menu -->
+									<?php include $this->themePath('main/pagemenu.php', true) ?>
+									
+									<!-- Credit balance -->
+									<?php if (in_array($params->get('module'), array('donate', 'purchase'))) include $this->themePath('main/balance.php', true) ?>
