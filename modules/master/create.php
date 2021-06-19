@@ -52,6 +52,7 @@ if (count($_POST)) {
         else {
             exit('Uh oh, what happened?');
         }
+		$this->redirect($this->url('master','view'));
     }
     catch (Flux_RegisterError $e) {
         switch ($e->getCode()) {

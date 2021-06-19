@@ -5,7 +5,7 @@ $title = 'List Account Ban History';
 
 $banTable    = Flux::config('FluxTables.AccountBanTable');
 $sqlpartial  = "LEFT JOIN {$server->loginDatabase}.login AS l1 ON l1.account_id = a.account_id ";
-$sqlpartial .= "LEFT JOIN {$server->loginDatabase}.login AS l2 ON l2.account_id = a.banned_by ";
+$sqlpartial .= "LEFT JOIN {$server->loginDatabase}.cp_users AS l2 ON l2.user_id = a.banned_by ";
 $sqlpartial .= "WHERE 1=1 ";
 $sqlpartial .= "AND a.banned_by IS NOT NULL ";
 $bind        = array();
@@ -34,7 +34,7 @@ if ($bannedBy) {
 		$bind[]      = $bannedBy;
 	}
 	else {
-		$sqlpartial .= 'AND (l2.userid LIKE ? OR l2.userid = ?) ';
+		$sqlpartial .= 'AND (l2.user_id LIKE ? OR l2.user_id = ?) ';
 		$bind[]      = "%$bannedBy%";
 		$bind[]      = $bannedBy;
 	}
@@ -68,11 +68,11 @@ $sth->execute($bind);
 
 $paginator = $this->getPaginator($sth->fetch()->total);
 $paginator->setSortableColumns(array(
-	'account', 'banned_by', 'ban_type', 'ban_date' => 'desc', 'ban_until'
+	'a.account_id', 'banned_by', 'ban_type', 'ban_date' => 'desc', 'ban_until'
 ));
 
 $sql  = "SELECT a.account_id, a.banned_by, a.ban_type, a.ban_until, a.ban_date, a.ban_reason, ";
-$sql .= "l1.userid AS banned_userid, l2.userid AS banned_by_userid FROM {$server->loginDatabase}.$banTable AS a $sqlpartial";
+$sql .= "l1.userid AS banned_userid, l2.user_id AS banned_by_userid, l2.name AS banned_by_name FROM {$server->loginDatabase}.$banTable AS a $sqlpartial";
 $sql  = $paginator->getSQL($sql);
 $sth  = $server->connection->getStatement($sql);
 $sth->execute($bind);

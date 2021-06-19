@@ -35,7 +35,7 @@
 <?php echo $paginator->infoText() ?>
 <table class="horizontal-table">
 	<tr>
-		<th><?php echo $paginator->sortableColumn('account', 'Account') ?></th>
+		<th><?php echo $paginator->sortableColumn('a.account_id', 'Account') ?></th>
 		<th><?php echo $paginator->sortableColumn('banned_by', 'Banned By') ?></th>
 		<th><?php echo $paginator->sortableColumn('ban_type', 'Ban Type') ?></th>
 		<th><?php echo $paginator->sortableColumn('ban_date', 'Ban Date') ?></th>
@@ -53,7 +53,7 @@
 		</td>
 		<td>
 			<?php if ($auth->actionAllowed('account', 'view') && $auth->allowedToViewAccount): ?>
-				<?php echo $this->linkToAccount($ban->banned_by, $ban->banned_by_userid) ?>
+				<?php echo $this->linkToMasterAccount($ban->banned_by, $ban->banned_by_name) ?>
 			<?php else: ?>
 				<?php echo $ban->banned_by ?>
 			<?php endif ?>

@@ -50,7 +50,7 @@ if (!$isMine) {
 	$sql .= "FROM {$server->loginDatabase}.login ";
 	if(Flux::config('MasterAccount')) {
 		$sql .= "LEFT OUTER JOIN $usersTable ON login.email = $usersTable.email ";
-		$sql .= "LEFT OUTER JOIN cp_credits_master ON $usersTable.{$userColumns->get('id')} = cp_credits_master.user_id ";
+		$sql .= "LEFT OUTER JOIN cp_credits_master ON $usersTable.user_id = cp_credits_master.user_id ";
 	} else
 		$sql .= "LEFT OUTER JOIN {$server->loginDatabase}.{$creditsTable} AS credits ON login.account_id = credits.account_id ";
 	$sql .= "LEFT OUTER JOIN {$server->loginDatabase}.{$createTable} AS created ON login.account_id = created.account_id ";
@@ -93,7 +93,7 @@ if (count($_POST) && $account) {
 	
 	if ($params->get('tempban') && ($tempBanDate=$params->get('tempban_date'))) {
 		if ($canTempBan) {
-			if ($server->loginServer->temporarilyBan($session->account->account_id, $reason, $account->account_id, $tempBanDate)) {
+			if ($server->loginServer->temporarilyBan(Flux::config('MasterAccount') ? $session->account->id : $session->account->account_id, $reason, $account->account_id, $tempBanDate)) {
 				$formattedDate = $this->formatDateTime($tempBanDate);
 				$session->setMessageData("Account has been temporarily banned until $formattedDate.");
 				$this->redirect($this->url('account', 'view', array('id' => $account->account_id)));
@@ -108,7 +108,7 @@ if (count($_POST) && $account) {
 	}
 	elseif ($params->get('permban')) {
 		if ($canPermBan) {
-			if ($server->loginServer->permanentlyBan($session->account->account_id, $reason, $account->account_id)) {
+			if ($server->loginServer->permanentlyBan(Flux::config('MasterAccount') ? $session->account->id : $session->account->account_id, $reason, $account->account_id)) {
 				$session->setMessageData("Account has been permanently banned.");
 				$this->redirect($this->url('account', 'view', array('id' => $account->account_id)));
 			}
@@ -132,7 +132,7 @@ if (count($_POST) && $account) {
 		$sth = $server->connection->getStatement($sql);
 		
 		if ($tempBanned && $auth->allowedToTempUnbanAccount &&
-				$server->loginServer->unban($session->account->account_id, $reason, $account->account_id)) {
+				$server->loginServer->unban(Flux::config('MasterAccount') ? $session->account->id : $session->account->account_id, $reason, $account->account_id)) {
 					
 			if ($confirm) {
 				$sth->execute(array($account->account_id));
@@ -142,7 +142,7 @@ if (count($_POST) && $account) {
 			$this->redirect($this->url('account', 'view', array('id' => $account->account_id)));
 		}
 		elseif ($permBanned && $auth->allowedToPermUnbanAccount &&
-				$server->loginServer->unban($session->account->account_id, $reason, $account->account_id)) {
+				$server->loginServer->unban(Flux::config('MasterAccount') ? $session->account->id : $session->account->account_id, $reason, $account->account_id)) {
 					
 			if ($confirm) {
 				$sth->execute(array($account->account_id));
@@ -159,7 +159,11 @@ if (count($_POST) && $account) {
 
 $banInfo = false;
 if ($account) {
-	$banInfo = $server->loginServer->getBanInfo($account->account_id);
+	if (Flux::config('MasterAccount')){
+		$banInfo = $server->loginServer->getBanInfoGameAccount($account->account_id);
+	} else {
+		$banInfo = $server->loginServer->getBanInfo($account->account_id);
+	}
 }
 
 $characters = array();

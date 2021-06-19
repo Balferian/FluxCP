@@ -175,11 +175,11 @@
 			<td><?php echo htmlspecialchars($this->formatDateTime($ban->ban_date)) ?></td>
 			<td><?php echo nl2br(htmlspecialchars($ban->ban_reason)) ?></td>
 			<td>
-				<?php if ($ban->userid): ?>
+				<?php if ($ban->name): ?>
 					<?php if ($auth->allowedToViewAccount): ?>
-						<?php echo $this->linkToAccount($ban->banned_by, $ban->userid) ?>
+						<?php echo $this->linkToMasterAccount($ban->banned_by, $ban->name) ?>
 					<?php else: ?>
-						<?php echo htmlspecialchars($ban->userid) ?>
+						<?php echo htmlspecialchars($ban->name) ?>
 					<?php endif ?>
 				<?php else: ?>
 					<strong><?php echo htmlspecialchars(Flux::message('BanLogBannedByCP')) ?></strong>

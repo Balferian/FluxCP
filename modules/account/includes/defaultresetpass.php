@@ -39,18 +39,27 @@ else {
             $errorMessage = Flux::message('ResetPassDisallowed');
         }
         else {
-            $code = md5(rand() + $row->account_id);
-            $sql  = "INSERT INTO {$loginAthenaGroup->loginDatabase}.$resetPassTable ";
-            $sql .= "(code, account_id, old_password, request_date, request_ip, reset_done) ";
-            $sql .= "VALUES (?, ?, ?, NOW(), ?, 0)";
-            $sth  = $loginAthenaGroup->connection->getStatement($sql);
-            $res  = $sth->execute(array($code, $row->account_id, $row->user_pass, $_SERVER['REMOTE_ADDR']));
-            if ($res) {
+			if (Flux::config('MasterAccount')) {
+				$code = md5(rand() + $row->account_id);
+				$sql  = "INSERT INTO {$loginAthenaGroup->loginDatabase}.$resetPassTable ";
+				$sql .= "(code, user_id, account_id, old_password, request_date, request_ip, reset_done) ";
+				$sql .= "VALUES (?, ?, ?, ?, NOW(), ?, 0)";
+				$sth  = $loginAthenaGroup->connection->getStatement($sql);
+				$res  = $sth->execute(array($code, $session->account->id, $row->account_id, $row->user_pass, $_SERVER['REMOTE_ADDR']));
+            } else {
+				$code = md5(rand() + $row->account_id);
+				$sql  = "INSERT INTO {$loginAthenaGroup->loginDatabase}.$resetPassTable ";
+				$sql .= "(code, account_id, old_password, request_date, request_ip, reset_done) ";
+				$sql .= "VALUES (?, ?, ?, NOW(), ?, 0)";
+				$sth  = $loginAthenaGroup->connection->getStatement($sql);
+				$res  = $sth->execute(array($code, $row->account_id, $row->user_pass, $_SERVER['REMOTE_ADDR']));				
+			}
+			if ($res) {
                 require_once 'Flux/Mailer.php';
                 $name = $loginAthenaGroup->serverName;
                 $link = $this->url('account', 'resetpw', array('_host' => true, 'code' => $code, 'account' => $row->account_id, 'login' => $name));
                 $mail = new Flux_Mailer();
-                $sent = $mail->send($email, 'Reset Password', 'resetpass', array('AccountUsername' => $userid, 'ResetLink' => htmlspecialchars($link)));
+                $sent = $mail->send($email, 'Reset Password', 'resetpass', array('AccountUsername' => $account->userid, 'ResetLink' => htmlspecialchars($link)));
             }
         }
     }

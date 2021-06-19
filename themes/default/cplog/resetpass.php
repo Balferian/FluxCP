@@ -68,15 +68,35 @@
 	<?php foreach ($resets as $reset): ?>
 	<tr>
 		<td align="right">
-			<?php if ($auth->actionAllowed('account', 'view')): ?>
-				<?php echo $this->linkToAccount($reset->account_id, $reset->account_id) ?>
+			<?php if ($reset->user_id && $reset->account_id): ?>
+				<?php if ($auth->actionAllowed('account', 'view')): ?>
+					<?php echo $this->linkToAccount($reset->account_id, $reset->account_id) ?>
+				<?php else: ?>
+					<?php echo $reset->account_id ?>
+				<?php endif ?>			
+			<?php elseif($reset->user_id && !$reset->account_id): ?>
+				<?php if ($auth->actionAllowed('master', 'view')): ?>
+					<?php echo $this->linkToMasterAccount($reset->user_id, $reset->user_id) ?>
+				<?php else: ?>
+					<?php echo $reset->user_id ?>
+				<?php endif ?>
 			<?php else: ?>
-				<?php echo $reset->account_id ?>
+				<span class="not-applicable">Unknown</span>
 			<?php endif ?>
 		</td>
 		<td>
-			<?php if ($reset->userid): ?>
-				<?php echo htmlspecialchars($reset->userid) ?>
+			<?php if ($reset->user_id && $reset->account_id): ?>
+				<?php if ($auth->actionAllowed('account', 'view')): ?>
+					<?php echo $this->linkToAccount($reset->account_id, $reset->userid) ?>
+				<?php else: ?>
+					<?php echo $reset->userid ?>
+				<?php endif ?>			
+			<?php elseif($reset->user_id && !$reset->account_id): ?>
+				<?php if ($auth->actionAllowed('master', 'view')): ?>
+					<?php echo $this->linkToMasterAccount($reset->user_id, $reset->name) ?>
+				<?php else: ?>
+					<?php echo $reset->name ?>
+				<?php endif ?>
 			<?php else: ?>
 				<span class="not-applicable">Unknown</span>
 			<?php endif ?>

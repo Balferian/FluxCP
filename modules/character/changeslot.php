@@ -10,7 +10,7 @@ if (!$charID) {
 }
 
 $char = $server->getCharacter($charID);
-if (!$char || ($session->isMine($char->account_id) && !$auth->allowedToChangeSlot)) {
+if (!$char || (!$session->isMine($char->account_id) && !$auth->allowedToChangeSlot)) {
 	$this->deny();
 }
 
