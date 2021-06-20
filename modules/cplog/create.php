@@ -52,7 +52,7 @@ $sth->execute($bind);
 
 $paginator = $this->getPaginator($sth->fetch()->total);
 $paginator->setSortableColumns(array(
-	'account_id', 'userid', 'user_pass', 'reg_ip',
+	'login.account_id', 'user_id', 'userid', 'reg_ip',
 	'reg_date' => 'desc'
 ));
 

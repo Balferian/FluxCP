@@ -37,8 +37,8 @@
 <table class="horizontal-table">
 	<tr>
 		<th><?php echo $paginator->sortableColumn('user_id', 'Master ID') ?></th>
-		<th><?php echo $paginator->sortableColumn('account_id', 'Account ID') ?></th>
-		<th><?php echo $paginator->sortableColumn('user_id', 'Username') ?></th>
+		<th><?php echo $paginator->sortableColumn('login.account_id', 'Account ID') ?></th>
+		<th><?php echo $paginator->sortableColumn('userid', 'Username') ?></th>
 		<?php if (($showPassword=Flux::config('CpLoginLogShowPassword')) && ($seePassword=$auth->allowedToSeeCpLoginLogPass)): ?>
 		<th><?php echo $paginator->sortableColumn('user_pass', 'Password') ?></th>
 		<?php endif ?>
