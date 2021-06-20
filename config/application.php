@@ -338,8 +338,9 @@ return array(
 		'master' 		=> array (
 			'index'			=>	'List Master Accounts',
 			'view'			=>	'Account Info',
-			'create'		=>	'Create Account',
+			'create'		=>	'Create Game Account',
 			'changepass'	=>	'Change Password',
+			'history'		=>  'Account History',
 		),
 		'server'		=> array(
 			'status'		=> 'View Status',
