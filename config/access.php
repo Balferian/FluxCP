@@ -213,6 +213,7 @@ return array(
 			'create'		=> AccountLevel::NORMAL,
 			'changepass' 	=> AccountLevel::NORMAL,
 			'accounts'		=> AccountLevel::NORMAL,
+			'history'		=> AccountLevel::NORMAL,
 		),
 	),
 	// General feature permissions, handled by the modules themselves.

@@ -6,17 +6,17 @@ $this->loginRequired();
 $title = Flux::message('HistoryPassResetTitle');
 $passResetTable = Flux::config('FluxTables.ResetPasswordTable');
 
-$sql = "SELECT COUNT(id) AS total FROM {$server->loginDatabase}.$passResetTable WHERE account_id = ?";
+$sql = "SELECT COUNT(id) AS total FROM {$server->loginDatabase}.$passResetTable WHERE account_id = ? OR user_id = ?";
 $sth = $server->connection->getStatement($sql);
-$sth->execute(array($session->account->account_id));
+$sth->execute(array($session->account->account_id, $session->account->user_id));
 
 $paginator = $this->getPaginator($sth->fetch()->total);
 $paginator->setSortableColumns(array('request_date', 'request_ip', 'reset_date', 'reset_ip', 'reset_done'));
 
-$sql = "SELECT request_date, request_ip, reset_date, reset_ip, reset_done FROM {$server->loginDatabase}.$passResetTable WHERE account_id = ?";
+$sql = "SELECT request_date, request_ip, reset_date, reset_ip, reset_done FROM {$server->loginDatabase}.$passResetTable WHERE account_id = ? OR user_id = ?";
 $sql = $paginator->getSQL($sql);
 $sth = $server->connection->getStatement($sql);
-$sth->execute(array($session->account->account_id));
+$sth->execute(array($session->account->account_id, $session->account->user_id));
 
 $resets = $sth->fetchAll();
 ?>
