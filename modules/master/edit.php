@@ -17,7 +17,6 @@ $sql .= "WHERE {$server->loginDatabase}.{$usersTable}.user_id = ? LIMIT 1";
 $sth  = $server->connection->getStatement($sql);
 $sth->execute(array($userId));
 
-echo $sql;
 // Account object.
 $account = $sth->fetch();
 $isMine  = false;
