@@ -18,7 +18,6 @@ $rep  = $server->connection->getStatement($sql);
 $rep->execute(array($ticket_id, $session->account->account_id));
 $trow = $rep->fetch();
 
-echo $sql;
 if($trow) {
 	$chid=$trow->char_id;
 	$sql = "SELECT * FROM {$server->charMapDatabase}.char WHERE char_id = ? and account_id = ?";
