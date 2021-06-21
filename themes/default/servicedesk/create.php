@@ -4,7 +4,7 @@ $this->loginRequired();
 ?>
 <h2><?php echo htmlspecialchars(Flux::message('SDCreateNew')) ?></h2>
 	<h3>Required Information</h3>
-	<form action="<?php echo $this->urlWithQs ?>" method="post">
+	<form action="<?php echo $this->urlWithQs ?>" method="post" class="input_fill">
 	<table class="vertical-table" width="100%">
 		<tr>
 			<?php if (Flux::config('MasterAccount')): ?>

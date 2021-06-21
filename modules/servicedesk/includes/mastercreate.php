@@ -100,6 +100,7 @@ if(isset($_POST['account_id']) && isset($_POST['Submit'])){
 				));
 			}
 		}
+		
 		$this->redirect($this->url('servicedesk','index'));
 	} else
 		$errorMessage = Flux::message('InvalidSecurityCode');

@@ -75,6 +75,10 @@ input[type=text], input[type=password], input[type=file], textarea {
 	outline-width: 0;
 }
 
+.input_fill input, .input_fill select, .input_fill textarea {
+	width: -webkit-fill-available;
+}
+
 label:hover {
 	cursor: pointer;
 }
