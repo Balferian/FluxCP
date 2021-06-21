@@ -1,7 +1,7 @@
 <?php
 if (!defined('FLUX_ROOT')) exit;
 $this->loginRequired();
-$ticket_id = trim($params->get('ticketid'));
+$ticket_id = $params->get('ticketid');
 $tbl = Flux::config('FluxTables.ServiceDeskTable'); 
 $tbla = Flux::config('FluxTables.ServiceDeskATable'); 
 $tblsettings = Flux::config('FluxTables.ServiceDeskSettingsTable'); 
@@ -25,10 +25,12 @@ $userColumns = Flux::config('FluxTables.MasterUserTableColumns');
 $sql  = "SELECT $tbl.*, login.userid as accname, login.email, {$usersTable}.{$userColumns->get('id')} as `user_id`, {$usersTable}.{$userColumns->get('name')} as `name` FROM {$server->loginDatabase}.$tbl ";
 $sql .= "LEFT JOIN {$server->loginDatabase}.login ON $tbl.account_id = login.account_id ";
 $sql .= "LEFT JOIN {$server->loginDatabase}.{$usersTable} ON login.email = {$usersTable}.email ";
-$sql .= "WHERE ticket_id = $ticket_id";
+$sql .= "WHERE ticket_id = ?";
 $rep  = $server->connection->getStatement($sql);
-$rep->execute();
+$rep->execute(array($ticket_id));
 $trow = $rep->fetch();
+
+$email = $trow->email;
 
 if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 //	Respond and Return to Ticket: <input type="radio" name="secact" value="1"/>
@@ -48,12 +50,12 @@ if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 		$sql .= "VALUES (?, ?, ?, 0, ?, 1)";
 		$sth = $server->connection->getStatement($sql);
 		$sth->execute(array($ticket_id, $_POST['staff_reply_name'], $text, $_SERVER['REMOTE_ADDR'])); 
-		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel'' WHERE ticket_id = ?");
+		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel' WHERE ticket_id = ?");
 		$sth->execute(array($ticket_id)); 
 				require_once 'Flux/Mailer.php';
 				$name = $session->loginAthenaGroup->serverName;
 				$mail = new Flux_Mailer();
-				$sent = $mail->send($_POST['curemail'], 'Ticket Reply', 'ticketreply', array(
+				$sent = $mail->send($email, 'Ticket Reply', 'ticketreply', array(
 					'TicketID'		=> $ticket_id,
 					'Staff'			=> $staffsess->prefered_name
 				));
@@ -81,7 +83,7 @@ if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 					'TicketID'		=> $ticket_id,
 					'Staff'			=> $staffsess->prefered_name
 				));
-		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel'' WHERE ticket_id = ?");
+		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel' WHERE ticket_id = ?");
 		$sth->execute(array($ticket_id)); 
 		$this->redirect($this->url('servicedesk','staffindex'));
 	
@@ -107,7 +109,7 @@ if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 					'TicketID'		=> $ticket_id,
 					'Staff'			=> $staffsess->prefered_name
 				));
-		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel'' WHERE ticket_id = ?");
+		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel' WHERE ticket_id = ?");
 		$sth->execute(array($ticket_id)); 
 		$this->redirect($this->url('servicedesk','staffindex'));
 	
@@ -131,7 +133,7 @@ if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 		$sql .= "VALUES (?, ?, ?, ?, ?, 1)";
 		$sth = $server->connection->getStatement($sql);
 		$sth->execute(array($ticket_id, $_POST['staff_reply_name'], $text, $action, $_SERVER['REMOTE_ADDR'])); 
-		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel'' WHERE ticket_id = ?");
+		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel' WHERE ticket_id = ?");
 		$sth->execute(array($ticket_id)); 
 		$this->redirect($this->url('servicedesk','staffindex'));
 
@@ -148,7 +150,7 @@ if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 		$sql .= "VALUES (?, ?, ?, ?, ?, 1)";
 		$sth = $server->connection->getStatement($sql);
 		$sth->execute(array($ticket_id, $_POST['staff_reply_name'], $text, $action, $_SERVER['REMOTE_ADDR'])); 
-		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel'' WHERE ticket_id = ?");
+		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel' WHERE ticket_id = ?");
 		$sth->execute(array($ticket_id)); 
 		$this->redirect($this->url('servicedesk','staffindex'));
 		
@@ -174,7 +176,7 @@ if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 					'TicketID'		=> $ticket_id,
 					'Staff'			=> $staffsess->prefered_name
 				));
-		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel'' WHERE ticket_id = ?");
+		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel' WHERE ticket_id = ?");
 		$sth->execute(array($ticket_id)); 
 		$this->redirect($this->url('servicedesk','staffindex'));
 		
@@ -201,7 +203,7 @@ if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 					'TicketID'		=> $ticket_id,
 					'Staff'			=> $staffsess->prefered_name
 				));
-		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel'' WHERE ticket_id = ?");
+		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel' WHERE ticket_id = ?");
 		$sth->execute(array($ticket_id)); 
 		$this->redirect($this->url('servicedesk','staffindex'));
 	}
