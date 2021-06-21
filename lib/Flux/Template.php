@@ -469,7 +469,7 @@ class Flux_Template {
 							'url'    => $exturl
 						);
 					}
-					elseif ($auth->actionAllowed($module, $action) && $auth->config("modules.$module.$action.$params") < $adminMenuLevel) {
+					elseif ($auth->actionAllowed($module, $action) && $auth->config("modules.$module.$action/$params") < $adminMenuLevel) {
 						$allowedItems[$categoryName][] = array(
 							'name'   => $menuName,
 							'exturl' => null,
