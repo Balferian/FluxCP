@@ -2,8 +2,7 @@
 if (!defined('FLUX_ROOT')) exit;
 $this->loginRequired();
 $SDCategory = ($params->get('category') > 0) ? $params->get('category') : false;
-if($SDCategory)
-	$sqlpartial = "WHERE status = 'SDStatus_$SDCategory'";
+$sqlpartial = $SDCategory ? "WHERE status = 'SDStatus_$SDCategory'" : null;
 
 $tbl = Flux::config('FluxTables.ServiceDeskTable'); 
 $tblcat = Flux::config('FluxTables.ServiceDeskCatTable'); 

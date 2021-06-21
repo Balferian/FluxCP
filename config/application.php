@@ -414,7 +414,7 @@ return array(
 			'add'			=> 'Add News',
 		),
 		'servicedesk'	=> array(
-			'staffindex'	=> 'View Active',
+			'staffindex'	=> 'View tickets',
 			'staffsettings'	=> 'Staff Settings',
 			'catcontrol'	=> 'Category Control',
 		),
@@ -428,14 +428,14 @@ return array(
 
 	'ServiceDeskItems'		=> array(
 		'SDHeader'		=> array(
-			'SDStatusAll' => array('module' => 'servicedesk', 'action' => 'staffindex&category=0'),
-			'SDStatus_1' => array('module' => 'servicedesk', 'action' => 'staffindex&category=1'),
-			'SDStatus_2' => array('module' => 'servicedesk', 'action' => 'staffindex&category=2'),
-			'SDStatus_3' => array('module' => 'servicedesk', 'action' => 'staffindex&category=3'),
-			'SDStatus_4' => array('module' => 'servicedesk', 'action' => 'staffindex&category=4'),
-			'SDStatus_5' => array('module' => 'servicedesk', 'action' => 'staffindex&category=5'),
-			'SDStatus_6' => array('module' => 'servicedesk', 'action' => 'staffindex&category=6'),
-			'SDStatus_7' => array('module' => 'servicedesk', 'action' => 'staffindex&category=7'),
+			'SDStatusAll' => array('module' => 'servicedesk', 'action' => 'staffindex', 'params' => array('category' => '0')),
+			'SDStatus_1' => array('module' => 'servicedesk', 'action' => 'staffindex', 'params' => array('category' => '1')),
+			'SDStatus_2' => array('module' => 'servicedesk', 'action' => 'staffindex', 'params' => array('category' => '2')),
+			'SDStatus_3' => array('module' => 'servicedesk', 'action' => 'staffindex', 'params' => array('category' => '3')),
+			'SDStatus_4' => array('module' => 'servicedesk', 'action' => 'staffindex', 'params' => array('category' => '4')),
+			'SDStatus_5' => array('module' => 'servicedesk', 'action' => 'staffindex', 'params' => array('category' => '5')),
+			'SDStatus_6' => array('module' => 'servicedesk', 'action' => 'staffindex', 'params' => array('category' => '6')),
+			'SDStatus_7' => array('module' => 'servicedesk', 'action' => 'staffindex', 'params' => array('category' => '7')),
 		),
 	),
 	'AllowMD5PasswordSearch'		=> false,

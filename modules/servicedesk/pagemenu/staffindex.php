@@ -9,7 +9,7 @@ $pageMenu = array();
 
 foreach ($ServiceDeskItems as $menuCategory => $menus)
 	foreach ($menus as $menuItem)
-		$pageMenu[Flux::message($menuItem['name'])] = $this->url($menuItem['module'], $menuItem['action']);
+		$pageMenu[Flux::message($menuItem['name'])] = $this->url($menuItem['module'], $menuItem['action'], $menuItem['params']);
 return $pageMenu;
 ?>
 

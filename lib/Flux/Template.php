@@ -435,6 +435,7 @@ class Flux_Template {
 			foreach ($menu as $menuName => $menuItem) {
 				$module = array_key_exists('module', $menuItem) ? $menuItem['module'] : false;
 				$action = array_key_exists('action', $menuItem) ? $menuItem['action'] : $defaultAction;
+				$params = array_key_exists('params', $menuItem) ? $menuItem['params'] : null;
 				$exturl = array_key_exists('exturl', $menuItem) ? $menuItem['exturl'] : null;
 				// Master account
 				$masterAccount = array_key_exists('master', $menuItem) ? $menuItem['master'] : null;
@@ -448,7 +449,8 @@ class Flux_Template {
 							'exturl' => null,
 							'module' => $module,
 							'action' => $action,
-							'url'    => $this->url($module, $action)
+							'params' => $params,
+							'url'    => $this->url($module, $action, $params)
 						);
 					}
 				}
@@ -463,16 +465,18 @@ class Flux_Template {
 							'exturl' => $exturl,
 							'module' => null,
 							'action' => null,
+							'params' => null,
 							'url'    => $exturl
 						);
 					}
-					elseif ($auth->actionAllowed($module, $action) && $auth->config("modules.$module.$action") < $adminMenuLevel) {
+					elseif ($auth->actionAllowed($module, $action) && $auth->config("modules.$module.$action.$params") < $adminMenuLevel) {
 						$allowedItems[$categoryName][] = array(
 							'name'   => $menuName,
 							'exturl' => null,
 							'module' => $module,
 							'action' => $action,
-							'url'    => $this->url($module, $action)
+							'params' => $params,
+							'url'    => $this->url($module, $action, $params)
 						);
 					}
 				}

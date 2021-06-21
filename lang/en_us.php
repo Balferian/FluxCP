@@ -64,7 +64,6 @@ return array(
     'ForumLabel'              => 'Forum',
     'AccountLabel'            => 'Account',
     'CharacterLabel'          => 'Character',
-    'ServiceDeskLabel'        => 'Service Desk',
     'CPLogsLabel'             => 'CP Logs',
     'FluxAdminLabel'          => 'Flux Admin',
     'PagesLabel'              => 'Pages',

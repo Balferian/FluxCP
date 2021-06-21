@@ -30,7 +30,7 @@ $this->loginRequired();
 			<th>Category</th>
 			<td><?php echo $catname ?></td>
 			<th>Current Status</th>
-			<td><?php echo htmlspecialchars($trow->status) ?></td>
+			<td><?php echo Flux::message($trow->status) ?></td>
 		</tr>
 		<tr>
 			<th>Date/Time Submitted</th>
