@@ -419,12 +419,12 @@ class Flux_Template {
 	 *
 	 * @return array
 	 */
-	public function getMenuItems($adminMenus = false)
+	public function getMenuItems($menuItem = false, $adminMenus = false)
 	{
 		$auth              = Flux_Authorization::getInstance();
 		$adminMenuLevel    = Flux::config('AdminMenuGroupLevel');
 		$defaultAction     = Flux_Dispatcher::getInstance()->defaultAction;
-		$menuItems         = Flux::config('MenuItems');
+		$menuItems         = $menuItem ? Flux::config($menuItem) : Flux::config('MenuItems');
 		$allowedItems      = array();
 		
 		if (!($menuItems instanceOf Flux_Config)) {
@@ -485,9 +485,9 @@ class Flux_Template {
 	/**
 	 * @see Flux_Template::getMenuItems()
 	 */
-	public function getAdminMenuItems()
+	public function getAdminMenuItems($menuItem = false)
 	{
-		return $this->getMenuItems(true);
+		return $this->getMenuItems(false, true);
 	}
 	
 	/**

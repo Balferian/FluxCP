@@ -1,7 +1,7 @@
 <?php
 if (!defined('FLUX_ROOT')) exit;
 $adminMenuItems = $this->getAdminMenuItems();
-$menuItems = $this->getMenuItems();
+$menuItems = $this->getMenuItems('MenuItems');
 ?>
 
 <?php if (!empty($adminMenuItems) && !Flux::config('AdminMenuNewStyle')): ?>
