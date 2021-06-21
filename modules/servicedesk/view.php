@@ -8,6 +8,28 @@ $tbla = Flux::config('FluxTables.ServiceDeskATable');
 $tblc = Flux::config('FluxTables.ServiceDeskCatTable');
 $title = Flux::message('SDHeader');
 
+$usersTable = Flux::config('FluxTables.MasterUserTable');
+$userColumns = Flux::config('FluxTables.MasterUserTableColumns');
+$sql  = "SELECT $tbl.*, login.userid as accname, login.email, {$usersTable}.{$userColumns->get('id')} as `user_id`, {$usersTable}.{$userColumns->get('name')} as `name` FROM {$server->loginDatabase}.$tbl ";
+$sql .= "LEFT JOIN {$server->loginDatabase}.login ON $tbl.account_id = login.account_id ";
+$sql .= "LEFT JOIN {$server->loginDatabase}.{$usersTable} ON login.email = {$usersTable}.email ";
+$sql .= "WHERE ticket_id = ? and login.account_id = ?";
+$rep  = $server->connection->getStatement($sql);
+$rep->execute(array($ticket_id, $session->account->account_id));
+$trow = $rep->fetch();
+
+echo $sql;
+if($trow) {
+	$chid=$trow->char_id;
+	$sql = "SELECT * FROM {$server->charMapDatabase}.char WHERE char_id = ? and account_id = ?";
+	$ch = $server->connection->getStatement($sql);
+	$ch->execute(array($chid, $session->account->account_id));
+	$chr = $ch->fetchAll();
+	foreach($chr as $char) {
+	}
+} else {
+}
+
 if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 	if($_POST['secact']=='2'){
 		if($_POST['response']=='Leave as-is to skip text response.' || $_POST['response'] == '' || $_POST['response'] == NULL || !isset($_POST['response'])){
@@ -60,22 +82,6 @@ if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 		$sth->execute(array($ticket_id)); 
 		$this->redirect($this->url('servicedesk','index'));
 	}
-}
-$rep = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.$tbl WHERE ticket_id = ? and account_id = ?");
-$rep->execute(array($ticket_id, $session->account->account_id));
-$ticketlist = $rep->fetchAll();
-if($ticketlist) {
-    foreach($ticketlist as $trow) {
-		$chid=$trow->char_id;
-		$sql = "SELECT * FROM {$server->charMapDatabase}.char WHERE char_id = ? and account_id = ?";
-		$ch = $server->connection->getStatement($sql);
-		$ch->execute(array($chid, $session->account->account_id));
-		$chr = $ch->fetchAll();
-		foreach($chr as $char) {
-		}
-	}
-} else {
-    $this->redirect($this->url('servicedesk','index'));
 }
 
 $repr = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.$tbla WHERE ticket_id = ?");

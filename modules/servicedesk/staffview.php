@@ -22,7 +22,7 @@ $tbl = Flux::config('FluxTables.ServiceDeskTable');
 $tbla = Flux::config('FluxTables.ServiceDeskATable'); 
 $usersTable = Flux::config('FluxTables.MasterUserTable');
 $userColumns = Flux::config('FluxTables.MasterUserTableColumns');
-$sql  = "SELECT $tbl.*, login.email, {$usersTable}.{$userColumns->get('id')} as `user_id`, {$usersTable}.{$userColumns->get('name')} as `name` FROM {$server->loginDatabase}.$tbl ";
+$sql  = "SELECT $tbl.*, login.userid as accname, login.email, {$usersTable}.{$userColumns->get('id')} as `user_id`, {$usersTable}.{$userColumns->get('name')} as `name` FROM {$server->loginDatabase}.$tbl ";
 $sql .= "LEFT JOIN {$server->loginDatabase}.login ON $tbl.account_id = login.account_id ";
 $sql .= "LEFT JOIN {$server->loginDatabase}.{$usersTable} ON login.email = {$usersTable}.email ";
 $sql .= "WHERE ticket_id = $ticket_id";

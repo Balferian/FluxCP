@@ -7,8 +7,16 @@ $this->loginRequired();
 	<table class="vertical-table" width="100%"> 
 		<tbody>
 		<tr>
+			<?php if(Flux::config('MasterAccount')): ?>
+				<tr>
+					<th>Master Account</th>
+						<td><?php echo $this->linkToMasterAccount($trow->user_id, $trow->email) ?></td>
+					<th>Name</th>
+						<td><?php echo $trow->name ?></td>
+				</tr>
+			<?php endif ?>
 			<th>Account</th>
-				<td><?php echo $this->linkToAccount($trow->account_id,$session->account->userid . ' ('.$session->account->account_id.')') ?></td>
+				<td><?php echo $this->linkToAccount($trow->account_id, $trow->accname . ' ('.$session->account->account_id.')') ?></td>
 			<th>Characters Affected</th>
 				<?php if($trow->char_id=='0'):?>
 				<td><i>All Characters</i></td>

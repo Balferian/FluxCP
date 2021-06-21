@@ -16,7 +16,7 @@ $this->loginRequired();
 		<?php endif ?>
 		<tr>
 			<th>Account</th>
-				<td><?php echo $this->linkToAccount($trow->account_id,''. $ticketaccount->userid .' ('.$trow->account_id.')') ?></td>
+				<td><?php echo $this->linkToAccount($trow->account_id,''. $trow->accname .' ('.$trow->account_id.')') ?></td>
 			<th>Characters Affected</th>
 				<?php if($trow->char_id=='0'):?>
 				<td><i>All Characters</i></td>
