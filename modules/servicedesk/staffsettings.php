@@ -4,6 +4,7 @@ $this->loginRequired();
 $option = trim($params->get('option'));
 $cur = trim($params->get('cur'));
 $staffid = trim($params->get('staffid'));
+$title = Flux::message('SDHeader');
 $tbl = Flux::config('FluxTables.ServiceDeskSettingsTable');
 $sth = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.$tbl WHERE account_id = ?");
 $sth->execute(array($session->account->account_id));

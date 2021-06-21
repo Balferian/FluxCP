@@ -7,8 +7,15 @@ if($SDCategory)
 
 $tbl = Flux::config('FluxTables.ServiceDeskTable'); 
 $tblcat = Flux::config('FluxTables.ServiceDeskCatTable'); 
+$usersTable = Flux::config('FluxTables.MasterUserTable');
+$userColumns = Flux::config('FluxTables.MasterUserTableColumns');
+$title = Flux::message('SDHeader');
 
-$rep = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.$tbl $sqlpartial ORDER BY ticket_id DESC");
+$sql  = "SELECT * FROM {$server->loginDatabase}.$tbl ";
+$sql .= "LEFT JOIN {$server->loginDatabase}.login ON $tbl.account_id = login.account_id ";
+$sql .= "LEFT JOIN {$server->loginDatabase}.{$usersTable} ON login.email = {$usersTable}.email ";
+$sql .= "$sqlpartial ORDER BY ticket_id DESC";
+$rep  = $server->connection->getStatement($sql);
 $rep->execute();
 $ticketlist = $rep->fetchAll();
 $rowoutput=NULL;
@@ -18,8 +25,10 @@ $catsql->execute(array($trow->category));
 $catlist = $catsql->fetch();
 
 $rowoutput.='<tr >
-				<td><a href="'. $this->url('servicedesk', 'staffview', array('ticketid' => $trow->ticket_id)) .'" >'. $trow->ticket_id .'</a></td>
-				<td>'. $trow->account_id .'</td>
+				<td><a href="'. $this->url('servicedesk', 'staffview', array('ticketid' => $trow->ticket_id)) .'" >'. $trow->ticket_id .'</a></td>';
+$rowoutput.='<td>'. $trow->name .'</td>
+				<td>'. $this->linkToMasterAccount($trow->user_id, $trow->email) .'</td>';
+$rowoutput.='<td>'. $this->linkToMasterAccount($trow->account_id, $trow->account_id) .'</td>
 				<td><a href="'. $this->url('servicedesk', 'staffview', array('ticketid' => $trow->ticket_id)) .'" >'. $trow->subject .'</a></td>
 				<td><a href="'. $this->url('servicedesk', 'staffview', array('ticketid' => $trow->ticket_id)) .'" >
 					'. $catlist->name .'</a></td>

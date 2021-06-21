@@ -4,6 +4,7 @@ $this->loginRequired();
 $option = trim($params->get('option'));
 $catid = trim($params->get('catid'));
 $tbl = Flux::config('FluxTables.ServiceDeskCatTable');
+$title = Flux::message('SDHeader');
 
 if(isset($option) && $option == 'hide'){
 	$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET display = 0 WHERE cat_id = ?");

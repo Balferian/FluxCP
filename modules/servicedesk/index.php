@@ -4,6 +4,7 @@ $this->loginRequired();
 
 $tbl = Flux::config('FluxTables.ServiceDeskTable'); 
 $tblcat = Flux::config('FluxTables.ServiceDeskCatTable');
+$title = Flux::message('SDHeader');
 
 if (Flux::config('MasterAccount')) {
 	$accountIds = $session->account->game_accounts['account_ids'];

@@ -5,7 +5,8 @@ $ticket_id = trim($params->get('ticketid'));
 $updateID = trim($params->get('update'));
 $tbl = Flux::config('FluxTables.ServiceDeskTable'); 
 $tbla = Flux::config('FluxTables.ServiceDeskATable'); 
-$tblc = Flux::config('FluxTables.ServiceDeskCatTable'); 
+$tblc = Flux::config('FluxTables.ServiceDeskCatTable');
+$title = Flux::message('SDHeader');
 
 if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 	if($_POST['secact']=='2'){

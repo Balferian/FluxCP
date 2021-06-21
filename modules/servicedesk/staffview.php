@@ -7,6 +7,7 @@ $tbla = Flux::config('FluxTables.ServiceDeskATable');
 $tblsettings = Flux::config('FluxTables.ServiceDeskSettingsTable'); 
 $reward_credits = Flux::config('SDCreditReward')->toArray();
 $add_credits = ($params->get('credits') >= $reward_credits[0] && $params->get('credits') <= $reward_credits[1]) ? $params->get('credits') : $reward_credits[0];
+$title = Flux::message('SDHeader');
 
 $sth = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.$tblsettings WHERE account_id = ?");
 $sth->execute(array($session->account->account_id));

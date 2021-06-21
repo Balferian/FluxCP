@@ -9,6 +9,10 @@ $this->loginRequired();
 		<tbody>
 		<tr>
 			<th><?php  echo htmlspecialchars(Flux::message('SDHeaderID')) ?></th>
+			<?php if(Flux::config('MasterAccount')): ?>
+				<th><?php  echo htmlspecialchars(Flux::message('MasterNameAccountLabel')) ?></th>
+				<th><?php  echo htmlspecialchars(Flux::message('MasterAccountLabel')) ?></th>
+			<?php endif ?>
 			<th><?php  echo htmlspecialchars(Flux::message('SDHeaderAccount')) ?></th>   
 			<th><?php  echo htmlspecialchars(Flux::message('SDHeaderSubject')) ?></th>    
 			<th><?php  echo htmlspecialchars(Flux::message('SDHeaderCategory')) ?></th>    
