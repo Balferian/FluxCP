@@ -219,12 +219,14 @@ return array(
 	'CMSDisplayModifiedBy'		=> false,					// If a news item has been modified, display modified date under news item?
 
 // Service Desk
-	'StaffReplyColour'			=> 'brown',
-	'FontResolvedColour'		=> 'green',
-	'FontPendingColour'			=> 'orange',
-	'FontClosedColour'			=> 'darkgrey',
+	// Colors for labels
+	'SDStaffLabel'			=> 'brown',		// Staff answer
+	'SDStatus_3'			=> 'green',		// Resolved
+	'SDStatus_5'			=> 'darkgrey',	// Closed
+	'SDStatus_6'			=> 'orange',	// Pending
+	'SDStatus_7'			=> 'lawngreen',	// Resolved & Rewarded
 	'SDEnableCreditRewards'		=> true,					// Show option in Service Desk to reward player X credits for reporting bugs/abuse/etc.
-	'SDCreditReward'			=> 10,						// Number of credits to award account.
+	'SDCreditReward'			=> array(1, 1000),	// min/max credits to award account.
 
 // Discord Webhooks
 	'DiscordUseWebhook'			=> false,
@@ -413,7 +415,6 @@ return array(
 		),
 		'servicedesk'	=> array(
 			'staffindex'	=> 'View Active',
-			'staffviewclosed'=> 'View Closed',
 			'staffsettings'	=> 'Staff Settings',
 			'catcontrol'	=> 'Category Control',
 		),
@@ -424,7 +425,19 @@ return array(
 			'index'			=> 'Buyers',
 		),
 	),
-	
+
+	'ServiceDeskItems'		=> array(
+		'SDHeader'		=> array(
+			'SDStatusAll' => array('module' => 'servicedesk', 'action' => 'staffindex&category=0'),
+			'SDStatus_1' => array('module' => 'servicedesk', 'action' => 'staffindex&category=1'),
+			'SDStatus_2' => array('module' => 'servicedesk', 'action' => 'staffindex&category=2'),
+			'SDStatus_3' => array('module' => 'servicedesk', 'action' => 'staffindex&category=3'),
+			'SDStatus_4' => array('module' => 'servicedesk', 'action' => 'staffindex&category=4'),
+			'SDStatus_5' => array('module' => 'servicedesk', 'action' => 'staffindex&category=5'),
+			'SDStatus_6' => array('module' => 'servicedesk', 'action' => 'staffindex&category=6'),
+			'SDStatus_7' => array('module' => 'servicedesk', 'action' => 'staffindex&category=7'),
+		),
+	),
 	'AllowMD5PasswordSearch'		=> false,
 	'ReallyAllowMD5PasswordSearch'	=> false, // Are you POSITIVELY sure?
 

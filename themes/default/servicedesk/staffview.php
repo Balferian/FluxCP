@@ -6,6 +6,14 @@ $this->loginRequired();
 <h2><?php echo Flux::message('SDHeaderID') ?><?php echo htmlspecialchars($trow->ticket_id) ?> - <?php echo htmlspecialchars($trow->subject) ?> - Staff Area</h2>
 	<table class="vertical-table" width="100%"> 
 		<tbody>
+		<?php if(Flux::config('MasterAccount')): ?>
+			<tr>
+				<th>Master Account</th>
+					<td><?php echo $this->linkToMasterAccount($trow->user_id, $trow->email) ?></td>
+				<th>Name</th>
+					<td><?php echo $trow->name ?></td>
+			</tr>
+		<?php endif ?>
 		<tr>
 			<th>Account</th>
 				<td><?php echo $this->linkToAccount($trow->account_id,''. $ticketaccount->userid .' ('.$trow->account_id.')') ?></td>
@@ -22,7 +30,7 @@ $this->loginRequired();
 			<th>Category</th>
 			<td><?php echo $catname ?></td>
 			<th>Current Status</th>
-			<td><?php echo htmlspecialchars($trow->status) ?></td>
+			<td><?php echo Flux::message($trow->status) ?></td>
 		</tr>
 		<tr>
 			<th>Date/Time Submitted</th>
@@ -70,7 +78,7 @@ $this->loginRequired();
 		<tr>
 			<th width="100">Reply By</th>
 			<td><?php if($rrow->isstaff==1): ?>
-					<font color="<?php echo Flux::config('StaffReplyColour') ?>"><?php echo $rrow->author ?></font>
+					<font color="<?php echo Flux::config('SDStaffLabel') ?>"><?php echo $rrow->author ?></font>
 				<?php elseif($rrow->isstaff==0): ?>
 					<?php echo $rrow->author ?>
 				<?php endif ?></td>
@@ -117,22 +125,26 @@ $this->loginRequired();
 		<tr>
 			<th>Actions</th>
 			<td><table class="generic-form-table">
-				<?php if($trow->status!="Resolved" && $trow->status!="Closed"): ?>
+				<?php if($trow->status!="SDStatus_3" && $trow->status!="SDStatus_5"): ?>
 					<tr><td><?php echo Flux::message('SDRespTable1') ?>:</td><td><input type="radio" name="secact" value="1" checked="checked" /></td></tr>
 					<tr><td><?php echo Flux::message('SDRespTable2') ?>:</td><td><input type="radio" name="secact" value="2" /></td></tr>
 					<tr><td><?php echo Flux::message('SDRespTable3') ?>:</td><td><input type="radio" name="secact" value="3" /></td></tr>
 					<?php if(Flux::config('SDEnableCreditRewards')):?>
 					<tr><td><?php echo Flux::message('SDRespTable7') ?>:</td><td><input type="radio" name="secact" value="7" /></td></tr>
+					<tr>
+						<td><?php echo Flux::message('SDCreditRewardLabel') ?> (<?php echo $reward_credits[0]; ?> ~ <?php echo $reward_credits[1]; ?>):</td>
+						<td><input type="number" name="credits" id="credits" min = "<?php echo $reward_credits[0]; ?>" max = "<?php echo $reward_credits[1]; ?>" value = "<?php echo $reward_credits[0]; ?>" /> <?php echo Flux::message('XferLogCreditsLabel'); ?></td>
+					</tr>
 					<?php endif ?>
 					<?php if($trow->team<3): ?>
 						<tr><td><?php echo Flux::message('SDRespTable4') ?>:</td><td><input type="radio" name="secact" value="4" /></td></tr>
 						<input type="hidden" name="curteam" value="<?php echo $trow->team ?>" />
 					<?php endif ?>
 				<?php endif ?>
-				<?php if($staffsess->team>=2 && $trow->status=="Resolved"): ?>
+				<?php if($staffsess->team>=2 && ($trow->status=="SDStatus_3" || $trow->status=="SDStatus_7")): ?>
 					<tr><td><?php echo Flux::message('SDRespTable5') ?>:</td><td><input type="radio" name="secact" value="5" /></td></tr>
 				<?php endif ?>
-				<?php if($trow->status=="Resolved" || $trow->status=="Closed"): ?>
+				<?php if($trow->status=="SDStatus_3" || $trow->status=="SDStatus_5" || $trow->status=="SDStatus_7"): ?>
 					<tr><td><?php echo Flux::message('SDRespTable6') ?>:</td><td><input type="radio" name="secact" value="6" checked="checked" /></td></tr>
 				<?php endif ?>
 				</table>

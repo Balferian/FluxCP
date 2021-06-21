@@ -1,11 +1,14 @@
 <?php
 if (!defined('FLUX_ROOT')) exit;
 $this->loginRequired();
+$SDCategory = ($params->get('category') > 0) ? $params->get('category') : false;
+if($SDCategory)
+	$sqlpartial = "WHERE status = 'SDStatus_$SDCategory'";
 
 $tbl = Flux::config('FluxTables.ServiceDeskTable'); 
 $tblcat = Flux::config('FluxTables.ServiceDeskCatTable'); 
 
-$rep = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.$tbl WHERE status != 'Closed' ORDER BY ticket_id DESC");
+$rep = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.$tbl $sqlpartial ORDER BY ticket_id DESC");
 $rep->execute();
 $ticketlist = $rep->fetchAll();
 $rowoutput=NULL;
@@ -21,10 +24,10 @@ $rowoutput.='<tr >
 				<td><a href="'. $this->url('servicedesk', 'staffview', array('ticketid' => $trow->ticket_id)) .'" >
 					'. $catlist->name .'</a></td>
 				<td>
-					<font color="'. Flux::config('Font'. $trow->status .'Colour') .'"><strong>'. $trow->status .'</strong></font>
+					<font color="'. Flux::config($trow->status) .'"><strong>'. Flux::message($trow->status) .'</strong></font>
 				</td>
 				<td width="50">';
-					if($trow->lastreply=='0'){$rowoutput.='<i>None</i>';} else {$rowoutput.= $trow->lastreply;}
+					if($trow->lastreply=='0'){$rowoutput.='<i>None</i>';} else {$rowoutput.= Flux::message($trow->lastreply);}
 $rowoutput.='</td>
 				<td>
 					'. Flux::message('SDGroup'. $trow->team) .'

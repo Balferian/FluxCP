@@ -3,7 +3,7 @@ if (!defined('FLUX_ROOT')) exit;
 $this->loginRequired();
 ?>
 <h2><?php echo htmlspecialchars(Flux::message('SDHeader')) ?> - Staff Area</h2>
-<h3><?php echo Flux::message('SDH3ActiveTickets') ?></h3>
+<h3><?php echo $SDCategory ? Flux::message('SDH3SelectedTickets').Flux::message("SDStatus_$SDCategory") : Flux::message('SDH3AllTickets') ?></h3>
 <?php if($rowoutput): ?>
 	<table class="horizontal-table" width="100%"> 
 		<tbody>

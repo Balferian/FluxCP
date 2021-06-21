@@ -816,6 +816,8 @@ return array(
 	'SDHeaderAccount'		=> 'Account',  
 	'SDHeaderTeam'			=> 'Team',  
 	'SDH3ActiveTickets'		=> 'Active Tickets',
+	'SDH3AllTickets'		=> 'All Tickets',
+	'SDH3SelectedTickets'	=> 'Selected Tickets: ',
 	'SDH3InActiveTickets'	=> 'In-Active Tickets',
 	'SDH3ClosedTickets'		=> 'Closed Tickets',
 	'SDH3CurrentCat'		=> 'Current Categories',
@@ -835,6 +837,17 @@ return array(
 	'SDGroup2'				=> 'Head of Support',
 	'SDGroup3'				=> 'Administration',
 	'SDLinkOpenNew'			=> 'Open a new ticket',
+	'SDCreditRewardLabel'	=> 'Reward credits',
+	'SDStaffLabel'			=> 'Staff',
+	'SDStatusAll'			=> 'All tickets',
+	'SDStatus_1'			=> 'Staff Reply',
+	'SDStatus_2'			=> 'Waiting response',
+	'SDStatus_3'			=> 'Resolved',
+	'SDStatus_4'			=> 'Escalated',
+	'SDStatus_5'			=> 'Closed',
+	'SDStatus_6'			=> 'Pending',
+	'SDStatus_7'			=> 'Resolved & Rewarded',
+	
 
 	// Module: webcommands
 	'WCTitleLabel'			=> 'Web Commands',
