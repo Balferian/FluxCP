@@ -95,10 +95,13 @@
                     <th><?php echo htmlspecialchars(Flux::message('UsernameLabel')) ?></th>
                     <th><?php echo htmlspecialchars(Flux::message('AccountGroupIDLabel')) ?></th>
                     <th><?php echo htmlspecialchars(Flux::message('LoginCountLabel')) ?></th>
-                    <th><?php echo htmlspecialchars(Flux::message('LastLoginDateLabel')) ?></th>
-                    <th><?php echo htmlspecialchars(Flux::message('LastUsedIpLabel')) ?></th>
+					<?php if($server->VipSystem): ?>
+						<th><?php echo htmlspecialchars(Flux::message('VIPStateLabel')) ?></th>
+					<?php endif ?>
 					<th><?php echo htmlspecialchars(Flux::message('CashPointLabel')) ?></th>
 					<th><?php echo htmlspecialchars(Flux::message('AccountStateLabel')) ?></th>
+                    <th><?php echo htmlspecialchars(Flux::message('LastLoginDateLabel')) ?></th>
+                    <th><?php echo htmlspecialchars(Flux::message('LastUsedIpLabel')) ?></th>
                 </tr>
                 <?php foreach ($userAccount as $acct):?>
                     <tr>
@@ -109,9 +112,10 @@
                         </td>
                         <td><?php echo (int)$acct->group_id ?></td>
                         <td><?php echo (int)$acct->logincount ?></td>
-                        <td><?php echo $acct->lastlogin ? date(Flux::config('DateTimeFormat'), strtotime($acct->lastlogin)) : null ?></td>
-                        <td><?php echo $acct->last_ip ?></td>
-                        <td><?php echo (int)$acct->cashpoints ?></td>
+						<?php if($server->VipSystem): ?>
+							<td><?php echo $acct->vip_time; ?></td>
+						<?php endif ?>
+						<td><?php echo (int)$acct->cashpoints ?></td>
                         <td>
                             <?php if (!$acct->confirmed && $acct->confirm_code): ?>
                                 <span class="account-state state-pending">
@@ -125,7 +129,10 @@
                                 </span>
                             <?php else: ?>
                                 <span class="account-state state-unknown"><?php echo htmlspecialchars(Flux::message('UnknownLabel')) ?></span>
-                            <?php endif ?></td>
+                            <?php endif ?>
+						</td>
+                        <td><?php echo $acct->lastlogin ? date(Flux::config('DateTimeFormat'), strtotime($acct->lastlogin)) : null ?></td>
+                        <td><?php echo $acct->last_ip ?></td>
                     </tr>
                 <?php endforeach ?>
             </table>

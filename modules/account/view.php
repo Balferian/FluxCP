@@ -80,11 +80,9 @@ $showTempBan = !$isMine && !$tempBanned && !$permBanned && $auth->allowedToTempB
 $showPermBan = !$isMine && !$permBanned && $auth->allowedToPermBanAccount;
 $showUnban   = !$isMine && ($tempBanned && $auth->allowedToTempUnbanAccount) || ($permBanned && $auth->allowedToPermUnbanAccount);
 
-if($account->vip_time != '0' && $account->vip_time !== null){
-	$vipexpiretime = $account->vip_time;
-	$dt = new DateTime("$vipexpiretime");
-	$vipexpires = 'Expires '.$dt->format('Y-m-d');
-} elseif ($account->vip_time == '0'){
+if($account->vip_time != '0' && $account->vip_time !== null && $account->vip_time > time()){
+	$vipexpires = 'Expires '.date(Flux::config('DateTimeFormat'), $account->vip_time);
+} elseif ($account->vip_time == '0' || $acct->vip_time < time()){
 	$vipexpires = 'Standard Account';
 } else {$vipexpires = 'Unknown';}
 

@@ -122,6 +122,14 @@ class Flux_Athena {
 	public $isRenewal;
 	
 	/**
+	 * Boolean to signify if server use VIP system.
+	 *
+	 * @access public
+	 * @var bool
+	 */
+	public $VipSystem;
+	
+	/**
 	 * Timezone of this char/map server pair.
 	 *
 	 * @access public
@@ -174,6 +182,7 @@ class Flux_Athena {
 		$this->expRates        = $charMapConfig->getExpRates()->toArray();
 		$this->dropRates       = $charMapConfig->getDropRates()->toArray();
 		$this->isRenewal       = (boolean)$charMapConfig->getRenewal();
+		$this->VipSystem       = (boolean)$charMapConfig->getVipSystem();
 		$this->maxCharSlots    = (int)$charMapConfig->getMaxCharSlots();
 		$this->dateTimezone    = $charMapConfig->getDateTimezone();
 		$this->charMapDatabase = $charMapConfig->getDatabase();

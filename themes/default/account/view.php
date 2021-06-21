@@ -81,12 +81,17 @@
 			<?php endif ?>
 		</tr>
 		<tr>
-			<th><?php echo htmlspecialchars(Flux::message('AccountBirthdateLabel')) ?></th>
-			<td><?php echo $account->birthdate ?></td>
-			<th><?php echo htmlspecialchars(Flux::message('VIPStateLabel')) ?></th>
-			<td>
-				<?php echo $vipexpires ?>
-			</td>
+			<?php if($server->VipSystem): ?>
+				<th><?php echo htmlspecialchars(Flux::message('AccountBirthdateLabel')) ?></th>
+				<td><?php echo $account->birthdate ?></td>
+				<th><?php echo htmlspecialchars(Flux::message('VIPStateLabel')) ?></th>
+				<td>
+					<?php echo $vipexpires ?>
+				</td>
+			<?php else: ?>
+				<th><?php echo htmlspecialchars(Flux::message('AccountBirthdateLabel')) ?></th>
+				<td colspan="3"><?php echo $account->birthdate ?></td>
+			<?php endif ?>
 		</tr>
 		<tr>
 			<th><?php echo htmlspecialchars(Flux::message('LastLoginDateLabel')) ?></th>

@@ -49,7 +49,7 @@ $userAccountTable = Flux::config('FluxTables.MasterUserAccountTable');
 foreach ($session->getAthenaServerNames() as $serverName) {
     $athena = $session->getAthenaServer($serverName);
 
-    $sql  = "SELECT *, login.account_id, login.userid, login.logincount, login.lastlogin, login.last_ip, login.sex";
+    $sql  = "SELECT *, login.account_id, login.userid, login.logincount, login.lastlogin, login.last_ip, login.sex, login.`vip_time` as `vip_time` ";
 	$sql .= " ,(SELECT value FROM {$server->charMapDatabase}.`acc_reg_num` WHERE account_id = login.account_id AND `key` = '#CASHPOINTS') as 'cashpoints' ";
     $sql .= " FROM {$athena->charMapDatabase}.{$userAccountTable} AS ua";
     $sql .= " JOIN {$athena->charMapDatabase}.login ON login.account_id = ua.account_id ";
@@ -59,4 +59,12 @@ foreach ($session->getAthenaServerNames() as $serverName) {
 
     $userAccount = $sth->fetchAll();
     $userAccounts[$athena->serverName] = $userAccount;
+}
+
+foreach ($userAccount as $acct) {
+	if($acct->vip_time != '0' && $acct->vip_time !== null && $acct->vip_time > time()){
+		$acct->vip_time = 'Expires '.date(Flux::config('DateTimeFormat'), $acct->vip_time);
+	} elseif ($acct->vip_time == '0' || $acct->vip_time < time()){
+		$acct->vip_time = 'Standard Account';
+	} else {$acct->vip_time = 'Unknown';}
 }
