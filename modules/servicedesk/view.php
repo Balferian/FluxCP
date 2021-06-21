@@ -47,7 +47,7 @@ if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 		$this->redirect($this->url('servicedesk','index'));
 	
 	}elseif($_POST['secact']=='3'){
-		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET status = 'Resolved' WHERE ticket_id = ?");
+		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET status = 'SDStatus_3' WHERE ticket_id = ?");
 		$sth->execute(array($ticket_id)); 
 		
 		if($_POST['response']=='Leave as-is to skip text response.' || $_POST['response'] == '' || $_POST['response'] == NULL || !isset($_POST['response'])){
@@ -65,7 +65,7 @@ if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 		$this->redirect($this->url('servicedesk','index'));
 		
 	}elseif($_POST['secact']=='6'){
-		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET status = 'Pending' WHERE ticket_id = ?");
+		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET status = 'SDStatus_6' WHERE ticket_id = ?");
 		$sth->execute(array($ticket_id)); 
 		
 		if($_POST['response']=='Leave as-is to skip text response.' || $_POST['response'] == '' || $_POST['response'] == NULL || !isset($_POST['response'])){
