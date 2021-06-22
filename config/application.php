@@ -221,7 +221,10 @@ return array(
 // Service Desk
 	// Colors for labels
 	'SDStaffLabel'			=> 'brown',		// Staff answer
+	'SDStatus_1'			=> 'red',		// Staff Reply
+	'SDStatus_2'			=> 'coral',		// Waiting Response
 	'SDStatus_3'			=> 'green',		// Resolved
+	'SDStatus_4'			=> 'purple',		// Escalated
 	'SDStatus_5'			=> 'darkgrey',	// Closed
 	'SDStatus_6'			=> 'orange',	// Pending
 	'SDStatus_7'			=> 'lawngreen',	// Resolved & Rewarded
@@ -365,7 +368,7 @@ return array(
 		'cplog'			=> array(
 			'paypal'		=> 'PayPal Transactions',
 			'master'		=> 'Master Account Registrations',
-			'create'		=> 'Account Registrations',
+			'create'		=> 'Game Account Registrations',
 			'login'			=> 'Logins',
 			'resetpass'		=> 'Password Resets',
 			'changepass'	=> 'Password Changes',
@@ -414,7 +417,7 @@ return array(
 			'add'			=> 'Add News',
 		),
 		'servicedesk'	=> array(
-			'staffindex'	=> 'View tickets',
+			'staffindex'	=> 'View Tickets',
 			'staffsettings'	=> 'Staff Settings',
 			'catcontrol'	=> 'Category Control',
 		),

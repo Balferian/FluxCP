@@ -42,7 +42,7 @@ if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 		$sql .= "VALUES (?, ?, ?, 0, ?, 0)";
 		$sth = $server->connection->getStatement($sql);
 		$sth->execute(array($ticket_id, $session->account->userid, $text, $_SERVER['REMOTE_ADDR'])); 
-		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'Player' WHERE ticket_id = ?");
+		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'Player', status = 'SDStatus_2' WHERE ticket_id = ?");
 		$sth->execute(array($ticket_id)); 
 		$this->redirect($this->url('servicedesk','index'));
 	
