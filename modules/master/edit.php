@@ -32,7 +32,7 @@ if ($account) {
 		$title = Flux::message('AccountEditTitle2');
 	}
 	else {
-		$title = sprintf(Flux::message('AccountEditTitle3'), $account->userid);
+		$title = sprintf(Flux::message('AccountEditTitle3'), $account->email);
 	}
 	
 	if (count($_POST)) {
