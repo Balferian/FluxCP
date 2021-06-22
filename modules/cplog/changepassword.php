@@ -4,9 +4,10 @@ if (!defined('FLUX_ROOT')) exit;
 $title = 'Password Changes';
 
 $changeTable  = Flux::config('FluxTables.ChangePasswordTable');
-$sqlpartial  = "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = log.account_id ";
-$sqlpartial .= 'WHERE 1=1 ';
-$bind        = array();
+$sqlpartial   = "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = log.account_id ";
+$sqlpartial  .= "LEFT JOIN {$server->loginDatabase}.cp_users ON cp_users.user_id = log.user_id ";
+$sqlpartial  .= 'WHERE 1=1 ';
+$bind         = array();
 
 // Password change searching.
 $changeAfter   = $params->get('change_after_date');
@@ -67,7 +68,8 @@ $paginator->setSortableColumns(array(
 	'change_date' => 'desc', 'change_ip'
 ));
 
-$col  = 'id, log.account_id, old_password, new_password, userid, change_date, change_ip';
+$col  = 'id, log.account_id, old_password, new_password, userid, change_date, change_ip,';
+$col .= 'cp_users.user_id, cp_users.name, cp_users.email';
 $sql  = $paginator->getSQL("SELECT $col FROM {$server->loginDatabase}.$changeTable AS log $sqlpartial");
 $sth  = $server->connection->getStatement($sql);
 $sth->execute($bind);

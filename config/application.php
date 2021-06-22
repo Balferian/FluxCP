@@ -376,7 +376,7 @@ return array(
 			'create'		=> 'Game Account Registrations',
 			'login'			=> 'Logins',
 			'resetpass'		=> 'Password Resets',
-			'changepass'	=> 'Password Changes',
+			'changepassword'	=> 'Password Changes',
 			'changemail'	=> 'E-mail Changes',
 			'ban'			=> 'Account Bans',
 			'ipban'			=> 'IP Bans'
@@ -446,6 +446,7 @@ return array(
 			'SDStatus_7' => array('module' => 'servicedesk', 'action' => 'staffindex', 'params' => array('category' => '7')),
 		),
 	),
+
 	'AllowMD5PasswordSearch'		=> false,
 	'ReallyAllowMD5PasswordSearch'	=> false, // Are you POSITIVELY sure?
 

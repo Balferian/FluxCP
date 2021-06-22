@@ -134,7 +134,7 @@ return array(
 			'master'		=> AccountLevel::ADMIN,
 			'login'			=> AccountLevel::ADMIN,
 			'resetpass'		=> AccountLevel::ADMIN,
-			'changepass'	=> AccountLevel::ADMIN,
+			'changepassword'	=> AccountLevel::ADMIN,
 			'changemail'	=> AccountLevel::ADMIN,
 			'ban'			=> AccountLevel::ADMIN,
 			'ipban'			=> AccountLevel::ADMIN,

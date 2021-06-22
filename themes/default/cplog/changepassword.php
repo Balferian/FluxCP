@@ -55,15 +55,35 @@
 	<?php foreach ($changes as $change): ?>
 	<tr>
 		<td align="right">
-			<?php if ($auth->actionAllowed('account', 'view')): ?>
-				<?php echo $this->linkToAccount($change->account_id, $change->account_id) ?>
+			<?php if ($change->user_id && $change->account_id): ?>
+				<?php if ($auth->actionAllowed('account', 'view')): ?>
+					<?php echo $this->linkToAccount($change->account_id, $change->account_id) ?>
+				<?php else: ?>
+					<?php echo $change->account_id ?>
+				<?php endif ?>			
+			<?php elseif($change->user_id && !$change->account_id): ?>
+				<?php if ($auth->actionAllowed('master', 'view')): ?>
+					<?php echo $this->linkToMasterAccount($change->user_id, $change->user_id) ?>
+				<?php else: ?>
+					<?php echo $change->user_id ?>
+				<?php endif ?>
 			<?php else: ?>
-				<?php echo $change->account_id ?>
+				<span class="not-applicable">Unknown</span>
 			<?php endif ?>
 		</td>
 		<td>
-			<?php if ($change->userid): ?>
-				<?php echo htmlspecialchars($change->userid) ?>
+			<?php if ($change->user_id && $change->account_id): ?>
+				<?php if ($auth->actionAllowed('account', 'view')): ?>
+					<?php echo $this->linkToAccount($change->account_id, $change->userid) ?>
+				<?php else: ?>
+					<?php echo $change->userid ?>
+				<?php endif ?>			
+			<?php elseif($change->user_id && !$change->account_id): ?>
+				<?php if ($auth->actionAllowed('master', 'view')): ?>
+					<?php echo $this->linkToMasterAccount($change->user_id, $change->name) ?>
+				<?php else: ?>
+					<?php echo $change->name ?>
+				<?php endif ?>
 			<?php else: ?>
 				<span class="not-applicable">Unknown</span>
 			<?php endif ?>
