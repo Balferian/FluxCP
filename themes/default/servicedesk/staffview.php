@@ -56,14 +56,14 @@ $this->loginRequired();
 			<th>Screenshots</th>
 			<td colspan="4">
 				<?php foreach($screenshots as $key => $screenshot):?>
-					<a href="<?php echo $screenshots_path.'/'.$screenshot; ?>" target="_blank"><img src="<?php echo $screenshots_path.'/'.$screenshot; ?>" width="100px" height="100"></a>
+					<a href="<?php echo $screenshots_path.'/'.$screenshot; ?>" target="_blank"><img src="<?php echo $screenshots_path.'/'.$screenshot; ?>" class="screenshot"></a>
 				<?php endforeach; ?>
 			</td>
 		</tr>
 		<?php elseif($trow->sslink!='0'): ?>
 		<tr>
 			<th>Screenshots</th>
-			<td colspan="3"><a href="<?php echo $trow->sslink ?>" target="_blank"><img src="<?php echo $trow->sslink ?>" width="100px" height="100"></a></td></tr>
+			<td colspan="3"><a href="<?php echo $trow->sslink ?>" target="_blank"><img src="<?php echo $trow->sslink ?>" class="screenshot"></a></td></tr>
 		</tr>
 		<?php endif ?>
 		<?php if($trow->videolink!='0'): ?>
