@@ -14,8 +14,7 @@ $this->loginRequired();
                 <th>Account ID</th>
 			    <td><input type="text" name="account_id" id="account_id" value="<?php echo $session->account->account_id ?>" readonly="readonly" /></td>
             <?php endif; ?>
-            <form action="<?php echo $this->urlWithQs ?>" method="post">
-                <input type="hidden" name="account_id" id="account_id" value="<?php echo $accountId ?>" />
+            <input type="hidden" name="account_id" id="account_id" value="<?php echo $accountId ?>" />
 		</tr>
 		<tr>
 			<th>Character</th>
