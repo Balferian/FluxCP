@@ -50,7 +50,7 @@ if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 		$sql .= "VALUES (?, ?, ?, 0, ?, 1)";
 		$sth = $server->connection->getStatement($sql);
 		$sth->execute(array($ticket_id, $_POST['staff_reply_name'], $text, $_SERVER['REMOTE_ADDR'])); 
-		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel' WHERE ticket_id = ?");
+		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel', status = 'SDStatus_1' WHERE ticket_id = ?");
 		$sth->execute(array($ticket_id)); 
 				require_once 'Flux/Mailer.php';
 				$name = $session->loginAthenaGroup->serverName;
@@ -83,7 +83,7 @@ if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 					'TicketID'		=> $ticket_id,
 					'Staff'			=> $staffsess->prefered_name
 				));
-		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel' WHERE ticket_id = ?");
+		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET lastreply = 'SDStaffLabel', status = 'SDStatus_1' WHERE ticket_id = ?");
 		$sth->execute(array($ticket_id)); 
 		$this->redirect($this->url('servicedesk','staffindex'));
 	
@@ -120,7 +120,7 @@ if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
 		if($staffsess->team=='2'){
 			$escalateto=3;
 		}
-		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET team = ? WHERE ticket_id = ?");
+		$sth = $server->connection->getStatement("UPDATE {$server->loginDatabase}.$tbl SET status = 'SDStatus_4', team = ? WHERE ticket_id = ?");
 		$sth->execute(array($escalateto, $ticket_id)); 
 
 		if($_POST['response']=='Leave as-is to skip text response.' || $_POST['response'] == '' || $_POST['response'] == NULL || !isset($_POST['response'])){

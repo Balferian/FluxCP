@@ -34,17 +34,33 @@ if(isset($option) && $option == 'alerttoggle'){
 }
 
 if(isset($_POST['account_name'])){
+	//Fetch inputs to make it pretty
+	$account_name = $params->get('account_name');
+	$prefered_name = $params->get('prefered_name');
+	$team = $params->get('team');
+	//Query if account is already part of staffs.
 	$sth = $server->connection->getStatement("SELECT account_name FROM {$server->loginDatabase}.$tbl WHERE account_name = ?");
 	$sth->execute(array($_POST['account_name']));
 	$fetch = $sth->fetch();
-	if($fetch){	$session->setMessageData('Account already exists!'); } else {
-	if(!$emailalerts){$emailalerts = 0;}
-	$sql = "INSERT INTO {$server->loginDatabase}.$tbl (account_name, prefered_name, team, emailalerts)";
-	$sql .= "VALUES (?, ?, ?, ?)";
-	$sth = $server->connection->getStatement($sql);
-	$sth->execute(array($_POST['account_name'],$_POST['prefered_name'],$_POST['team'], $emailalerts)); 
-	$this->redirect($this->url('servicedesk','staffsettings'));
-}
+	if($fetch){	
+		$session->setMessageData('Account already exists!'); 
+	} else {
+		//Query if account belongs to staff.
+		$sql = "SELECT user_id, group_id FROM {$server->loginDatabase}.$usersTable WHERE email = ?"; //Select both user_id and group_id since user_id is needed to add in table else it will fail.
+		$sth = $server->connection->getStatement($sql);
+		$sth->execute(array($account_name));
+		$account = $sth->fetch();
+		if($account->group_id < 2){ //Replace value '2' to pretty format depending on the server configuration. 0 = normal account, 1 = vip
+			$session->setMessageData('The account you are adding is a non-staff account!'); 
+		} else {
+			if(!$emailalerts){$emailalerts = 0;}
+			$sql = "INSERT INTO {$server->loginDatabase}.$tbl (account_id, account_name, prefered_name, team, emailalerts)";
+			$sql .= "VALUES (?, ?, ?, ?, ?)";
+			$sth = $server->connection->getStatement($sql);
+			$sth->execute(array($account->user_id, $account_name, $prefered_name, $team, $emailalerts));
+			$this->redirect($this->url('servicedesk','staffsettings'));
+		}
+	}
 }
 
 $rep = $server->connection->getStatement("SELECT $tbl.*, {$usersTable}.{$userColumns->get('id')} as user_id, {$usersTable}.{$userColumns->get('name')} as `name` FROM {$server->loginDatabase}.$tbl LEFT JOIN {$server->loginDatabase}.{$usersTable} ON $tbl.account_name = {$usersTable}.{$userColumns->get('email')} ORDER BY $tbl.account_name");
