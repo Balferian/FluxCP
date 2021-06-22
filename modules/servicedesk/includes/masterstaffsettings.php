@@ -50,7 +50,7 @@ if(isset($_POST['account_name'])){
 		$sth = $server->connection->getStatement($sql);
 		$sth->execute(array($account_name));
 		$account = $sth->fetch();
-		if($account->group_id < 2){ //Replace value '2' to pretty format depending on the server configuration. 0 = normal account, 1 = vip
+		if(!in_array($AllowedStaffGroup, $account->group_id)){
 			$session->setMessageData('The account you are adding is a non-staff account!'); 
 		} else {
 			if(!$emailalerts){$emailalerts = 0;}

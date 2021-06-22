@@ -230,6 +230,8 @@ return array(
 	'SDStatus_7'			=> 'lawngreen',	// Resolved & Rewarded
 	'SDEnableCreditRewards'		=> true,					// Show option in Service Desk to reward player X credits for reporting bugs/abuse/etc.
 	'SDCreditReward'			=> array(1, 1000),	// min/max credits to award account.
+	'SDAllowedStaffGroup'		=> array(2, 10, 99),	// groups that can be assigned to service desk staff
+														// Support, Law Enforcement, Admin
 
 // Discord Webhooks
 	'DiscordUseWebhook'			=> false,
