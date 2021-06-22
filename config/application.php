@@ -228,6 +228,9 @@ return array(
 	'SDStatus_5'			=> 'darkgrey',	// Closed
 	'SDStatus_6'			=> 'orange',	// Pending
 	'SDStatus_7'			=> 'lawngreen',	// Resolved & Rewarded
+	'SDAllowUplodScreenshots'	=> true,					// Screenshots upload path: data/uploads/servicedesk.
+	'SDScreenshotUplodFolder'	=> FLUX_DATA_DIR.'/uploads/servicedesk/',
+	'SDMaxUplodScreenshots'		=> 5,
 	'SDEnableCreditRewards'		=> true,					// Show option in Service Desk to reward player X credits for reporting bugs/abuse/etc.
 	'SDCreditReward'			=> array(1, 1000),	// min/max credits to award account.
 	'SDAllowedStaffGroup'		=> array(2, 10, 99),	// groups that can be assigned to service desk staff

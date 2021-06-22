@@ -13,20 +13,19 @@ $userColumns = Flux::config('FluxTables.MasterUserTableColumns');
 $sql  = "SELECT $tbl.*, login.userid as accname, login.email, {$usersTable}.{$userColumns->get('id')} as `user_id`, {$usersTable}.{$userColumns->get('name')} as `name` FROM {$server->loginDatabase}.$tbl ";
 $sql .= "LEFT JOIN {$server->loginDatabase}.login ON $tbl.account_id = login.account_id ";
 $sql .= "LEFT JOIN {$server->loginDatabase}.{$usersTable} ON login.email = {$usersTable}.email ";
-$sql .= "WHERE ticket_id = ? and login.account_id = ?";
+$sql .= "WHERE ticket_id = ?";
 $rep  = $server->connection->getStatement($sql);
-$rep->execute(array($ticket_id, $session->account->account_id));
+$rep->execute(array($ticket_id));
 $trow = $rep->fetch();
 
 if($trow) {
 	$chid=$trow->char_id;
-	$sql = "SELECT * FROM {$server->charMapDatabase}.char WHERE char_id = ? and account_id = ?";
+	$sql = "SELECT * FROM {$server->charMapDatabase}.char WHERE char_id = ?";
 	$ch = $server->connection->getStatement($sql);
-	$ch->execute(array($chid, $session->account->account_id));
+	$ch->execute(array($chid));
 	$chr = $ch->fetchAll();
 	foreach($chr as $char) {
 	}
-} else {
 }
 
 if(isset($_POST['postreply']) && $_POST['postreply'] == 'gogolol'){
@@ -95,5 +94,10 @@ if($ticketlist) {
 	foreach($ticketlist as $crow) {
 		$catname=$crow->name;
 	}
+}
+
+if(Flux::config('SDAllowUplodScreenshots')) {
+	$screenshots_path = Flux::config('SDScreenshotUplodFolder').$trow->ticket_id;
+	$screenshots = $this->list_of_files(Flux::config('SDScreenshotUplodFolder').$trow->ticket_id);
 }
 ?>

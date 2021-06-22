@@ -243,5 +243,8 @@ if($ticketlist) {
 	}
 }
 
-
+if(Flux::config('SDAllowUplodScreenshots')) {
+	$screenshots_path = Flux::config('SDScreenshotUplodFolder').$trow->ticket_id;
+	$screenshots = $this->list_of_files(Flux::config('SDScreenshotUplodFolder').$trow->ticket_id);
+}
 ?>

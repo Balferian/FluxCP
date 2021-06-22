@@ -51,7 +51,16 @@ $this->loginRequired();
 			<td colspan="3"><a href="<?php echo htmlspecialchars($trow->chatlink) ?>" target="_blank"><?php echo htmlspecialchars($trow->chatlink) ?></a></td></tr>
 		</tr>
 		<?php endif ?>
-		<?php if($trow->sslink!='0'): ?>
+		<?php if(Flux::config('SDAllowUplodScreenshots') && $screenshots): ?>
+		<tr>
+			<th>Screenshots</th>
+			<td colspan="4">
+				<?php foreach($screenshots as $key => $screenshot):?>
+					<a href="<?php echo $screenshots_path.'/'.$screenshot; ?>" target="_blank"><img src="<?php echo $screenshots_path.'/'.$screenshot; ?>" width="100px" height="100"></a>
+				<?php endforeach; ?>
+			</td>
+		</tr>
+		<?php elseif($trow->sslink!='0'): ?>
 		<tr>
 			<th>Screenshots</th>
 			<td colspan="3"><a href="<?php echo $trow->sslink ?>" target="_blank"><img src="<?php echo $trow->sslink ?>" width="100px" height="100"></a></td></tr>

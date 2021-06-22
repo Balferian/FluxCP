@@ -4,7 +4,7 @@ $this->loginRequired();
 ?>
 <h2><?php echo htmlspecialchars(Flux::message('SDCreateNew')) ?></h2>
 	<h3>Required Information</h3>
-	<form action="<?php echo $this->urlWithQs ?>" method="post" class="input_fill">
+	<form action="<?php echo $this->urlWithQs ?>" method="post" class="input_fill" enctype="multipart/form-data">
 	<table class="vertical-table" width="100%">
 		<tr>
 			<?php if (Flux::config('MasterAccount')): ?>
@@ -57,7 +57,18 @@ $this->loginRequired();
 		<tbody id="ssrow">
 		<tr>
 			<th>Screenshot Proof</th>
-			<td><input type="text" name="sslink" id="sslink" size="50" /><br /><?php echo Flux::message('SDPointerScreenShot') ?></td>
+			<td>
+				<?php if(Flux::config('SDAllowUplodScreenshots')): ?>
+					<div id='upload_screenshots'>
+						<p><input type="file" name="screenshots[]" class="upload_screenshot" style="padding: 0;" accept=".jpg,.png,.gif,.bmp,.jpeg"></p>
+					</div>
+					<?php if(Flux::config('SDMaxUplodScreenshots') > 1): ?>
+						<button type="button" class="btn btn-info btn-sm btn_clone" id="add_screenshot">Add new one</button>
+					<?php endif ?>
+				<?php else: ?>
+					<input type="text" name="sslink" id="sslink" size="50" /><br /><?php echo Flux::message('SDPointerScreenShot') ?>
+				<?php endif ?>
+			</td>
 		</tr>
 		</tbody>
 		
@@ -82,3 +93,20 @@ $this->loginRequired();
 		</tr>
     </table>
 </form>
+
+<?php if(Flux::config('SDAllowUplodScreenshots')): ?>
+	<script type="text/javascript">
+		let i = 1;
+		$('.btn_clone').click(function(){
+			i++;
+			if(i > <?php echo Flux::config('SDMaxUplodScreenshots')-1; ?>) {
+				document.getElementById("add_screenshot").remove();
+			}
+			if (i <= <?php echo Flux::config('SDMaxUplodScreenshots'); ?>) {
+				var $upload_screenshots = $('#upload_screenshots');
+				var $clone = $upload_screenshots.find('p:last').clone().appendTo('#upload_screenshots');
+				$clone.find('.upload_screenshot').attr("id",'').removeClass('hasupload_screenshot').upload_screenshot();
+			}
+		})
+	</script>
+<?php endif ?>

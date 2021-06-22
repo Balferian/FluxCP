@@ -1588,5 +1588,27 @@ class Flux_Template {
 		else 
 			return false;
 	}
+	
+	public static function make_upload($tmp_name, $name, $dir){
+		if(!is_dir($dir))
+			mkdir($dir, 0777, true);
+		move_uploaded_file($tmp_name, "$dir/$name");
+		return true;
+	}
+	
+	public static function list_of_files($dir){
+		if(!is_dir($dir))
+			return array();
+		$path = $dir;
+		$filelist = array();
+		$have_files = false;
+		if($handle = opendir($path)){
+			while($entry = readdir($handle)){
+				if($entry != "." && $entry != "..") $filelist[] = $entry;
+			}
+			closedir($handle);
+		}
+		return $filelist;
+	}
 }
 ?>

@@ -65,6 +65,24 @@ if(isset($_POST['account_id'])){
             ));
         }
     }
+
+	if(Flux::config('SDAllowUplodScreenshots')) {
+		$sql = "SELECT max(ticket_id) as max FROM {$server->loginDatabase}.$tbl";
+		$sth = $server->connection->getStatement($sql);
+		$sth->execute(array($mobID));
+		$max_id = $sth->fetch();
+
+		if(isset($_FILES["screenshots"])) {
+			foreach ($_FILES["screenshots"]["error"] as $key => $error) {
+				if ($error == UPLOAD_ERR_OK && $key < Flux::config('SDMaxUplodScreenshots') ) {
+					$tmp_name = $_FILES["screenshots"]["tmp_name"][$key];
+					$name = basename($_FILES["screenshots"]["name"][$key]);
+					$this->make_upload($tmp_name, $max_id->max, $name);
+				}
+			}	
+		}
+	}
+
     $this->redirect($this->url('servicedesk','index'));
 }
 ?>
