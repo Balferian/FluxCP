@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `cp_users` (
   `update_date` datetime DEFAULT NULL,
   `delete_date` datetime DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1;
 
 CREATE INDEX master_email
 ON cp_users (email);

@@ -7,7 +7,6 @@ $template = trim($params->get('template'));
 $subject = trim($params->get('subject'));
 $selectedtemplate = $template.'.php';
 
-
 // Select Template
 $template_dir = FLUX_DATA_DIR."/templates/";
 $myDirectory = opendir($template_dir);
@@ -17,21 +16,26 @@ $indexCount	= count($dirArray);
 sort($dirArray);
 
 if (count($_POST)) {
-	//<input type="radio" name="whoto" id="whoto" value="1" checked="checked"> No one<br />
-	//<input type="radio" name="whoto" id="whoto" value="2"> Admins Only<br />
-	//<input type="radio" name="whoto" id="whoto" value="3"> Staff Only<br />
-	//<input type="radio" name="whoto" id="whoto" value="4"> Everyone<br />
-	//<input type="radio" name="whoto" id="whoto" value="5"> VIPs<br />
-
-	if($whoto == '1'){
-		// please leave blank
-	}elseif($whoto == '2'){
-		$sth = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.login WHERE `group_id` = '99'");
-	}elseif($whoto == '3'){
-		$sth = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.login WHERE (group_id=2 OR group_id=99)");
-	}elseif($whoto == '4'){
-		$sth = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.login");
-	}elseif($whoto == '5'){
+	if (Flux::config('MasterAccount')) {
+		if($whoto == '1'){
+			// please leave blank
+		}elseif($whoto == '2'){
+			$sth = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.cp_users WHERE group_id = '99'");
+		}elseif($whoto == '3'){
+			$sth = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.cp_users WHERE group_id >= '2'");
+		}elseif($whoto == '4'){
+			$sth = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.cp_users");
+		}
+	} else {
+		if($whoto == '1'){
+			// please leave blank
+		}elseif($whoto == '2'){
+			$sth = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.login WHERE `group_id` = '99'");
+		}elseif($whoto == '3'){
+			$sth = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.login WHERE (group_id=2 OR group_id=99)");
+		}elseif($whoto == '4'){
+			$sth = $server->connection->getStatement("SELECT * FROM {$server->loginDatabase}.login");
+		}	
 	}
 
 	$sth->execute();

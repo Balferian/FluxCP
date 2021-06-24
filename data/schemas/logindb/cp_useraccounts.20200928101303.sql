@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `cp_user_accounts` (
   `create_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1;
 
 CREATE INDEX master_user_id
 ON cp_user_accounts (user_id);

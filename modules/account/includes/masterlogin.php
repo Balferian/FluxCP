@@ -56,7 +56,7 @@ catch (Flux_LoginError $e) {
             $sql .= "(user_id, username, password, ip, error_code, login_date) ";
             $sql .= "VALUES (?, ?, ?, ?, ?, NOW())";
             $sth  = $loginAthenaGroup->connection->getStatement($sql);
-            $sth->execute(array($row->id, $email, $password, $_SERVER['REMOTE_ADDR'], $e->getCode()));
+            $sth->execute(array($row->user_id, $email, $password, $_SERVER['REMOTE_ADDR'], $e->getCode()));
         }
     }
 

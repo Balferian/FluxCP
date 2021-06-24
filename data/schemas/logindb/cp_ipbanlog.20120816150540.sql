@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS `cp_ipbanlog` (
   PRIMARY KEY  (`id`),
   INDEX (`ip_address`),
   INDEX (`banned_by`)
-) ENGINE=MyISAM ;
+) ENGINE=MyISAM;

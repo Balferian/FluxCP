@@ -331,7 +331,7 @@ return array(
 			'index'			=> 'List Accounts',
 			'view'			=> 'View Account',
 			'changepass'	=> 'Change Password',
-			'changemail'	=> 'Change E-mail',
+			'changemail'	=> 'Change E-Mail',
 			'changesex'		=> 'Change Gender',
 			'transfer'		=> 'Transfer Credits',
 			'xferlog'		=> 'Credit Transfer History',
@@ -339,7 +339,7 @@ return array(
 			'login'			=> 'Login',
 			'create'		=> 'Register',
 			'resetpass'		=> 'Reset Password',
-			'resend'		=> 'Resend E-mail Confirmation'
+			'resend'		=> 'Resend E-Mail Confirmation'
 		),
 		'guild'			=> array(
 			'index'			=> 'List Guilds',
@@ -377,7 +377,7 @@ return array(
 			'login'			=> 'Logins',
 			'resetpass'		=> 'Password Resets',
 			'changepassword'	=> 'Password Changes',
-			'changemail'	=> 'E-mail Changes',
+			'changemail'	=> 'E-Mail Changes',
 			'ban'			=> 'Account Bans',
 			'ipban'			=> 'IP Bans'
 		),
@@ -391,7 +391,7 @@ return array(
 		'donate'		=> array(
 			'index'			=> 'Make a Donation',
 			'history'		=> 'Donation History',
-			'trusted'		=> 'Trusted PayPal E-mails'
+			'trusted'		=> 'Trusted PayPal E-Mails'
 		),
 		'ipban'			=> array(
 			'index'			=> 'IP Ban List',
