@@ -232,6 +232,39 @@
 <p>No skills found for <?php echo htmlspecialchars($monster->name_english) ?>.</p>
 <?php endif ?>
 
+<h3>“<?php echo htmlspecialchars($monster->name_english) ?>” on maps</h3>
+<?php if ($mobSpawns): ?>
+<table class="vertical-table">
+	<tr>
+		<th>Image map</th>
+		<th>Map name</th>
+		<th>Spawn</th>
+		<th>Respawn time</th>
+	</tr>	
+	<?php foreach ($mobSpawns as $mobSpawn): ?>
+	<tr>
+		<td>
+			<?php if($auth->actionAllowed('map', 'view')): ?><a href="<?php echo $this->url('map', 'view', array('map' => $mobSpawn->map)); ?>"><?php endif; ?>
+				<img src="<?php echo $this->mapImage($mobSpawn->map) ?>" class="map_image"/>
+			<?php if($auth->actionAllowed('map', 'view')): ?></a><?php endif; ?>
+		</td>
+		<td>
+			<?php if($auth->actionAllowed('map', 'view')): ?><a href="<?php echo $this->url('map', 'view', array('map' => $mobSpawn->map)); ?>"><?php endif; ?>
+				<?php echo htmlspecialchars($mobSpawn->map) ?>
+			<?php if($auth->actionAllowed('map', 'view')): ?></a><?php endif; ?>
+		</td>
+		<td><?php echo htmlspecialchars($mobSpawn->count) ?></td>
+		<td>
+			<?php echo ceil($mobSpawn->time_to / 60000) ?></b>min
+			<?php echo ($mobSpawn->time_from ? '-<b>'.(ceil($mobSpawn->time_to / 60000) + ceil($mobSpawn->time_from / 60000)).'</b>min' : '') ?>
+		</td>
+	</tr>
+	<?php endforeach ?>
+</table>
+<?php else: ?>
+<p>No spawns found for <?php echo htmlspecialchars($monster->name_english) ?>.</p>
+<?php endif ?>
+
 <?php else: ?>
 <p>No such monster was found. <a href="javascript:history.go(-1)">Go back</a>.</p>
 <?php endif ?>

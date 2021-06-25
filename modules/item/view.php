@@ -14,6 +14,8 @@ $tableName = "{$server->charMapDatabase}.items";
 $tempTable = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
 $shopTable = Flux::config('FluxTables.ItemShopTable');
 $itemDescTable = Flux::config('FluxTables.ItemDescTable');
+$npcsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.NpcsSpawnTable");
+$shopsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.VendorsTable");
 
 $itemID = $params->get('id');
 
@@ -207,5 +209,14 @@ if ($item) {
 
 	// Sort so that monsters are ordered by drop chance and name.
 	usort($itemDrops, '__tmpSortDrops');
+	
+	$sql  = "SELECT *, $shopsDB.id_shop as npc_id, $tableName.price_buy FROM $shopsDB ";
+	$sql .= "LEFT JOIN $npcsDB ON $shopsDB.id_shop = $npcsDB.id ";
+	$sql .= "LEFT JOIN $tableName ON $shopsDB.item = $tableName.id ";
+	$sql .= "WHERE $shopsDB.item = ?";
+	$sth = $server->connection->getStatement($sql);
+	$sth->execute(array($itemID));
+
+	$itemShop = $sth->fetchAll();
 }
 ?>

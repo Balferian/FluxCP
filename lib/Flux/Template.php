@@ -1499,6 +1499,9 @@ class Flux_Template {
  	 */
 	public function monsterImage($monsterID)
 	{
+		// Check if it is sprite name then change it to id
+		if(!is_numeric($monsterID))
+			$monsterID = Flux::getSpriteID($monsterID);
 		$path = sprintf(FLUX_DATA_DIR."/monsters/".Flux::config('MonsterImageNameFormat'), $monsterID);
 		$link = preg_replace('&/{2,}&', '/', "{$this->basePath}/$path");
 		
@@ -1520,6 +1523,36 @@ class Flux_Template {
 		$path = sprintf(FLUX_DATA_DIR."/jobs/images/%s/".Flux::config('JobImageNameFormat'), $gender, $jobID);
 		$link = preg_replace('&/{2,}&', '/', "{$this->basePath}/$path");
 		return file_exists($path) ? $link : false;
+	}
+	
+	/**
+	 *
+	 */
+	public function mapImage($map_name, $x = false, $y = false)
+	{
+		$path = sprintf(FLUX_DATA_DIR."/maps/".Flux::config('MapNameFormat'), $map_name);
+		$link = preg_replace('&/{2,}&', '/', "{$this->basePath}/$path");
+		
+		if(Flux::config('DivinePrideIntegration') && !file_exists($path)) {
+			$download_link = "https://www.divine-pride.net/img/map/raw/$map_name";
+			// maybe add cheeck for full transparent maps and change it to raw?
+			/*$download_link = "https://www.divine-pride.net/img/map/original/$map_name";
+			$image = imagecreatefromstring(file_get_contents($download_link));
+			$palette = array(2130706432);
+			for($x = 0; $x < $x; $x += 10){
+				for($y = 0; $y < $y; $y += 10){
+					$palette[] = imagecolorat($image, $x, $y);
+				}
+			}
+			$palette = array_unique($palette);
+			if(count($palette) == 1)
+				$download_link = "https://www.divine-pride.net/img/map/raw/$map_name";*/
+			$data = get_headers($download_link, true);
+			$size = isset($data['Content-Length']) ? (int)$data['Content-Length'] : 0;
+			if($size != 0 && $size != 654)
+				file_put_contents(sprintf(FLUX_DATA_DIR."/maps/".Flux::config('MapNameFormat'), $map_name), file_get_contents($download_link));
+		}
+        return file_exists($path) ? $link : false;
 	}
 	
 	/**
@@ -1610,5 +1643,14 @@ class Flux_Template {
 		}
 		return $filelist;
 	}
+	
+	/**
+	 * Return sprite id by name.
+	 */
+	public function getSpriteID($name)
+	{
+		return is_numeric($name) ? $name : Flux::getSpriteID($name);
+	}
+
 }
 ?>

@@ -7,6 +7,7 @@
 
 /data/monsters/*.png
 /data/monsters/*.gif
+/data/maps/*.png
 
 # Logs
 /data/logs/errors
@@ -17,6 +18,7 @@
 
 #uploads
 /data/uploads/servicedesk/*
+/data/uploads/npc/*
 
 # Caches
 /data/tmp/*.php

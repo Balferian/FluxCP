@@ -18,6 +18,7 @@ return array(
 	'ItemImageNameFormat'		=> '%d.png',				// The filename format for item images (defaults to {itemid}.png).
 	'MonsterImageNameFormat'	=> '%d.gif',				// The filename format for monster images (defaults to {monsterid}.gif).
 	'JobImageNameFormat'		=> '%d.gif',				// The filename format for job images (defaults to {jobid}.gif).
+	'MapNameFormat'		=> '%s.png',				// The filename format for item icons (defaults to {itemid}.png).
 	'DivinePrideAPI'			=> '',	// https://www.divine-pride.net/api.
 	'UseDivinePrideItemDesc'	=> true,								// Use items description from divine pride.
 	'DivinePrideServer'			=> '',					// What language use for Divine-Pride results.
@@ -32,6 +33,8 @@ return array(
 	'DateFormat'				=> 'Y-m-d',					// Default DATE format to be displayed in pages.
 	'DateTimeFormat'			=> 'Y-m-d H:i:s',			// Default DATETIME format to be displayed in pages.
 	'ShowSinglePage'			=> true,					// Whether or not to show the page numbers even if there's only one page.
+	'MapsResultsPerPage'		=> 50,						// The number of results to display maps in a paged set, per page.
+	'NpcsResultsPerPage'		=> 50,						// The number of results to display maps in a paged set, per page.
 	'ResultsPerPage'			=> 20,						// The number of results to display in a paged set, per page.
 	'PagesToShow'				=> 10,						// The number of page numbers to display at once.
 	'PageJumpMinimumPages'		=> 1,						// Minimum number of required pages before page jump box is shown. (0 to always show!)
@@ -290,6 +293,8 @@ return array(
 		'DatabaseLabel'		=> array(
 			'ItemDatabaseLabel'	=> array('module' => 'item'),
 			'MobDatabaseLabel'	=> array('module' => 'monster'),
+			'Maps Database' => array('module' => 'map'),
+			'Npcs Database' => array('module' => 'npcs'),
 		),
 		'SocialLabel'		=> array(
 			'JoinUsInFacebookLabel'	=> array('exturl' => 'https://www.facebook.com/<change_me>'),
@@ -312,6 +317,7 @@ return array(
 			'SendMailLabel'		=> array('module' => 'mail'),
 			'WCTitleLabel'		=> array('module' => 'webcommands'),
 			'Cash Shop'			=> array('module' => 'cashshop'),
+			'Script parser' 	=> array('module' => 'script_parser'),
 			//'Auction'		=> array('module' => 'auction'),
 			//'Economy'		=> array('module' => 'economy')
 		)
@@ -432,6 +438,12 @@ return array(
 		'buyingstore'		=> array(
 			'index'			=> 'Buyers',
 		),
+		'map' => array(
+			'index' => 'Map List',
+		),
+		'npcs' => array(
+			'index' => 'NPC List',
+		),
 	),
 
 	'ServiceDeskItems'		=> array(
@@ -543,6 +555,9 @@ return array(
 	// Item random options.
 	'RandomOptions'					=> include('item_randoptions.php'),
 
+	// Sprite ids
+	'SpriteIdList'					=> include('jobidentity.php'),
+
 	// DON'T TOUCH. THIS IS FOR DEVELOPERS.
 	'FluxTables'		=> array(
 		'CreditsTable'			=> 'cp_credits',
@@ -570,6 +585,12 @@ return array(
 		'ServiceDeskSettingsTable'	=> 'cp_servicedesksettings',
 		'WebCommandsTable'			=> 'cp_commands',
 		'ItemDescTable'     		=> 'cp_itemdesc',
+		'MobsSpawnTable'     		=> 'cp_mob_spawns',
+		'NpcsSpawnTable'     		=> 'cp_npcs',
+		'WarpsTable'     			=> 'cp_warps',
+		'MapsTable'     			=> 'cp_map_index',
+		'VendorsTable'     			=> 'cp_shops_sells',
+		'PremuimServiceTable'     	=> 'cp_premium',
 		'MasterUserTable'			=> 'cp_users',
 		'MasterUserAccountTable'	=> 'cp_user_accounts',
 		'MasterUserBanTable'		=> 'cp_user_banlog',
