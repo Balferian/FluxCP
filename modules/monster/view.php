@@ -35,6 +35,9 @@ if($server->isRenewal) {
 $itemDB    = "{$server->charMapDatabase}.items";
 $tempItems = new Flux_TemporaryTable($server->connection, $itemDB, $fromTables);
 
+// Monster spawn table
+$spawnDB    = "{$server->charMapDatabase}.".FLUX::config('FluxTables.MobsSpawnTable');
+
 $mode_list = array('mode_aggressive', 'mode_angry', 'mode_assist', 'mode_canattack', 'mode_canmove', 'mode_castsensorchase', 'mode_castsensoridle', 'mode_changechase', 'mode_changetargetchase', 'mode_changetargetmelee', 'mode_detector', 'mode_fixeditemdrop', 'mode_ignoremagic', 'mode_ignoremelee', 'mode_ignoremisc', 'mode_ignoreranged', 'mode_knockbackimmune', 'mode_looter', 'mode_mvp', 'mode_norandomwalk', 'mode_randomtarget', 'mode_skillimmune', 'mode_statusimmune', 'mode_targetweak', 'mode_teleportblock');
 
 $col  = 'origin_table, ID as monster_id, name_aegis AS sprite, name_english, name_japanese, level, HP AS hp, ';
@@ -178,5 +181,11 @@ if ($monster) {
 	$sth = $server->connection->getStatement($sql);
 	$sth->execute(array($mobID));
 	$mobSkills = $sth->fetchAll();
+	
+	// mob spawn
+	$sql = "SELECT * FROM $spawnDB WHERE mob_id = ? ORDER BY `count` DESC";
+	$sth = $server->connection->getStatement($sql);
+	$sth->execute(array($mobID));
+	$mobSpawns = $sth->fetchAll();
 }
 ?>

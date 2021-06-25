@@ -215,6 +215,18 @@ return array(
 			'accounts'		=> AccountLevel::NORMAL,
 			'history'		=> AccountLevel::NORMAL,
 		),
+		'script_parser' => array(
+			'index' => AccountLevel::ADMIN,
+			'get' => AccountLevel::ADMIN,
+		),
+		'map' => array(
+			'index' => AccountLevel::ANYONE,
+			'view' => AccountLevel::ANYONE,
+		),
+		'npcs' => array(
+			'index' => AccountLevel::ANYONE,
+			'view' => AccountLevel::ANYONE,
+		),
 	),
 	// General feature permissions, handled by the modules themselves.
 	'features' => array(

@@ -963,5 +963,19 @@ class Flux {
 
 		return $dictionary;
 	}
+
+	/**
+	 * return sprite id from name.
+	 */
+	public static function getSpriteID($name)
+	{
+		$index = self::config('SpriteIdList')->toArray();
+		if (array_key_exists($name, $index)) {
+			return $index[$name];
+		}
+		else {
+			return false;
+		}
+	}
 }
 ?>

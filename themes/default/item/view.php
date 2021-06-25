@@ -248,6 +248,38 @@
 </table>
 <?php endif ?>
 
+<?php if($itemShop !== false): ?>
+	<h3><?php echo $item->name?> Buyable At</h3>
+	<?php if(sizeof($itemShop)): ?>
+		<table class="vertical-table">
+			<tr>
+				<th>Name</th>
+				<th>Map</th>
+				<th>Coordinates</th>
+				<th>Sell Price</th>
+			</tr>
+			<?php foreach($itemShop as $it): ?>
+				<tr>
+					<?php if($auth->actionAllowed('npcs', 'view')): ?>
+						<td><a href="<?php echo $this->url('npcs', 'view', array('id' => $it->npc_id)); ?>"><?php echo $it->name; ?></a></td>
+					<?php else: ?>
+						<td><?php echo $it->name; ?></td>
+					<?php endif; ?>
+					<?php if($auth->actionAllowed('map', 'view')): ?>
+						<td><a href="<?php echo $this->url('map', 'view', array('map' => $it->map, 'x' => $it->x, 'y' => $it->y)); ?>"><?php echo $it->map; ?></a></td>
+					<?php else: ?>
+						<td><?php echo $it->map; ?></td>
+					<?php endif; ?>
+					<td><?php echo $it->x; ?>,<?php echo $it->y; ?></td>
+					<td><?php echo $it->price == -1 ? $it->price_buy : $it->price; ?> <?php echo FLUX::message('ServerInfoZenyLabel'); ?></td>
+				</tr>
+			<?php endforeach; ?>
+		</table>
+	<?php else: ?>
+		This item can not be bought
+	<?php endif; ?>
+<?php endif; ?>
+
 <?php else: ?>
 <p>No such item was found. <a href="javascript:history.go(-1)">Go back</a>.</p>
-<?php endif ?>
+<?php endif; ?>
