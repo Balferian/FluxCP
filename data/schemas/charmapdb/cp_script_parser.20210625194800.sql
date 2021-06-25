@@ -17,7 +17,6 @@ CREATE TABLE `cp_mob_spawns` (
 	`range_y` SMALLINT(4) NOT NULL,
 	`mob_id` SMALLINT(5) NOT NULL,
 	`count` SMALLINT(4) NOT NULL,
-	`name` VARCHAR(40) NOT NULL,
 	`time_to` INT(11) NOT NULL,
 	`time_from` INT(11) NOT NULL,
 	PRIMARY KEY (`id`),

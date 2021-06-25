@@ -8,6 +8,7 @@
 /data/monsters/*.png
 /data/monsters/*.gif
 /data/maps/*.png
+/data/debug/*
 
 # Logs
 /data/logs/errors

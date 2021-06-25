@@ -74,9 +74,13 @@ class parse{
     private function loadShops(array $data){
 		$npcsDB = 	"{$this->server->charMapDatabase}.".FLUX::config("FluxTables.NpcsSpawnTable");
 		$shopsDB = 	"{$this->server->charMapDatabase}.".FLUX::config("FluxTables.VendorsTable");
+		$debug1 = array();
+		$debug2 = array();
 
         $sql = "insert into $npcsDB (`map`, `x`, `y`, `name`, `sprite`, `id`, `is_shop`) values ";
         $sql_item = "insert into $shopsDB (`item`, `price`, `id_shop`) values ";
+		$debug1 = array();
+		$debug2 = array();
         $sth = $this->server->connection->getStatement("select max(id) id from $npcsDB");
         $sth->execute();
         $id = $sth->fetch();
@@ -98,11 +102,13 @@ class parse{
                 $sel_item[1] = trim($sel_item[1]);
                 $sells_items = array_merge($sells_items, $sel_item);
                 $sells_items[] = $id;
+				$debug2[] = "(".$sel_item[0].", ".$sel_item[0].", $id)";
             }
             $import[] = $id ++;
             $import[] = 1;
             $import_array = array_merge($import_array, $import);
             $import_sql[] = '(?, ?, ?, ?, ?, ?, ?)';
+			$debug1[] = "('".$import[0]."', '".$import[1]."', '".$import[2]."', '".$import[3]."', '".$import[4]."', '".$import[5]."', '".$import[6]."')";
         }
         if(sizeof($import_sql)) {
             $sth = $this->server->connection->getStatement($sql . join(',', $import_sql). ';');
@@ -110,6 +116,14 @@ class parse{
             $sth = $this->server->connection->getStatement($sql_item . join(',', $array). ';');
             $sth->execute($sells_items);
         }
+		if(FLUX::config('DebugMode')) {
+			$fd = fopen(FLUX_DATA_DIR . "/debug/shops.txt", 'a');
+			fwrite($fd, "insert into $npcsDB (`map`, `x`, `y`, `name`, `sprite`, `id`, `is_shop`) values \n".implode(",\n", $debug1). ";\n");
+			fclose($fd);
+			$fd = fopen(FLUX_DATA_DIR . "/debug/sell_items.txt", 'a');
+			fwrite($fd, "insert into $shopsDB (`item`, `price`, `id_shop`) values \n".implode(",\n", $debug2). ";\n");
+			fclose($fd);
+		}
         return sizeof($import_sql);
     }
 
@@ -193,6 +207,7 @@ class parse{
         $id = (int)$id->id + 1;
         $array = array();
         $insert = array();
+        $debug = array();
         foreach($data as $item){
             $import = explode(',', $item);
             if(sizeof($import) != 5){
@@ -202,13 +217,19 @@ class parse{
             $import[] = 0;
             $array = array_merge($array, $import);
             $insert[] = '(?, ?, ?, ?, ?, ?, ?)';
-        }
+ 			$debug[] = "('".$import[0]."', '".$import[1]."', '".$import[2]."', '".$import[3]."', '".$import[4]."', '".$import[5]."', '".$import[6]."')";
+       }
         if(sizeof($insert)) {
             $sql .= join(',', $insert);
             $sth = $this->server->connection->getStatement($sql);
             $sth->execute($array);
         }
-        return sizeof($insert);
+ 		if(FLUX::config('DebugMode')) {
+			$fd = fopen(FLUX_DATA_DIR . "/debug/npcs.txt", 'a');
+			fwrite($fd, ("insert into $npcsDB (`map`, `x`, `y`, `name`, `sprite`, `id`, `is_shop`)values" . "\n" . implode(",\n", $debug). ";\n"));
+			fclose($fd);
+		}
+       return sizeof($insert);
     }
 
     private function getWarps($file){
@@ -233,19 +254,27 @@ class parse{
         $sql = "insert into $warpsDB (`map`, `x`, `y`, `to`, `tx`, `ty`)values";
         $array = array();
         $insert = array();
+		$debug = array();
         foreach($data as $item){
+			$item = trim($item);
             $import = explode(',', $item);
             if(sizeof($import) != 6){
                 continue;
             }
             $array = array_merge($array, $import);
             $insert[] = '(?, ?, ?, ?, ?, ?)';
+			$debug[] = "('".$import[0]."', '".$import[1]."', '".$import[2]."', '".$import[3]."', '".$import[4]."', '".$import[5]."')";
         }
         if(sizeof($insert)) {
             $sql .= join(',', $insert);
             $sth = $this->server->connection->getStatement($sql);
             $sth->execute($array);
         }
+		if(FLUX::config('DebugMode')) {
+			$fd = fopen(FLUX_DATA_DIR . "/debug/warps.txt", 'a');
+			fwrite($fd, ("insert into $warpsDB (`map`, `x`, `y`, `to`, `tx`, `ty`)values" . "\n" . implode(",\n", $debug). ";\n"));
+			fclose($fd);
+		}
         return sizeof($insert);
     }
 
@@ -274,8 +303,9 @@ class parse{
         $sql = "insert into $mobsDB (`map`, `x`, `y`, `range_x`, `range_y`, `mob_id`, `count`, `time_to`, `time_from`)values";
         $array = array();
         $insert = array();
-        $text = "";
+        $debug = array();
         foreach($data as $item){
+			$item = trim($item);
             $import = explode(',', $item);
 			$import_temp = array();
 			if(sizeof($import) > 10){
@@ -322,13 +352,20 @@ class parse{
 				$import = $import_temp;
 			}
 			$import = array_diff($import, [$import[5]]);
+			$import = array($import[0], $import[1], $import[2], $import[3], $import[4], $import[6], $import[7], $import[8], $import[9]);
             $array = array_merge($array, $import);
             $insert[] = '(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            $debug[] = "('".$import[0]."', '".$import[1]."', '".$import[2]."', '".$import[3]."', '".$import[4]."', '".$import[6]."', '".$import[7]."', '".$import[8]."', '".$import[9]."')";
         }
         if(sizeof($insert)) {
             $sql .= join(',', $insert);
             $sth = $this->server->connection->getStatement($sql);
             $sth->execute($array);
+		}
+ 		if(FLUX::config('DebugMode')) {
+			$fd = fopen(FLUX_DATA_DIR . "/debug/monsters.txt", 'a');
+			fwrite($fd, ("insert into $mobsDB (`map`, `x`, `y`, `range_x`, `range_y`, `mob_id`, `count`, `time_to`, `time_from`)values" . "\n" . implode(",\n", $debug). ";\n"));
+			fclose($fd);
 		}
 		return sizeof($insert);
     }
