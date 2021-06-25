@@ -67,7 +67,7 @@ if ($logins) {
 	}
 
 	$uid  = $noCase ? 'LOWER(userid)' : 'userid';
-	$sql  = "SELECT $uid AS userid, account_id FROM {$server->loginDatabase}.login WHERE ";
+	$sql  = "SELECT $uid AS userid, account_id FROM {$server->logsDatabase}.login WHERE ";
 	$sql .= "sex != 'S' AND group_id >= 0 AND $uid IN (".implode(',', array_fill(0, count($usernames), '?')).")";
 	$sth  = $server->connection->getStatement($sql);
 	$sth->execute($usernames, true);

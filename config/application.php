@@ -337,7 +337,7 @@ return array(
 			'index'			=> 'List Accounts',
 			'view'			=> 'View Account',
 			'changepass'	=> 'Change Password',
-			'changemail'	=> 'Change E-mail',
+			'changemail'	=> 'Change E-Mail',
 			'changesex'		=> 'Change Gender',
 			'transfer'		=> 'Transfer Credits',
 			'xferlog'		=> 'Credit Transfer History',
@@ -345,7 +345,7 @@ return array(
 			'login'			=> 'Login',
 			'create'		=> 'Register',
 			'resetpass'		=> 'Reset Password',
-			'resend'		=> 'Resend E-mail Confirmation'
+			'resend'		=> 'Resend E-Mail Confirmation'
 		),
 		'guild'			=> array(
 			'index'			=> 'List Guilds',
@@ -382,8 +382,8 @@ return array(
 			'create'		=> 'Game Account Registrations',
 			'login'			=> 'Logins',
 			'resetpass'		=> 'Password Resets',
-			'changepass'	=> 'Password Changes',
-			'changemail'	=> 'E-mail Changes',
+			'changepassword'	=> 'Password Changes',
+			'changemail'	=> 'E-Mail Changes',
 			'ban'			=> 'Account Bans',
 			'ipban'			=> 'IP Bans'
 		),
@@ -397,7 +397,7 @@ return array(
 		'donate'		=> array(
 			'index'			=> 'Make a Donation',
 			'history'		=> 'Donation History',
-			'trusted'		=> 'Trusted PayPal E-mails'
+			'trusted'		=> 'Trusted PayPal E-Mails'
 		),
 		'ipban'			=> array(
 			'index'			=> 'IP Ban List',
@@ -458,6 +458,7 @@ return array(
 			'SDStatus_7' => array('module' => 'servicedesk', 'action' => 'staffindex', 'params' => array('category' => '7')),
 		),
 	),
+
 	'AllowMD5PasswordSearch'		=> false,
 	'ReallyAllowMD5PasswordSearch'	=> false, // Are you POSITIVELY sure?
 

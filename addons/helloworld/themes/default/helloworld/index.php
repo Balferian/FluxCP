@@ -18,12 +18,12 @@ if(isset($_FILES["screenshots"])) {
 <form action="<?php echo $this->urlWithQs ?>" enctype="multipart/form-data" method="post">
 
 <input type="text" name="image_id" id="image_id" style="display:none;" value="<?php echo mt_rand(0, 1000000000); ?>"/>
-<b>Не более 5 скриншотов.</b>
+<b>No more than 5 screenshots</b>
 <div id='upload_screenshots'>
     <p>Скриншот: <input type="file" name="screenshots[]" class="upload_screenshot" style="padding: 0;"></p>
 </div>
-<button type="button" class="btn btn-info btn-sm btn_clone">Добавить скриншот</button>
-<input type="submit" class="btn btn-primary btn-sm" value="Создать заявку" />
+<button type="button" class="btn btn-info btn-sm btn_clone">Add Screenshot</button>
+<input type="submit" class="btn btn-primary btn-sm" value="Create Ticket" />
 </form>
 
 

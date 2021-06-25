@@ -13,8 +13,4 @@ CREATE TABLE `cp_create_master_log` (
 	PRIMARY KEY (`id`),
 	INDEX `name` (`name`),
 	INDEX `user_id` (`user_id`)
-)
-COLLATE='latin1_swedish_ci'
-ENGINE=MyISAM
-AUTO_INCREMENT=0
-;
+) ENGINE=MyISAM AUTO_INCREMENT=0;
