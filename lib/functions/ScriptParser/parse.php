@@ -131,8 +131,8 @@ class parse{
         if(!file_exists($file)){
             return false;
         }
-        $text = file_get_contents($file);
-        preg_match_all("/((.*),([0-9]+)\t(shop|duplicate\(([^\)]+)\))\t(.*?)\t([0-9a-zA-Z_]+),?(.*))/", $text, $match);
+        $text = file_get_contents($file)."\n";
+        preg_match_all("/((.*),([0-9]+)\t(shop|duplicate\(([^\)]+)\))\t(.*?)\t([0-9a-zA-Z_.]+),?(.*))/", $text, $match);
         $data = $match[1];
         foreach($data as $key => &$item){
             if(substr(trim($item), 0, 2) == '//'){
@@ -142,7 +142,7 @@ class parse{
             preg_match("/\tduplicate\(([^\)]+)\)\t/", $item, $match);
             $duplicate = $match[1];
             if($duplicate){
-                preg_match("/\tshop\t" . preg_quote($duplicate) . "\t([0-9a-zA-Z_]+),?(.*)/", $text, $sell_items);
+                preg_match("/\tshop\t" . preg_quote($duplicate) . "\t([0-9a-zA-Z_.]+),?(.*)/", $text, $sell_items);
                 if(!sizeof($sell_items)) {
                     unset($data[$key]);
                     continue;
@@ -150,17 +150,19 @@ class parse{
                     $sell_items = $sell_items[2];
                 }
             } else {
-                preg_match("/\tshop\t(.*?)\t([0-9a-zA-Z_]+),?(.*)/", $item, $sell_items);
+                preg_match("/\tshop\t(.*?)\t([0-9a-zA-Z_.]+),?(.*)/", $item, $sell_items);
                 $sell_items = $sell_items[3];
             }
-            $item = preg_replace("/,([0-9]+)\t(shop|duplicate\(([^\)]+)\))\t(.*?)\t([0-9a-zA-Z_]+),?(.*)/", ',$4,$5', $item);
+			if(strpos($sell_items , '//'))
+				$sell_items  = trim(strstr($sell_items , '//', true));
+            $item = preg_replace("/,([0-9]+)\t(shop|duplicate\(([^\)]+)\))\t(.*?)\t([0-9a-zA-Z_.]+),?(.*)/", ',$4,$5', $item);
             $item = explode(',', $item);
             $item[3] = explode('#', $item[3]);
             $item[3] = $item[3][0] ? $item[3][0] : 'No Name';
             $item = join(',', $item);
             $item = explode('::', $item);
             $item = $item[0];
-            $item = array(
+			$item = array(
                 'npc' => $item,
                 'item' => $sell_items
             );
@@ -172,8 +174,8 @@ class parse{
         if(!file_exists($file)){
             return false;
         }
-        $text = file_get_contents($file);
-        preg_match_all("/((.*),([0-9]+)\t(script|duplicate\(([^\)]+)\))\t(.*?)\t([0-9a-zA-Z_]+),?([0-9]+,)?([0-9]+,)?(.*))/", $text, $match);
+        $text = file_get_contents($file)."\n";
+        preg_match_all("/((.*),([0-9]+)\t(script|duplicate\(([^\)]+)\))\t(.*?)\t([0-9a-zA-Z_.]+),?([0-9]+,)?([0-9]+,)?(.*))/", $text, $match);
         $data = $match[1];
         foreach($data as $key => &$item){
             if(substr(trim($item), 0, 2) == '//'){
@@ -186,12 +188,13 @@ class parse{
                 unset($data[$key]);
                 continue;
             }
-            $item = preg_replace("/,([0-9]+)\t(script|duplicate\(([^\)]+)\))\t(.*?)\t([0-9a-zA-Z_]+),?([0-9]+,)?([0-9]+,)?(.*)/", ',$4,$5', $item);
+            $item = preg_replace("/,([0-9]+)\t(script|duplicate\(([^\)]+)\))\t(.*?)\t([0-9a-zA-Z_.]+),?([0-9]+,)?([0-9]+,)?(.*)/", ',$4,$5', $item);
             $item = explode(',', $item);
             $item[3] = explode('#', $item[3]);
             $item[3] = $item[3][0] ? $item[3][0] : 'No Name';
             $item = join(',', $item);
             $item = explode('::', $item);
+            //$item = str_replace("'", "/'", $item);
             $item = $item[0];
         }unset($item);
         return $data;
@@ -236,7 +239,7 @@ class parse{
         if(!file_exists($file)){
             return false;
         }
-        $text = file_get_contents($file);
+        $text = file_get_contents($file)."\n";
         preg_match_all("/((.*),([0-9]+)\twarp\t(.*?)\t([0-9]+),([0-9]+),(.*))/", $text, $match);
         $data = $match[1];
         foreach($data as $key => &$item){
@@ -245,6 +248,8 @@ class parse{
                 continue;
             }
             $item = preg_replace("/,([0-9]+)\twarp\t(.*?)\t([0-9]+),([0-9]+),/", ',', $item);
+			if(strpos($item, '/*'))
+				$item = trim(strstr($item, '/*', true));
         }unset($item);
         return $data;
     }
@@ -282,7 +287,7 @@ class parse{
         if(!file_exists($file)){
             return false;
         }
-        $text = file_get_contents($file);
+        $text = file_get_contents($file)."\n";
         preg_match_all("/((.*)\t(boss_)?monster\t(.*))/", $text, $match);
         $data = $match[1];
         foreach($data as $key => &$item){
@@ -351,11 +356,10 @@ class parse{
 				}
 				$import = $import_temp;
 			}
-			$import = array_diff($import, [$import[5]]);
 			$import = array($import[0], $import[1], $import[2], $import[3], $import[4], $import[6], $import[7], $import[8], $import[9]);
             $array = array_merge($array, $import);
             $insert[] = '(?, ?, ?, ?, ?, ?, ?, ?, ?)';
-            $debug[] = "('".$import[0]."', '".$import[1]."', '".$import[2]."', '".$import[3]."', '".$import[4]."', '".$import[6]."', '".$import[7]."', '".$import[8]."', '".$import[9]."')";
+            $debug[] = "('".$import[0]."', '".$import[1]."', '".$import[2]."', '".$import[3]."', '".$import[4]."', '".$import[5]."', '".$import[6]."', '".$import[7]."', '".$import[8]."')";
         }
         if(sizeof($insert)) {
             $sql .= join(',', $insert);

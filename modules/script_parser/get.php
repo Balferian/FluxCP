@@ -35,13 +35,3 @@ $data['file'] = $file;
 $data['file_short'] = array_pop(explode('/', str_replace('\\', '/', $file)));
 echo json_encode($data);
 die();
-
-
-
-
-
-
-
-
-
-
