@@ -104,12 +104,12 @@ if($map){
 			$icon = $this->iconImage($item->item);
 			if($icon)
 				$shop->items .= '<img src="'.htmlspecialchars($icon).'?nocache='.rand().'" /><div>';
-			$shop->items .= $auth->actionAllowed('item', 'view') ? $this->linkToItem($item->item, $item->name) : htmlspecialchars($item->name);
-			$shop->items .= '<br><span>'.($item->price == -1 ? $item->price_buy : $item->price).' '.FLUX::message('ServerInfoZenyLabel').'</span>';
-			$shop->items .= '</div></li>';
+				$shop->items .= $auth->actionAllowed('item', 'view') ? $this->linkToItem($item->item, $item->name) : htmlspecialchars($item->name);
+				$shop->items .= '<br><span>'.($item->price == -1 ? $item->price_buy : $item->price).' '.FLUX::message('ServerInfoZenyLabel').'</span>';
+				$shop->items .= '</div></li>';
 		}
-			for($i = 1; $i <= 4-(count($sale_list)%4); $i++)
-				$shop->items .= "<li></li>";
+		for($i = 1; $i <= 4-(count($sale_list)%4); $i++)
+			$shop->items .= "<li></li>";
 	}
 }
 
