@@ -2,7 +2,11 @@
 <h2><?php echo FLUX::message('SpawnGeneratorLabel'); ?></h2>
 <h3><?php echo FLUX::message('UnitsDBLabel'); ?></h3>
 <div id="parser_table">
-<table class="table">
+Errors:
+<table class="table_errors">
+</table>
+<hr>Success:
+<table class="table_success">
 </table>
 </div>
 <div class="units_parser">
@@ -62,12 +66,12 @@
                     },
                     success: function (data) {
                         if(data.isError){
-                            $('.table').append('<tr style="color: red;"><td>' +
+                            $('.table_error').prepend('<tr style="color: red;"><td>' +
                                 (COUNT + 1) + '/' + FILES.length + ' ' +
                                 'File <b>' + FILES[COUNT] + '</b> unsuccessfly load. </td>' +
                                 '<td colspan=4>' + data.error + '</td></tr>');
                         } else {
-                            $('.table').append('<tr><td>' +
+                            $('.table_success').append('<tr><td>' +
                                 (COUNT + 1) + '/' + FILES.length + ' ' +
                                 'File <b>' + data.file_short + '</b> successfly load. </td>' +
                                 '<td>Mobs: <b>' + data.data.mobs + '</b>, </td>' +
@@ -81,16 +85,17 @@
                             $('#shopNum').text(parseInt($('#shopNum').text()) + data.data.shops);
                         }
                         COUNT++;
-                        block.scrollTop = 9999;
                         startInsert();
                     },
                     error: function () {
                         errors[COUNT]++;
-                        $('.table').append('<tr><td class="reds">' +
-                            (COUNT + 1) + '/' + FILES.length + ' ' +
-                            'File <b>' + FILES[COUNT] + '</b> unsuccessfly load </td>' +
-                            '<td colspan=4>(attempt ' + errors[COUNT] + ' of 3)</td></tr>');
-                        block.scrollTop = block.scrollHeight;
+                        var error_num = [
+							'',
+							'<tr><td style="color: red;">' + (COUNT + 1) + '/' + FILES.length + ' ' + 'File <b>' + FILES[COUNT] + '</b> unsuccessfly load </td>' + '<td colspan=4>(NPCs not found)</td></tr>',
+							'<tr><td style="color: red;">' + (COUNT + 1) + '/' + FILES.length + ' ' + 'File <b>' + FILES[COUNT] + '</b> unsuccessfly load </td>' + '<td colspan=4>(ERROR: 2)</td></tr>',
+							'<tr><td style="color: red;">' + (COUNT + 1) + '/' + FILES.length + ' ' + 'File <b>' + FILES[COUNT] + '</b> unsuccessfly load </td>' + '<td colspan=4>(ERROR: 3)</td></tr>'
+						];
+                        $('.table_error').prepend(error_num[errors[COUNT]]);
                         startInsert();
                     }
                 })
