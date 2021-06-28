@@ -21,11 +21,12 @@ if($server->isRenewal) {
 }
 $tempItems = new Flux_TemporaryTable($server->connection, $itemDB, $fromTables);
 
-$shopsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.VendorsTable");
-$mobsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.MobsSpawnTable");
-$mapsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.MapsTable");
-$warpsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.WarpsTable");
-$npcsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.NpcsSpawnTable");
+$shopsDB = 		"{$server->charMapDatabase}.".FLUX::config("FluxTables.VendorsTable");
+$mobsDB = 		"{$server->charMapDatabase}.".FLUX::config("FluxTables.MobsSpawnTable");
+$mapsDB = 		"{$server->charMapDatabase}.".FLUX::config("FluxTables.MapsTable");
+$warpsDB = 		"{$server->charMapDatabase}.".FLUX::config("FluxTables.WarpsTable");
+$npcsDB = 		"{$server->charMapDatabase}.".FLUX::config("FluxTables.NpcsSpawnTable");
+$mapflagsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.MapflagsTable");
 
 $ignored_npcs = " AND (`name` != 'No Name' AND sprite != 45 AND sprite != 139 AND sprite != 111 AND sprite != 844 AND sprite != 'WARPNPC' AND sprite != 'CLEAR_NPC' AND sprite != 'HIDDEN_WARP_NPC')";
 
@@ -78,6 +79,11 @@ if($map){
 			"$npcsDB",
 			"",
 			" WHERE map = ? AND is_shop = 1 $ignored_npcs"
+		),
+        "mapflags"	=> array(
+			"$mapflagsDB",
+			"",
+			" WHERE name = ? GROUP BY mapflag"
 		)
     );
     foreach($tables as $var => $table) {

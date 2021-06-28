@@ -14,6 +14,7 @@ Errors:
     <?php echo sprintf(Flux::message('ScriptNpcsFoundedLabel'), $npcsBase); ?><br>
     <?php echo sprintf(Flux::message('ScriptShopsFoundedLabel'), $shopsBase); ?><br>
     <?php echo sprintf(Flux::message('ScriptWarpsFoundedLabel'), $warpsBase); ?><br>
+    <?php echo sprintf(Flux::message('ScriptMapflagsFoundedLabel'), $mapflagsBase); ?><br>
 	<form method="post" enctype="multipart/form-data">
 		<?php echo sprintf(Flux::message('ScriptUploadScriptLabel'), ini_get('upload_max_filesize')); ?><br>
 		<input type="file" name="npc_zip"><br>
@@ -78,11 +79,13 @@ Errors:
                                 '<td>Warps: <b>' + data.data.warps + '</b>, </td>' +
                             '<td>NPCs: <b>' + data.data.npcs + '</b></td>' +
                             '<td>Shops: <b>' + data.data.shops + '</b></td>' +
+                            '<td>Mapflags: <b>' + data.data.mapflags + '</b></td>' +
                             '</tr>');
                             $('#monNum').text(parseInt($('#monNum').text()) + data.data.mobs);
                             $('#warpNum').text(parseInt($('#warpNum').text()) + data.data.warps);
                             $('#npcNum').text(parseInt($('#npcNum').text()) + data.data.npcs);
                             $('#shopNum').text(parseInt($('#shopNum').text()) + data.data.shops);
+                            $('#mapflagNum').text(parseInt($('#mapflagNum').text()) + data.data.mapflags);
                         }
                         COUNT++;
                         startInsert();

@@ -49,6 +49,7 @@ class parse{
             'npcs' => 0,
             'warps' => 0,
             'shops' => 0,
+            'mapflags' => 0,
         );
         foreach($files as $file){
             $npcs = $this->getNpc($file);
@@ -66,6 +67,10 @@ class parse{
             $shops = $this->getShops($file);
             if(is_array($shops) && sizeof($shops)){
                 $array['shops'] += $this->loadShops($shops);
+            }
+            $mapflags = $this->getMapflag($file);
+            if(is_array($mapflags) && sizeof($mapflags)){
+                $array['mapflags'] += $this->loadMapflags($mapflags);
             }
         }
         return $array;
@@ -378,4 +383,54 @@ class parse{
 		}
 		return sizeof($insert);
     }
+	
+    private function getMapflag($file){
+        if(!file_exists($file)){
+            return false;
+        }
+		$text = file_get_contents($file)."\n";
+
+		preg_match_all("/((.*)\tmapflag\t([0-9a-zA-Z_]+))/", $text, $match);
+		$data = $match[1];
+		foreach($data as $key => &$item){
+			if(substr(trim($item), 0, 2) == '//'){
+				unset($data[$key]);
+				continue;
+			}
+			$item = preg_replace("/\tmapflag\t(.*?)/", ',$1', $item);
+			$item = explode(',', $item);
+			$item = join(',', $item);
+		}unset($item);
+		return $data;
+	}
+
+    private function loadMapflags(array $data){
+		$mapflagsDB = 	"{$this->server->charMapDatabase}.".FLUX::config("FluxTables.MapflagsTable");
+        $sql = "insert into $mapflagsDB (`name`, `mapflag`)values";
+        $array = array();
+        $insert = array();
+		$debug = array();
+        foreach($data as $item){
+			$item = trim($item);
+            $import = explode(',', $item);
+            if(sizeof($import) != 2){
+                continue;
+            }
+            $array = array_merge($array, $import);
+            $insert[] = '(?, ?)';
+			$debug[] = "('".$import[0]."', '".$import[1]."')";
+        }
+        if(sizeof($insert)) {
+            $sql .= join(',', $insert);
+            $sth = $this->server->connection->getStatement($sql);
+            $sth->execute($array);
+        }
+		if(FLUX::config('DebugMode')) {
+			$fd = fopen(FLUX_DATA_DIR . "/debug/mpflags.txt", 'a');
+			fwrite($fd, ("insert into $mapflagsDB (`name`, `mapflag`)values" . "\n" . implode(",\n", $debug). ";\n"));
+			fclose($fd);
+		}
+        return sizeof($insert);
+    }
+
 }

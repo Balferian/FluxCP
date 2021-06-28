@@ -1,53 +1,69 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
 <h2><?php echo FLUX::message('MapsDBLabel'); ?><?php if($map->name) echo ': '.$map->name; ?></h2>
 <?php if($map): ?>
-	<div class="map_block">
-		<img src="<?php echo $this->mapImage($map->name, $map->x, $map->y)?>" 
-			style="<?php
-				if($map->x == $map->y) echo "width:100%;height:100%;";
-				if($map->x > $map->y) echo "width:100%;";
-				if($map->x < $map->y) echo "height:100%;";
-			?>">
-			
-		<?php if((int)$params->get('x') && (int)$params->get('y')): ?>
-			<div class="you_here" style="
-			left:<?php echo conv((int)$params->get('x'), $map->x, $map) - 5?>px;
-			bottom:<?php echo conv((int)$params->get('y'), $map->y, $map) - 5?>px;
-			"></div>
-		<?php endif; ?>
+	<table>
+		<tr>
+			<td>
+				<div class="map_block">
+					<img src="<?php echo $this->mapImage($map->name, $map->x, $map->y)?>" 
+						style="<?php
+							if($map->x == $map->y) echo "width:100%;height:100%;";
+							if($map->x > $map->y) echo "width:100%;";
+							if($map->x < $map->y) echo "height:100%;";
+						?>">
+						
+					<?php if((int)$params->get('x') && (int)$params->get('y')): ?>
+						<div class="you_here" style="
+						left:<?php echo conv((int)$params->get('x'), $map->x, $map) - 5?>px;
+						bottom:<?php echo conv((int)$params->get('y'), $map->y, $map) - 5?>px;
+						"></div>
+					<?php endif; ?>
 
-		<?php foreach($npcs as $npc): ?>
-			<div class="npc_<?php echo $npc->x?>-<?php echo $npc->y?> points_npcs map_hide npc_resp" style="
-			left:<?php echo conv($npc->x, $map->x, $map) - 5?>px;
-			bottom:<?php echo conv($npc->y, $map->y, $map) - 5?>px;
-			"></div>
-		<?php endforeach; ?>
-		
-		<?php foreach($shops as $shop): ?>
-			<div class="npc_<?php echo $shop->x?>-<?php echo $shop->y?> points_npcs map_hide npc_resp" style="
-			left:<?php echo conv($shop->x, $map->x, $map) - 5?>px;
-			bottom:<?php echo conv($shop->y, $map->y, $map) - 5?>px;
-			"></div>
-		<?php endforeach; ?>
+					<?php foreach($npcs as $npc): ?>
+						<div class="npc_<?php echo $npc->x?>-<?php echo $npc->y?> points_npcs map_hide npc_resp" style="
+						left:<?php echo conv($npc->x, $map->x, $map) - 5?>px;
+						bottom:<?php echo conv($npc->y, $map->y, $map) - 5?>px;
+						"></div>
+					<?php endforeach; ?>
+					
+					<?php foreach($shops as $shop): ?>
+						<div class="npc_<?php echo $shop->x?>-<?php echo $shop->y?> points_npcs map_hide npc_resp" style="
+						left:<?php echo conv($shop->x, $map->x, $map) - 5?>px;
+						bottom:<?php echo conv($shop->y, $map->y, $map) - 5?>px;
+						"></div>
+					<?php endforeach; ?>
 
-		<?php $isResp = false; foreach($mobs as $mob): ?>
-			<?php if(!$mob->x){continue;} $isResp = true; ?>
-			<div class="mob_spawn_<?php echo $mob->id?> points map_hide mob_resp" style="
-			width:<?php echo conv($mob->range_x, $map->x)?>px;
-			height:<?php echo conv($mob->range_y, $map->y)?>px;
-			left:<?php echo conv($mob->x, $map->x, $map) - conv($mob->range_x, $map->x, $map) / 2?>px;
-			bottom:<?php echo conv($mob->y, $map->y, $map) - conv($mob->range_y, $map->y, $map) / 2?>px;
-			"></div>
-		<?php endforeach; ?>
+					<?php $isResp = false; foreach($mobs as $mob): ?>
+						<?php if(!$mob->x){continue;} $isResp = true; ?>
+						<div class="mob_spawn_<?php echo $mob->id?> points map_hide mob_resp" style="
+						width:<?php echo conv($mob->range_x, $map->x)?>px;
+						height:<?php echo conv($mob->range_y, $map->y)?>px;
+						left:<?php echo conv($mob->x, $map->x, $map) - conv($mob->range_x, $map->x, $map) / 2?>px;
+						bottom:<?php echo conv($mob->y, $map->y, $map) - conv($mob->range_y, $map->y, $map) / 2?>px;
+						"></div>
+					<?php endforeach; ?>
 
-		<?php foreach($warps as $warp): ?>
-			<a href="<?php echo $this->url('map', 'view', array('map' => $warp->to, 'x' => $warp->tx, 'y' => $warp->ty))?>">
-			<div class="warps" style="
-			left:<?php echo conv($warp->x, $map->x, $map) - 10?>px;
-			bottom:<?php echo conv($warp->y, $map->y, $map) - 10?>px;
-			"><div class="portal"></div></div></a>
-		<?php endforeach; ?>
-	</div>
+					<?php foreach($warps as $warp): ?>
+						<a href="<?php echo $this->url('map', 'view', array('map' => $warp->to, 'x' => $warp->tx, 'y' => $warp->ty))?>">
+						<div class="warps" style="
+						left:<?php echo conv($warp->x, $map->x, $map) - 10?>px;
+						bottom:<?php echo conv($warp->y, $map->y, $map) - 10?>px;
+						"><div class="portal"></div></div></a>
+					<?php endforeach; ?>
+				</div>
+			</td>
+			<?php if($mapflags): ?>
+				<td style="padding-left: 10px;">
+					<h3><?php echo FLUX::message('MapflagsMapDBLabel'); ?></h3>
+					<ul>
+						<?php foreach($mapflags as $mapflag): ?>
+							<?php if(in_array($mapflag->mapflag ,FLUX::config('AllowedMapflags')->toArray())) echo '<li>'.FLUX::message('Mapflag_'.$mapflag->mapflag).'</li>'; ?>
+						<?php endforeach; ?>
+					</ul>
+				</td>
+			<?php endif; ?>
+		</tr>
+	</table>
 
 	<h3><?php echo FLUX::message('MobsOnMapDBLabel'); ?> <?php if($map->name) echo $map->name; ?></h3>
 	<?php if($mobs): ?>

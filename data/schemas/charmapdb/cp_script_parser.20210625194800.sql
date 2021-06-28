@@ -52,6 +52,7 @@ CREATE TABLE `cp_shops_sells` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
+
 CREATE TABLE `cp_warps` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`map` VARCHAR(20) NOT NULL,
@@ -65,4 +66,12 @@ CREATE TABLE `cp_warps` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 AUTO_INCREMENT=0
+;
+
+CREATE TABLE `cp_mapflags` (
+	`name` VARCHAR(50) NOT NULL,
+	`mapflag` VARCHAR(50) NOT NULL DEFAULT ''
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
 ;

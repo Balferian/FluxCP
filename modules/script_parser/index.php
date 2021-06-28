@@ -5,11 +5,12 @@ require_once 'functions/ScriptParser/mapImage.php';
 error_reporting(0);
 
 $title = 'Spawn Monsters';
-$shopsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.VendorsTable");
-$mobsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.MobsSpawnTable");
-$mapsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.MapsTable");
-$warpsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.WarpsTable");
-$npcsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.NpcsSpawnTable");
+$shopsDB = 		"{$server->charMapDatabase}.".FLUX::config("FluxTables.VendorsTable");
+$mobsDB = 		"{$server->charMapDatabase}.".FLUX::config("FluxTables.MobsSpawnTable");
+$mapsDB = 		"{$server->charMapDatabase}.".FLUX::config("FluxTables.MapsTable");
+$warpsDB = 		"{$server->charMapDatabase}.".FLUX::config("FluxTables.WarpsTable");
+$npcsDB = 		"{$server->charMapDatabase}.".FLUX::config("FluxTables.NpcsSpawnTable");
+$mapflagsDB =	"{$server->charMapDatabase}.".FLUX::config("FluxTables.MapflagsTable");
 
 if($params->get('act')){
     switch($params->get('act')){
@@ -20,6 +21,7 @@ if($params->get('act')){
                 truncate table $mobsDB;
                 truncate table $warpsDB;
                 truncate table $shopsDB;
+                truncate table $mapflagsDB;
                 ");
                 $sth->execute();
             } catch(Exception $e){}
@@ -132,11 +134,12 @@ if($files->get('npc_zip')) {
 
 // get data from tables
 $tables = array(
-    "$mobsDB" => "MobSpawnBase",
-    "$mapsDB" => "mapIndexBase",
-    "$warpsDB" => "warpsBase",
-    "$npcsDB where is_shop = 0" => "npcsBase",
-    "$npcsDB where is_shop = 1" => "shopsBase"
+    "$mobsDB"					=> "MobSpawnBase",
+    "$mapsDB"					=> "mapIndexBase",
+    "$warpsDB"					=> "warpsBase",
+    "$npcsDB where is_shop = 0"	=> "npcsBase",
+    "$npcsDB where is_shop = 1"	=> "shopsBase",
+    "$mapflagsDB"				=> "mapflagsBase"
 );
 
 foreach($tables as $table => $var) {
