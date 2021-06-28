@@ -24,9 +24,7 @@ $sth->execute();
 $perPage       = FLUX::config('NpcsResultsPerPage');
 $paginator     = $this->getPaginator($sth->fetch()->total, array('perPage' => $perPage));
 $paginator->setSortableColumns(array(
-	'map' => 'map',
-	'name' => 'name',
-	'is_shop' => 'is_shop'
+	'name' => 'asc'
 ));
 
 $sql  = $paginator->getSQL("SELECT * FROM $npcsDB $sqlpartial $ignored_npcs");
