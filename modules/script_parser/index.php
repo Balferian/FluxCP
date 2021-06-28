@@ -81,7 +81,7 @@ if($files->get('map_index')) {
 
             if (sizeof($array_insert) % 3 == 0) {
                 $rows = sizeof($array_insert) / 3;
-                $sql = "insert into $mapsDB (`name`, `x`, `y`)values";
+                $sql = "insert ignore into $mapsDB (`name`, `x`, `y`)values";
                 $insert = array();
                 for ($i = 0; $i < $rows; $i++) {
                     $insert[] = '(?, ?, ?)';
