@@ -317,7 +317,7 @@ return array(
 			'SendMailLabel'		=> array('module' => 'mail'),
 			'WCTitleLabel'		=> array('module' => 'webcommands'),
 			'Cash Shop'			=> array('module' => 'cashshop'),
-			'Script parser' 	=> array('module' => 'script_parser'),
+			'Script Parser' 	=> array('module' => 'script_parser'),
 			//'Auction'		=> array('module' => 'auction'),
 			//'Economy'		=> array('module' => 'economy')
 		)

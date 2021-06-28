@@ -54,7 +54,7 @@
 			</td>
 			<?php if($mapflags): ?>
 				<td style="padding-left: 10px;">
-					<h3><?php echo FLUX::message('MapflagsMapDBLabel'); ?></h3>
+					<h3><?php echo FLUX::message('MapflagsMapDBLabel'); ?> <?php if($map->name) echo $map->name; ?></h3>
 					<ul>
 						<?php foreach($mapflags as $mapflag): ?>
 							<?php if(in_array($mapflag->mapflag ,FLUX::config('AllowedMapflags')->toArray())) echo '<li>'.FLUX::message('Mapflag_'.$mapflag->mapflag).'</li>'; ?>
