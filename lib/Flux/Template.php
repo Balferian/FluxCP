@@ -1599,7 +1599,7 @@ class Flux_Template {
 		$replace = array("</font>", "<font color='#$1'>");
 
 		if($Data)
-			return preg_replace($find, $replace, str_replace("\n",'<br />',$Data[description]));
+			return preg_replace($find, $replace, str_replace("\n",'<br />',$Data['description']));
 		else
 			return false;
 	}
