@@ -139,8 +139,9 @@ class parse{
                 unset($data[$key]);
                 continue;
             }
-            preg_match("/\tduplicate\(([^\)]+)\)\t/", $item, $match);
-            $duplicate = $match[1];
+			preg_match("/\tduplicate\(([^\)]+)\)\t/", $item, $duplicate);
+			if(is_array($duplicate))
+				$duplicate = implode("", $duplicate);
             if($duplicate){
                 preg_match("/\tshop\t" . preg_quote($duplicate) . "\t([0-9a-zA-Z_.]+),?(.*)/", $text, $sell_items);
                 if(!sizeof($sell_items)) {
@@ -159,9 +160,11 @@ class parse{
             $item = explode(',', $item);
             $item[3] = explode('#', $item[3]);
             $item[3] = $item[3][0] ? $item[3][0] : 'No Name';
+			if(strpos($item[3], '::')) {
+				$item2 = explode('::', $item[3]);
+				$item[3] = $item2[0];
+			}
             $item = join(',', $item);
-            $item = explode('::', $item);
-            $item = $item[0];
 			$item = array(
                 'npc' => $item,
                 'item' => $sell_items
@@ -182,20 +185,22 @@ class parse{
                 unset($data[$key]);
                 continue;
             }
-            preg_match("/\tduplicate\(([^\)]+)\)\t/", $item, $match);
-            $duplicate = $match[1];
-            if($duplicate && !preg_match("/\tscript\t" . $duplicate . "\t/", $text)){
-                unset($data[$key]);
-                continue;
-            }
+			preg_match("/\tduplicate\(([^\)]+)\)\t/", $item, $duplicate);
+			if(is_array($duplicate))
+				$duplicate = implode("", $duplicate);
+			if($duplicate && preg_match("/\tscript\t" . $duplicate . "\t/", $text)){
+				unset($data[$key]);
+				continue;
+			}
             $item = preg_replace("/,([0-9]+)\t(script|duplicate\(([^\)]+)\))\t(.*?)\t([0-9a-zA-Z_.]+),?([0-9]+,)?([0-9]+,)?(.*)/", ',$4,$5', $item);
             $item = explode(',', $item);
             $item[3] = explode('#', $item[3]);
             $item[3] = $item[3][0] ? $item[3][0] : 'No Name';
+			if(strpos($item[3], '::')) {
+				$item2 = explode('::', $item[3]);
+				$item[3] = $item2[0];
+			}
             $item = join(',', $item);
-            $item = explode('::', $item);
-            //$item = str_replace("'", "/'", $item);
-            $item = $item[0];
         }unset($item);
         return $data;
     }
