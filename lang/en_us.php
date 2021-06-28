@@ -1008,7 +1008,7 @@ return array(
 	'Mapflag_notomb'						=>	'Disabled MVP tombs from appearing on a map.',
 	'Mapflag_nocostume'						=>	'Disabled costume sprites on a map.',
 	'Mapflag_hidemobhpbar'					=>	'Monster\'s HP bar is hidden on a map.',
-	'Mapflag_privateairship_source'			=>	'You can get here by Private airship.',
-	'Mapflag_privateairship_destinationr'	=>	'From here you can fly away with an Private airship.',
+	'Mapflag_privateairship_source'			=>	'Allowed to use Private airship.',
+	'Mapflag_privateairship_destination'	=>	'From here you can fly away with an Private airship.',
 );
 ?>
