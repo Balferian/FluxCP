@@ -34,4 +34,10 @@ $sth  = $server->connection->getStatement($sql);
 
 $sth->execute();
 $npcs = $sth->fetchAll();
+
+$authorized = $auth->actionAllowed('npcs', 'view');
+
+if ($npcs && count($npcs) === 1 && $authorized && Flux::config('SingleMatchRedirect')) {
+    $this->redirect($this->url('npcs', 'view', array('id' => $npcs[0]->id)));
+}
 ?>

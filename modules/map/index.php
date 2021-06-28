@@ -22,4 +22,10 @@ $sth  = $server->connection->getStatement($sql);
 $sth->execute();
 
 $maps_list = $sth->fetchAll();
+
+$authorized = $auth->actionAllowed('map', 'view');
+
+if ($maps_list && count($maps_list) === 1 && $authorized && Flux::config('SingleMatchRedirect')) {
+    $this->redirect($this->url('map', 'view', array('map' => $maps_list[0]->name)));
+}
 ?>
