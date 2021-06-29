@@ -170,9 +170,17 @@
 		</td>
 		<?php if ($icon=$this->iconImage($item->item_id)): ?>
 			<td width="24"><img src="<?php echo htmlspecialchars($icon) ?>?nocache=<?php echo rand() ?>" /></td>
-			<td><?php echo htmlspecialchars($item->name) ?></td>
+			<td><?php echo htmlspecialchars($item->name) ?>
+				<?php if ($this->getCheckMVPCard($item->item_id)): ?>
+					<span class="mvp">MVP Card!</span>
+				<?php endif ?>
+			</td>
 		<?php else: ?>
-			<td colspan="2"><?php echo htmlspecialchars($item->name) ?></td>
+			<td colspan="2"><?php echo htmlspecialchars($item->name) ?>
+				<?php if ($this->getCheckMVPCard($item->item_id)): ?>
+					<span class="mvp">MVP Card!</span>
+				<?php endif ?>
+			</td>
 		<?php endif ?>
 		<td>
 			<?php if ($type=$this->itemTypeText($item->type)): ?>

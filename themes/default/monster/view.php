@@ -161,11 +161,14 @@
 		<?php if ($image=$this->iconImage($itemDrop['id'])): ?>
 			<td><img src="<?php echo $image ?>" /></td>
 			<td>
+				<?php echo htmlspecialchars($itemDrop['name']) ?>
 				<?php if ($itemDrop['type'] == 'mvp'): ?>
 				<?php ++$mvpDrops; ?>
 					<span class="mvp">MVP!</span>
 				<?php endif ?>
-				<?php echo htmlspecialchars($itemDrop['name']) ?>
+				<?php if ($this->getCheckMVPCard($itemDrop['id'])): ?>
+					<span class="mvp">MVP Card!</span>
+				<?php endif ?>
 			</td>
 		<?php else: ?>
 			<td colspan="2">

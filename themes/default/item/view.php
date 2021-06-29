@@ -5,6 +5,9 @@
 <h3>
 	<?php if ($icon): ?><img src="<?php echo $icon ?>" /><?php endif ?>
 	#<?php echo htmlspecialchars($item->item_id) ?>: <?php echo htmlspecialchars($item->name) ?>
+	<?php if ($this->getCheckMVPCard($item->item_id)): ?>
+		<span class="mvp">MVP Card!</span>
+	<?php endif ?>
 </h3>
 <table class="vertical-table">
 	<tr>

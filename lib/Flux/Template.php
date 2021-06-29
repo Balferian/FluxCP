@@ -1554,6 +1554,24 @@ class Flux_Template {
 		}
         return file_exists($path) ? $link : false;
 	}
+
+	/**
+	 *
+	 */
+	public function cardImage($nameid)
+	{
+		$path = sprintf(FLUX_DATA_DIR."/items/cards/".Flux::config('CardNameFormat'), $nameid);
+		$link = preg_replace('&/{2,}&', '/', "{$this->basePath}/$path");
+		
+		if(Flux::config('DivinePrideIntegration') && !file_exists($path)) {
+			$download_link = "https://static.divine-pride.net/images/items/cards/$nameid.png";
+			$data = get_headers($download_link, true);
+			$size = isset($data['Content-Length']) ? (int)$data['Content-Length'] : 0;
+			if($size != 0 && $size != 654)
+				file_put_contents(sprintf(FLUX_DATA_DIR."/items/cards/".Flux::config('CardNameFormat'), $nameid), file_get_contents($download_link));
+		}
+        return file_exists($path) ? $link : false;
+	}
 	
 	/**
 	 *
@@ -1658,6 +1676,14 @@ class Flux_Template {
 	public function getMapflag($name)
 	{
 		return Flux::getMapflag($name);
+	}
+	
+	/**
+	 * Check if cars is MVP
+	 */
+	public function getCheckMVPCard($card)
+	{
+		return Flux::getCheckMVPCard($card);
 	}
 
 }

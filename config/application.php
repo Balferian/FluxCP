@@ -16,6 +16,7 @@ return array(
 	'MissingEmblemBMP'			=> 'empty.bmp',				//
 	'ItemIconNameFormat'		=> '%d.png',				// The filename format for item icons (defaults to {itemid}.png).
 	'ItemImageNameFormat'		=> '%d.png',				// The filename format for item images (defaults to {itemid}.png).
+	'CardNameFormat'			=> '%d.png',				// The filename format for card images (defaults to {itemid}.png).
 	'MonsterImageNameFormat'	=> '%d.gif',				// The filename format for monster images (defaults to {monsterid}.gif).
 	'JobImageNameFormat'		=> '%d.gif',				// The filename format for job images (defaults to {jobid}.gif).
 	'MapNameFormat'		=> '%s.png',				// The filename format for item icons (defaults to {itemid}.png).
@@ -411,7 +412,8 @@ return array(
 			'homunculus'	=> 'Homunculus',
 			'mvp'			=> 'MVPs',
 			'guild'			=> 'Guilds',
-			'zeny'			=> 'Zeny'
+			'zeny'			=> 'Zeny',
+			'mvp_cards'		=> 'MVP Cards'
 		),
 		'item'			=> array(
 			'index'			=> 'List Items',
@@ -560,6 +562,9 @@ return array(
 
 	// Mapflag list
 	'MapflagsList'					=> include('mapflags.php'),
+
+	// Mvp card list
+	'MvpCardList'					=> include('mvp_cards.php'),
 
 	// DON'T TOUCH. THIS IS FOR DEVELOPERS.
 	'FluxTables'		=> array(

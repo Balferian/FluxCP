@@ -991,5 +991,19 @@ class Flux {
 			return false;
 		}
 	}
+
+	/**
+	 * return check mapflags.
+	 */
+	public static function getCheckMVPCard($card)
+	{
+		$index = self::config('MvpCardList')->toArray();
+		if (array_key_exists($card, $index)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }
 ?>

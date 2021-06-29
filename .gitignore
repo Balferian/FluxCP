@@ -1,6 +1,7 @@
 # Images
 /data/items/icons/*.png
 /data/items/images/*.png
+/data/items/cards/*.png
 
 /data/jobs/images/F/*.gif
 /data/jobs/images/M/*.gif

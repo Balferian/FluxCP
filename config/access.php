@@ -94,6 +94,7 @@ return array(
 			'bowman'		=> AccountLevel::ANYONE,
 			'spearman'		=> AccountLevel::ANYONE,
 			'mvp'       	=> AccountLevel::ANYONE,
+			'mvp_card'      => AccountLevel::ANYONE,
 		),
 		'item'		=> array(
 			'index'			=> AccountLevel::ANYONE,
