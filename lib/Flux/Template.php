@@ -1651,6 +1651,14 @@ class Flux_Template {
 	{
 		return is_numeric($name) ? $name : Flux::getSpriteID($name);
 	}
+	
+	/**
+	 * Check allowed mapflags.
+	 */
+	public function getMapflag($name)
+	{
+		return Flux::getMapflag($name);
+	}
 
 }
 ?>

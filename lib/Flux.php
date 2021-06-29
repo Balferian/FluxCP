@@ -977,5 +977,19 @@ class Flux {
 			return false;
 		}
 	}
+
+	/**
+	 * return check mapflags.
+	 */
+	public static function getMapflag($name)
+	{
+		$index = self::config('MapflagsList')->toArray();
+		if (in_array($name, $index)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }
 ?>
