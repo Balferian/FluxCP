@@ -24,16 +24,19 @@ foreach ($serverStatus as $privServerName => $gameServers) {
 		$cserv  = $dom->createAttribute('charServer');
 		$mserv  = $dom->createAttribute('mapServer');
 		$online = $dom->createAttribute('playersOnline');
+		$peak = $dom->createAttribute('playersPeak');
 		
 		$lserv->nodeValue  = (int)$gameServer['loginServerUp'];
 		$cserv->nodeValue  = (int)$gameServer['charServerUp'];
 		$mserv->nodeValue  = (int)$gameServer['mapServerUp'];
 		$online->nodeValue = (int)$gameServer['playersOnline'];
+		$peak->nodeValue = (int)$gameServer['playersPeak'];
 		
 		$serv->appendChild($lserv);
 		$serv->appendChild($cserv);
 		$serv->appendChild($mserv);
 		$serv->appendChild($online);
+		$serv->appendChild($peak);
 		$group->appendChild($serv);
 	}
 	
