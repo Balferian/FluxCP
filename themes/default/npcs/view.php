@@ -3,7 +3,7 @@
 <?php if($npc): ?>
 <table>
 	<tr>
-		<td>
+		<td style="width: 512px;">
 			<div class="map_block">
 				<img src="<?php echo $this->mapImage($map->name, $map->x, $map->y); ?>" 
 					style="<?php
@@ -22,52 +22,43 @@
 		</td>
 		<td style="padding: 0 10px;">
 			<h3><?php echo $npc->name . ($npc->is_shop ? ' (shop)' : ''); ?></h3>
-			<table>
-				<tr>
-					<td colspan="2" align="center">
-						<img src="<?php echo $this->monsterImage($npc->sprite); ?>" />
-					</td>
-					<?php if($items): ?>
-						<td rowspan="5" class="shops_list">
-							<h3><?php echo FLUX::message('NpcsSaleListLabel'); ?></h3>
-								<ul>
-									<?php foreach($items as $item): ?>
-										<li>
-											<img src="<?php echo htmlspecialchars($this->iconImage($item->item)); ?>?nocache=<?php echo rand(); ?>" />
-											<div>
-												<?php echo $auth->actionAllowed('item', 'view') ? $this->linkToItem($item->item, $item->name) : htmlspecialchars($item->name); ?>
-												<br>
-												<span><?php echo ($item->price == -1 ? $item->price_buy : $item->price).' '.FLUX::message('ServerInfoZenyLabel'); ?></span>
-											</div>
-										</li>
-									<?php endforeach; ?>
-									<?php for($i = 1; $i <= 4-(count($items)%4); $i++) echo "<li></li>"; ?>
-								</ul>
-						</td>
-					<?php endif; ?>
-				</tr>
-				<tr>
-					<th><?php echo FLUX::message('SearchNameDBLabel'); ?></th>
-					<td><?php echo $npc->name; ?></td>
-				</tr>
-				<tr>
-					<th><?php echo FLUX::message('SearchTypeDBLabel'); ?></th>
-					<td><?php echo $npc->is_shop ? FLUX::message('ShopTypeDBLabel') : FLUX::message('NpcTypeDBLabel'); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo FLUX::message('SearchMapDBLabel'); ?></th>
-					<?php if($auth->actionAllowed('map', 'view')): ?>
-						<td><a href="<?php echo $this->url('map', 'view', array('map' => $npc->map)); ?>"><?php echo $npc->map; ?></a></td>
-					<?php else: ?>
-						<td><?php echo $npc->map; ?></td>
-					<?php endif; ?>
-				</tr>
-				<tr>
-					<th><?php echo FLUX::message('CoordinatesDBLabel'); ?></th>
-					<td><?php echo $npc->x; ?>,<?php echo $npc->y; ?></td>
-				</tr>
-			</table>
+			<img src="<?php echo $this->monsterImage($npc->sprite); ?>" />
+			<hr>
+			<b><?php echo FLUX::message('SearchNameDBLabel'); ?></b>
+			<?php echo $npc->name; ?>
+			<br>
+			<b><?php echo FLUX::message('SearchTypeDBLabel'); ?></b>
+			<?php echo $npc->is_shop ? FLUX::message('ShopTypeDBLabel') : FLUX::message('NpcTypeDBLabel'); ?>
+			<br>
+			<b><?php echo FLUX::message('SearchMapDBLabel'); ?></b>
+			<?php if($auth->actionAllowed('map', 'view')): ?>
+				<a href="<?php echo $this->url('map', 'view', array('map' => $npc->map)); ?>"><?php echo $npc->map; ?></a>
+			<?php else: ?>
+				<?php echo $npc->map; ?>
+			<?php endif; ?>
+			<br>
+			<b><?php echo FLUX::message('CoordinatesDBLabel'); ?></b>
 		</td>
+	</tr>
+	<tr>
+		<?php if($items): ?>
+			<td colspan="2" class="shops_list">
+				<h3><?php echo FLUX::message('NpcsSaleListLabel'); ?></h3>
+					<ul>
+						<?php foreach($items as $item): ?>
+							<li>
+								<img src="<?php echo htmlspecialchars($this->iconImage($item->item)); ?>?nocache=<?php echo rand(); ?>" />
+								<div>
+									<?php echo $auth->actionAllowed('item', 'view') ? $this->linkToItem($item->item, $item->name) : htmlspecialchars($item->name); ?>
+									<br>
+									<span><?php echo ($item->price == -1 ? $item->price_buy : $item->price).' '.FLUX::message('ServerInfoZenyLabel'); ?></span>
+								</div>
+							</li>
+						<?php endforeach; ?>
+						<?php for($i = 1; $i <= 4-(count($items)%4); $i++) echo "<li></li>"; ?>
+					</ul>
+			</td>
+		<?php endif; ?>
 	</tr>
 </table>
 <?php else: ?>

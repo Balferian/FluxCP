@@ -25,8 +25,13 @@
                             <?php echo $vending->id ?>
                         <?php endif ?>
                     </td>
-                    <td style="font-weight:bold;"> <?php echo $vending->char_name; ?></td>
-                    
+                    <td style="font-weight:bold;">
+						<?php if ($auth->actionAllowed('character', 'view') && $auth->allowedToViewCharacter): ?>
+							<?php echo $this->linkToCharacter($vending->char_id, $vending->char_name); ?>
+						<?php else: ?>
+							<?php echo $vending->char_name; ?>
+						<?php endif ?>
+					</td>
                     <td>
                        <img src="<?php echo $this->iconImage(671) ?>?nocache=<?php echo rand() ?>" />
                       <?php if ($auth->actionAllowed('vending', 'viewshop')): ?>

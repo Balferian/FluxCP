@@ -16,7 +16,7 @@ $sortable = array(
 $paginator->setSortableColumns($sortable);
 
 // Create the main request.
-$sql    = "SELECT `char`.name as char_name, `vendings`.id, `vendings`.sex, `vendings`.map, `vendings`.x, `vendings`.y, `vendings`.title, autotrade ";
+$sql    = "SELECT `char`.name as char_name, `char`.char_id, `vendings`.id, `vendings`.sex, `vendings`.map, `vendings`.x, `vendings`.y, `vendings`.title, autotrade ";
 $sql    .= "FROM vendings ";
 $sql    .= "LEFT JOIN `char` on vendings.char_id = `char`.char_id ";
 $sql  = $paginator->getSQL($sql);

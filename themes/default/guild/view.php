@@ -230,7 +230,12 @@
 			<tr>
 				<td align="right"><?php echo $this->linkToItem($item->nameid, $item->nameid) ?></td>
 				<?php if ($icon): ?>
-				<td><img src="<?php echo htmlspecialchars($icon) ?>" /></td>
+				<td>
+					<img src="<?php echo htmlspecialchars($icon) ?>" />
+					<?php if($item->enchantgrade): ?>
+						<div class="enchantgrade grade_<?php echo $item->enchantgrade; ?>"></div>
+					<?php endif ?>
+				</td>
 				<?php endif ?>
 				<td<?php if (!$icon) echo ' colspan="2"' ?><?php if ($item->cardsOver) echo ' class="overslotted' . $item->cardsOver . '"'; else echo ' class="normalslotted"' ?>>
 					<?php if ($item->refine > 0): ?>

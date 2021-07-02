@@ -1148,7 +1148,8 @@ textarea {
 	height:512px;
 	display:flex;
 	align-items:center;
-	justify-content: center;	
+	justify-content: center;
+	background-color: #dbdbdb;
 }
 .maps_list {
 	min-width: 110px;
@@ -1330,4 +1331,29 @@ textarea {
 }
 .units_parser form {
 	display:inline;
+}
+
+/* Enchantgrade */
+.enchantgrade {
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	margin-top: -6px;
+	margin-left: 17px;
+}
+.grade_1 {
+	background-image: url('../img/enchantgrade/grade_icon1.png');
+}
+.grade_2 {
+	background-image: url('../img/enchantgrade/grade_icon2.png');
+}
+.grade_3 {
+	background-image: url('../img/enchantgrade/grade_icon3.png');
+}
+.grade_4 {
+	background-image: url('../img/enchantgrade/grade_icon4.png');
+}
+
+.vending_list td {
+	border-bottom: dotted 1px grey;
 }

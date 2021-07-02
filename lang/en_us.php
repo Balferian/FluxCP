@@ -1011,5 +1011,15 @@ return array(
 	'Mapflag_hidemobhpbar'					=>	'Monster\'s HP bar is hidden.',
 	'Mapflag_privateairship_source'			=>	'Allows usage of Private Airship feature.',
 	'Mapflag_privateairship_destination'	=>	'Allows moving to the map using Private Airship feature from a source destination.',
+	
+	// Vending module
+	'VendingItemsOf'						=>	'Vending Items Of [%s]',
+	'VendingTitle'							=>	'Shop [%s]',
+	'VendingSaleTitle'						=>	'Items for sale',
+	
+	'BuyingstoreItemsOf'					=>	'Buyer Items Of [%s]',
+	'BuyingstoreTitle'						=>	'Buyingstore [%s]',
+	'BuyingstoreBuyTitle'					=>	'Items for buy',
+	
 );
 ?>

@@ -2,6 +2,8 @@
 if (!defined('FLUX_ROOT')) exit;
 
 require_once 'Flux/TemporaryTable.php';
+require_once 'functions/ScriptParser/mapImage.php';
+$mapsDB =	"{$server->charMapDatabase}.".FLUX::config('FluxTables.MapsTable');
 
 // Get the current Vendor values.
 $sql = "SELECT `char`.name as char_name, `buyingstores`.id, `buyingstores`.sex, `buyingstores`.map, `buyingstores`.x, `buyingstores`.y, `buyingstores`.title, autotrade ";
@@ -12,7 +14,7 @@ $sth->execute(array($params->get("id")));
 $store = $sth->fetch();
 
 if ($store) {
-	$title = 'Buyer Items Of [' . $store->char_name . ']';
+    $title = sprintf(Flux::message('BuyingstoreItemsOf'), $store->char_name);
 
 // Create the itemdb temp table to retrieve names.
 	if ($server->isRenewal) {
@@ -35,6 +37,11 @@ if ($store) {
 	$sth = $server->connection->getStatement($sql);
 	$sth->execute(array($store->id));
 	$items = $sth->fetchAll();
+
+	$sql = "SELECT * FROM $mapsDB WHERE name = ?";
+	$sth = $server->connection->getStatement($sql);
+	$sth->execute(array($store->map));
+	$map = $sth->fetch();
 
 	$itemAttributes = Flux::config('Attributes')->toArray();
 } else {
