@@ -24,17 +24,17 @@
 			<h3><?php echo sprintf(Flux::message('BuyingstoreTitle'), $store->title); ?></h3>
 			<img src="<?php echo $this->monsterImage(858); ?>" />
 			<hr>
-			<b><?php echo FLUX::message('SearchNameDBLabel'); ?></b>
+			<b><?php echo FLUX::message('SearchNameDBLabel'); ?>:</b>
 			<?php echo $store->char_name; ?>
 			<br>
-			<b><?php echo FLUX::message('SearchMapDBLabel'); ?></b>
+			<b><?php echo FLUX::message('SearchMapDBLabel'); ?>:</b>
 			<?php if($auth->actionAllowed('map', 'view')): ?>
 				<a href="<?php echo $this->url('map', 'view', array('map' => $store->map)); ?>"><?php echo $store->map; ?></a>
 			<?php else: ?>
 				<?php echo $store->map; ?>
 			<?php endif; ?>
 			<br>
-			<b><?php echo FLUX::message('CoordinatesDBLabel'); ?></b>
+			<b><?php echo FLUX::message('CoordinatesDBLabel'); ?>:</b>
 			<?php echo $store->x; ?>,<?php echo $store->y; ?>
 		</td>
 	</tr>

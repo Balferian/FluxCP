@@ -8,7 +8,7 @@ $mapsDB =	"{$server->charMapDatabase}.".FLUX::config('FluxTables.MapsTable');
 // Get the current Vendor values.
 $sql = "SELECT `char`.name as char_name, `buyingstores`.id, `buyingstores`.sex, `buyingstores`.map, `buyingstores`.x, `buyingstores`.y, `buyingstores`.title, autotrade ";
 $sql .= "FROM {$server->charMapDatabase}.buyingstores ";
-$sql .= "LEFT JOIN `char` on buyingstores.char_id = `char`.char_id where id=?";
+$sql .= "LEFT JOIN {$server->charMapDatabase}.`char` on buyingstores.char_id = `char`.char_id where id=?";
 $sth = $server->connection->getStatement($sql);
 $sth->execute(array($params->get("id")));
 $store = $sth->fetch();
