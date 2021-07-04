@@ -35,7 +35,7 @@ if (!$accountID || $accountID == $session->account->account_id) {
 }
 
 if ($accountID && Flux::config('MasterAccount')) {
-	$account = $session->loginServer->getGameAccount($session->account->id, $accountID);
+	$account = $session->loginServer->getGameAccount($session->account->id, $accountID, $session->getAthenaServer($server->serverName));
 	$isMine = !empty($account);
 }
 
@@ -45,9 +45,9 @@ if (!$isMine) {
 		$this->deny();
 	}
 
-	$sql  = "SELECT login.*, {$creditColumns}, {$createColumns}, ";
+	$sql  = "SELECT {$server->charMapDatabase}.login.*, {$creditColumns}, {$createColumns}, ";
 	$sql .= "(SELECT value FROM {$server->charMapDatabase}.`acc_reg_num` WHERE account_id = ".$accountID." AND `key` = '#CASHPOINTS') as 'cashpoints' ";
-	$sql .= "FROM {$server->loginDatabase}.login ";
+	$sql .= "FROM {$server->charMapDatabase}.login ";
 	if(Flux::config('MasterAccount')) {
 		$sql .= "LEFT OUTER JOIN $usersTable ON login.email = $usersTable.email ";
 		$sql .= "LEFT OUTER JOIN cp_credits_master ON $usersTable.user_id = cp_credits_master.user_id ";
@@ -165,25 +165,24 @@ if ($account) {
 }
 
 $characters = array();
-foreach ($session->getAthenaServerNames() as $serverName) {
-	$athena = $session->getAthenaServer($serverName);
-	
-	$sql  = "SELECT ch.*, guild.name AS guild_name, ";
-	if(Flux::config('EmblemUseWebservice'))
-		$sql .= "guild_emblems.file_data as guild_emblem_len ";
-	else
-		$sql .= "guild.emblem_len AS guild_emblem_len ";
-	$sql .= "FROM {$athena->charMapDatabase}.`char` AS ch ";
-	$sql .= "LEFT OUTER JOIN {$athena->charMapDatabase}.guild ON guild.guild_id = ch.guild_id ";
-	if(Flux::config('EmblemUseWebservice'))
-		$sql .= "LEFT JOIN {$server->charMapDatabase}.`guild_emblems` ON `guild_emblems`.guild_id = guild.guild_id ";	
-	$sql .= "WHERE ch.account_id = ? ORDER BY ch.char_num ASC";
-	$sth  = $server->connection->getStatement($sql);
-	$sth->execute(array($accountID));
+$serverName = $server->serverName;
+$athena = $session->getAthenaServer($serverName);
 
-	$chars = $sth->fetchAll();
-	$characters[$athena->serverName] = $chars;
-}
+$sql  = "SELECT ch.*, guild.name AS guild_name, ";
+if(Flux::config('EmblemUseWebservice'))
+	$sql .= "guild_emblems.file_data as guild_emblem_len ";
+else
+	$sql .= "guild.emblem_len AS guild_emblem_len ";
+$sql .= "FROM {$athena->charMapDatabase}.`char` AS ch ";
+$sql .= "LEFT OUTER JOIN {$athena->charMapDatabase}.guild ON guild.guild_id = ch.guild_id ";
+if(Flux::config('EmblemUseWebservice'))
+	$sql .= "LEFT JOIN {$server->charMapDatabase}.`guild_emblems` ON `guild_emblems`.guild_id = guild.guild_id ";	
+$sql .= "WHERE ch.account_id = ? ORDER BY ch.char_num ASC";
+$sth  = $server->connection->getStatement($sql);
+$sth->execute(array($accountID));
+
+$chars = $sth->fetchAll();
+$characters[$athena->serverName] = $chars;
 
 $col  = "storage.*, items.name_english, items.type, items.slots, c.char_id, c.name AS char_name";
 

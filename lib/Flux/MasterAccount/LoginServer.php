@@ -52,7 +52,7 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
 		}
     }
 
-    public function register($username, $password, $confirmPassword, $birthDate, $securityCode, $email, $email2, $gender)
+    public function register($username, $password, $confirmPassword, $birthDate, $securityCode, $email, $email2, $gender, $serverlist)
     {
         $name = $username;
         if (!ctype_alpha(str_replace(" ", "", $name))) {
@@ -166,7 +166,7 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
         return false;
     }
 
-    public function createGameAccount($username, $password, $confirmPassword, $gender, $securityCode)
+    public function createGameAccount($username, $password, $confirmPassword, $gender, $securityCode, $serverlist)
     {
         if (!($account = Flux::$sessionData->account)) {
             return false;
@@ -184,7 +184,8 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
             $password,
             $confirmPassword,
             $gender,
-            $securityCode
+            $securityCode,
+			$serverlist
         );
 
         if (!$accountId) return false;
@@ -311,16 +312,18 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
 		}
 	}
 
-    public function getGameAccount($userId, $accountID)
+    public function getGameAccount($userId, $accountID, $current_server = null)
     {
+		$current_server = $current_server ? $current_server->charMapDatabase : $this->loginDatabase;
+
         $userAccountTable = Flux::config('FluxTables.MasterUserAccountTable');
         $creditsTable  = Flux::config('FluxTables.MasterCreditsTable');
         $creditColumns = 'credits.balance, credits.last_donation_date, credits.last_donation_amount';
 
-        $sql  = "SELECT *, {$creditColumns}, login.account_id, login.userid, login.logincount, login.lastlogin, login.last_ip, login.sex, ";
-		$sql .= "(SELECT value FROM {$this->loginDatabase}.`acc_reg_num` WHERE account_id = ? AND `key` = '#CASHPOINTS') as 'cashpoints' ";
+        $sql  = "SELECT *, {$creditColumns}, login.account_id, login.userid, login.logincount, login.lastlogin, login.last_ip, login.sex, login.vip_time, ";
+		$sql .= "(SELECT value FROM {$current_server}.`acc_reg_num` WHERE account_id = ? AND `key` = '#CASHPOINTS') as 'cashpoints' ";
         $sql .= " FROM {$this->loginDatabase}.{$userAccountTable} AS ua";
-        $sql .= " JOIN {$this->loginDatabase}.login ON login.account_id = ua.account_id";
+        $sql .= " JOIN {$current_server}.login ON login.account_id = ua.account_id";
         $sql .= " LEFT JOIN {$this->loginDatabase}.{$creditsTable} AS credits ON ua.id = credits.user_id ";
         $sql .= " WHERE ua.user_id = ? and login.account_id = ? ORDER BY ua.id ASC";
         $sth  = $this->connection->getStatement($sql);

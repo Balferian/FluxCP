@@ -98,7 +98,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 	/**
 	 *
 	 */
-	public function register($username, $password, $confirmPassword, $birthDate, $securityCode, $email, $email2, $gender)
+	public function register($username, $password, $confirmPassword, $birthDate, $securityCode, $email, $email2, $gender, $serverlist)
 	{
 		if (preg_match('/[^' . Flux::config('UsernameAllowedChars') . ']/', $username)) {
 			throw new Flux_RegisterError('Invalid character(s) used in username', Flux_RegisterError::INVALID_USERNAME);
@@ -194,30 +194,45 @@ class Flux_LoginServer extends Flux_BaseServer {
 			$password = Flux::hashPassword($password);
 		}
 		
-		$sql = "INSERT INTO {$this->loginDatabase}.login (userid, user_pass, email, sex, group_id, birthdate) VALUES (?, ?, ?, ?, ?, ?)";
-		$sth = $this->connection->getStatement($sql);
-		$res = $sth->execute(array($username, $password, $email, $gender, (int)$this->config->getGroupID(), date('Y-m-d', $birthdatestamp)));
-		
-		if ($res) {
-			$idsth = $this->connection->getStatement("SELECT LAST_INSERT_ID() AS account_id");
-			$idsth->execute();
+		$sql = "";
+		$bind = array();
+		foreach($serverlist as $cur_server) {
+			$sql .= "INSERT INTO $cur_server.login (userid, user_pass, email, sex, group_id, birthdate) VALUES (?, ?, ?, ?, ?, ?);";
+			$bind[] = $username;
+			$bind[] = $password;
+			$bind[] = $email;
+			$bind[] = $gender;
+			$bind[] = (int)$this->config->getGroupID();
+			$bind[] = date('Y-m-d', $birthdatestamp);
+		}
 			
-			$idres = $idsth->fetch();
+		$sth = $this->connection->getStatement($sql);
+		$res = $sth->execute($bind);
+			
+		if ($res) {
+
 			$createTable = Flux::config('FluxTables.AccountCreateTable');
 			
 			$sql  = "INSERT INTO {$this->loginDatabase}.{$createTable} (account_id, userid, user_pass, sex, email, reg_date, reg_ip, confirmed) ";
-			$sql .= "VALUES (?, ?, ?, ?, ?, NOW(), ?, 1)";
+			$sql .= "VALUES (?, ?, ?, ?, ?, NOW(), ?, 1);";
 			$sth  = $this->connection->getStatement($sql);
 			
-			$sth->execute(array($idres->account_id, $username, $password, $gender, $email, $_SERVER['REMOTE_ADDR']));
-			return $idres->account_id;
+			$sql2 = "SELECT MAX(account_id) AS account_id FROM {$this->loginDatabase}.login;";
+			$idsth = $this->connection->getStatement($sql2);
+			$idsth->execute();
+			$account_id = $idsth->fetch()->account_id;
+			if($account_id < 2000000)
+				$account_id = 2000000;
+
+			$sth->execute(array($account_id, $username, $password, $gender, $email, $_SERVER['REMOTE_ADDR']));
+			return $account_id;
 		}
 		else {
 			return false;
 		}
 	}
 	
-	public function registerGameAccount($account, $username, $password, $confirmPassword, $gender, $securityCode)
+	public function registerGameAccount($account, $username, $password, $confirmPassword, $gender, $securityCode, $serverlist)
 	{
 		return self::register(
 			$username,
@@ -227,7 +242,8 @@ class Flux_LoginServer extends Flux_BaseServer {
 			$securityCode,
 			$account->email,
 			$account->email,
-			$gender
+			$gender,
+			$serverlist
 		);
 	}
 	

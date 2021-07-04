@@ -882,6 +882,12 @@ return array(
 	'MasterTotalAccountsLabel'      => 'Total Game Accounts',
 	'ReachedMaxGameAccounts'      	 => 'You have reach the (%d) maximum game account per master account and can\'t create anymore.',
 	
+	// VIP status
+	
+	'VIPExpiresLabel'					=> 'Expires ',
+	'VIPStandardAccountLabel'        	=> 'Standard Account',
+	'VIPUnknownLabel'					=> 'Unknown',
+	
 	// Scripts parser
 	'SpawnGeneratorLabel'				=>	'Script & Map Parser',
 	'UnitsDBLabel'						=>	'Units Database',
@@ -1016,7 +1022,6 @@ return array(
 	'VendingItemsOf'						=>	'Vending Items Of [%s]',
 	'VendingTitle'							=>	'Shop [%s]',
 	'VendingSaleTitle'						=>	'Items for sale',
-	
 	'BuyingstoreItemsOf'					=>	'Buyer Items Of [%s]',
 	'BuyingstoreTitle'						=>	'Buyingstore [%s]',
 	'BuyingstoreBuyTitle'					=>	'Items for buy',

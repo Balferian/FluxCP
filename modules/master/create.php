@@ -43,8 +43,12 @@ if (count($_POST)) {
             throw new Flux_RegisterError('Invalid server', Flux_RegisterError::INVALID_SERVER);
         }
 
+		$server_list = array();
+		foreach ($session->loginAthenaGroup->athenaServers as $athenaServer)
+			$server_list[] = $athenaServer->charMapDatabase;
+
         // Woohoo! Register ;)
-        $result = $server->loginServer->createGameAccount($username, $password, $confirm, $gender, $code);
+		$result = $server->loginServer->createGameAccount($username, $password, $confirm, $gender, $code, $server_list);
 
         if ($result) {
             $session->setMessageData(Flux::message('MasterGameAccountCreated'));
