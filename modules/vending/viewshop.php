@@ -9,7 +9,7 @@ $mapsDB =	"{$server->charMapDatabase}.".FLUX::config('FluxTables.MapsTable');
 
 // Get the current Vendor values.
 $sql = "SELECT `char`.name as char_name, `vendings`.id, `vendings`.account_id, `vendings`.sex, `vendings`.map, `vendings`.x, `vendings`.y, `vendings`.title, autotrade ";
-$sql .= "FROM vendings ";
+$sql .= "FROM {$server->charMapDatabase}.vendings ";
 $sql .= "LEFT JOIN `char` on vendings.char_id = `char`.char_id where id=?";
 $sth = $server->connection->getStatement($sql);
 $sth->execute(array($params->get("id")));
@@ -46,10 +46,10 @@ if ($vending) {
     $sql .= "`cart_inventory`.option_id3, `cart_inventory`.option_val3, ";
     $sql .= "`cart_inventory`.option_id4, `cart_inventory`.option_val4, ";
     $sql .= "items.name_english as item_name, items.slots, items.type ";
-    $sql .= "FROM vending_items ";
+    $sql .= "FROM {$server->charMapDatabase}.vending_items ";
     $sql .= "LEFT JOIN `cart_inventory` on `vending_items`.cartinventory_id = `cart_inventory`.id ";
 
-    $sql .= "LEFT JOIN items on `cart_inventory`.nameid = items.id ";
+    $sql .= "LEFT JOIN $itemDB on `cart_inventory`.nameid = items.id ";
     
     $sql .= "LEFT JOIN {$server->charMapDatabase}.`char` AS c ";
 	$sql .= "ON c.char_id = IF(cart_inventory.card0 IN (254, 255), ";
@@ -110,7 +110,7 @@ if ($vending) {
 		
 		if ($cardIDs) {
 			$ids = implode(',', array_fill(0, count($cardIDs), '?'));
-			$sql = "SELECT id, name_english FROM {$server->charMapDatabase}.items WHERE id IN ($ids)";
+			$sql = "SELECT id, name_english FROM $itemDB WHERE id IN ($ids)";
 			$sth = $server->connection->getStatement($sql);
 
 			$sth->execute($cardIDs);
