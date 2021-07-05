@@ -100,6 +100,14 @@ class Flux_Athena {
 	public $cart;
 	
 	/**
+	 * Vip shop cart.
+	 *
+	 * @access public
+	 * @var Flux_VipShop_Cart
+	 */
+	public $cartvip;
+	
+	/**
 	 * @access public
 	 * @var Flux_LoginAthenaGroup
 	 */
@@ -272,6 +280,18 @@ class Flux_Athena {
 	{
 		$this->cart = $cart;
 		return $cart;
+	}
+	
+	/**
+	 * Set cartvip object.
+	 *
+	 * @param Flux_VipShop_Cart $cartvip
+	 * @return Flux_VipShop_Cart
+	 */
+	public function setCartVip(Flux_VipShop_Cart $cartvip)
+	{
+		$this->cartvip = $cartvip;
+		return $cartvip;
 	}
 	
 	/**

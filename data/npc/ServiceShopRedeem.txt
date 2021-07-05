@@ -1,0 +1,48 @@
+-	script	Redeemer#ServiceShop	-1,{
+OnTimer10000:
+	// Clear array
+	cleararray .@account_id[0],0,.numRedemptionsSimul;
+	// Get list of accounts in order
+	query_sql "SELECT account_id FROM `" + .redeemTable$ + "` WHERE `redeemed` = 0 GROUP BY `account_id` LIMIT " + .numRedemptionsSimul, .@account_id;
+	for(.@i = 0; .@i < getarraysize(.@account_id); .@i++) {
+		if (isloggedin(.@account_id[.@i])) {
+			// Clear array
+			cleararray .@category$[0],0,.numRedemptionsSimul;
+			cleararray .@quantity[0],0,.numRedemptionsSimul;
+			// Get list of items for current account
+			query_sql "SELECT category, SUM(quantity) as quantity FROM `" + .redeemTable$ + "` WHERE `account_id` = "+.@account_id[.@i]+" AND `redeemed` = 0 GROUP BY `category`", .@category$, .@quantity;
+			// Get char_id by account_id
+			.@charid = getcharid(0,rid2name(.@account_id[.@i]));
+			for(.@x = 0; .@x < 3; .@x++) {
+				if(.@category$[.@x] == "0") {
+					set #CASHPOINTS, readparam(#CASHPOINTS, .@charid) + .@quantity[.@x], .@charid;
+					.@body$ = "You got "+.@quantity[.@x]+" Cash points.\n\r Thank you for choosing our server!\n\r We wish you a pleasant game!";
+					mail .@charid, .sender$, .title$, .@body$;
+				}
+				if(.@category$[.@x] == "1") {
+					set #KAFRAPOINTS, readparam(#KAFRAPOINTS, .@charid) + .@quantity[.@x], .@charid;
+					.@body$ = "You got "+.@quantity[.@x]+" Kafra points.\n\r Thank you for choosing our server!\n\r We wish you a pleasant game!";
+					mail .@charid, .sender$, .title$, .@body$;
+				}
+				if(.@category$[.@x] == "2") {
+					atcommand "@vip +"+.@quantity[.@x]+"d "+rid2name(.@account_id[.@i]);
+					.@body$ = "You got "+.@quantity[.@x]+" VIP days.\n\r Thank you for choosing our server!\n\r We wish you a pleasant game!";
+					mail .@charid, .sender$, .title$, .@body$;
+				}
+			}
+
+			// Update redeem list
+			query_sql "UPDATE `" + .redeemTable$ + "` SET `char_id` = " + .@charid + ", `redeemed` = 1, `redemption_date` = NOW() WHERE `account_id` = "+.@account_id[.@i];
+		}
+	}
+
+OnInit:
+	.serverName$ = "FluxRO";
+	.redeemTable$ = "cp_vip_redeemlog";
+	.numRedemptionsSimul = 256;
+	// Mail text
+	.sender$ = "Web Service";
+	.title$ = .serverName$+" Service Shop";
+    initnpctimer;
+	end;
+}

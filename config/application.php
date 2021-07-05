@@ -129,6 +129,9 @@ return array(
 	'ItemShopMaxCost'			=> 99,						// Max price an item can be sold for.
 	'ItemShopMaxQuantity'		=> 99,						// Max quantity the item may be sold at once for.
 	'ItemShopItemPerPage'		=> 5,						// The number of items to display per page in the "Item Shop" page.
+	'VipShopMaxCost'			=> 100000,						// Max price an item can be sold for.
+	'VipShopMaxQuantity'		=> 10000000,						// Max quantity the item may be sold at once for.
+	'VipShopItemPerPage'		=> 10,						// The number of items to display per page in the "Item Shop" page.
     'ShowItemDesc'              => true,                   // Displays generated item descs from parsed itemInfo.lua
 	'HideFromWhosOnline'		=> AccountLevel::LOWGM,		// Levels greater than or equal to this will be hidden from the "Who's Online" page.
 	'HideFromMapStats'			=> AccountLevel::LOWGM,		// Levels greater than or equal to this will be hidden from the "Map Stats" page.
@@ -278,6 +281,7 @@ return array(
 		),
 		'DonationsLabel'		=> array(
 			'PurchaseLabel'		=> array('module' => 'purchase'),
+			'VipShopLabel'		=> array('module' => 'vipshop'),
 			'DonateLabel'		=> array('module' => 'donate'),
 		),
 		'InformationLabel'	=> array(
@@ -394,6 +398,14 @@ return array(
 			'checkout'		=> 'Checkout',
 			'clear'			=> 'Empty Cart',
 			'pending'		=> 'Pending Redemption'
+		),
+		'vipshop'		=> array(
+			'index'			=> 'Shop',
+			'cart'			=> 'Go to Cart',
+			'checkout'		=> 'Checkout',
+			'clear'			=> 'Empty Cart',
+			'pending'		=> 'Pending Redemption',
+			'new'			=> 'Add new service'
 		),
 		'donate'		=> array(
 			'index'			=> 'Make a Donation',
@@ -536,6 +548,9 @@ return array(
 	// Item shop categories.
 	'ShopCategories'				=> include('shopcategories.php'),
 
+	// Premium shop categories.
+	'VipCategories'					=> include('vipcategories.php'),
+
 	// Cash shop categories.
 	'CashShopCategories'			=> include('cashshopcategories.php'),
 
@@ -571,6 +586,8 @@ return array(
 		'CreditsTable'			=> 'cp_credits',
 		'CreditTransferTable'	=> 'cp_xferlog',
 		'ItemShopTable'			=> 'cp_itemshop',
+		'VipServiceShopTable'	=> 'cp_vip_service_shop',
+		'VipRedemptionTable'	=> 'cp_vip_redeemlog',
 		'TransactionTable'		=> 'cp_txnlog',
 		'RedemptionTable'		=> 'cp_redeemlog',
 		'AccountCreateTable'	=> 'cp_createlog',

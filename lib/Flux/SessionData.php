@@ -1,6 +1,7 @@
 <?php
 require_once 'Flux/DataObject.php';
 require_once 'Flux/ItemShop/Cart.php';
+require_once 'Flux/VipShop/CartVip.php';
 require_once 'Flux/LoginError.php';
 
 /**
@@ -132,25 +133,41 @@ class Flux_SessionData {
 			$this->setCartData(array());
 		}
 		
+		if (!is_array($this->cartvip)) {
+			$this->setCartVipData(array());
+		}
+		
 		if ($this->account->account_id && $this->loginAthenaGroup) {
 			if (!array_key_exists($this->loginAthenaGroup->serverName, $this->cart)) {
 				$this->cart[$this->loginAthenaGroup->serverName] = array();
+			}
+			if (!array_key_exists($this->loginAthenaGroup->serverName, $this->cartvip)) {
+				$this->cartvip[$this->loginAthenaGroup->serverName] = array();
 			}
 
 			foreach ($this->getAthenaServerNames() as $athenaServerName) {
 				$athenaServer = $this->getAthenaServer($athenaServerName);
 				$cartArray    = &$this->cart[$this->loginAthenaGroup->serverName];
+				$cartvipArray = &$this->cartvip[$this->loginAthenaGroup->serverName];
 				$accountID    = $this->account->account_id;
 				
 				if (!array_key_exists($accountID, $cartArray)) {
 					$cartArray[$accountID] = array();
 				}
+				if (!array_key_exists($accountID, $cartvipArray)) {
+					$cartvipArray[$accountID] = array();
+				}
 				
 				if (!array_key_exists($athenaServerName, $cartArray[$accountID])) {
 					$cartArray[$accountID][$athenaServerName] = new Flux_ItemShop_Cart();
 				}
+				if (!array_key_exists($athenaServerName, $cartvipArray[$accountID])) {
+					$cartvipArray[$accountID][$athenaServerName] = new Flux_VipShop_Cart();
+				}
 				$cartArray[$accountID][$athenaServerName]->setAccount($this->account);
 				$athenaServer->setCart($cartArray[$accountID][$athenaServerName]);
+				$cartvipArray[$accountID][$athenaServerName]->setAccount($this->account);
+				$athenaServer->setCartVip($cartvipArray[$accountID][$athenaServerName]);
 			}
 		}
 		

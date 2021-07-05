@@ -1,0 +1,41 @@
+-	script	Redeemer#ItemShop	-1,{
+OnTimer10000:
+	// Clear array
+	cleararray .@account_id[0],0,.numRedemptionsSimul;
+	// Get list of accounts in order
+	query_sql "SELECT account_id FROM `" + .redeemTable$ + "` WHERE `redeemed` = 0 GROUP BY `account_id` LIMIT " + .numRedemptionsSimul, .@account_id;
+	for(.@i = 0; .@i < getarraysize(.@account_id); .@i++) {
+		if (isloggedin(.@account_id[.@i])) {
+			// Clear array
+			cleararray .@item[0],0,.numRedemptionsSimul;
+			cleararray .@amount[0],0,.numRedemptionsSimul;
+			// Get list of items for current account
+			query_sql "SELECT nameid, quantity FROM `" + .redeemTable$ + "` WHERE `account_id` = "+.@account_id[.@i]+" AND `redeemed` = 0", .@item, .@amount;
+			// Get char_id by account_id
+			.@charid = getcharid(0,rid2name(.@account_id[.@i]));
+			for(.@x = 0; .@x < getarraysize(.@item); .@x++) {
+				.@mailitem[.@x%5]	=	.@item[.@x];
+				.@mailamount[.@x%5]	=	.@amount[.@x];
+				// Explode list for 5 items
+				if(.@x%5 == 4 || .@x == getarraysize(.@item)-1) {
+					mail .@charid, .sender$, .title$, .body$, 0, .@mailitem, .@mailamount;
+					cleararray .@mailitem[0],0,5;
+					cleararray .@mailamount[0],0,5;
+				}
+			}
+			// Update redeem list
+			query_sql "UPDATE `" + .redeemTable$ + "` SET `char_id` = " + .@charid + ", `redeemed` = 1, `redemption_date` = NOW() WHERE `account_id` = "+.@account_id[.@i];
+		}
+	}
+
+OnInit:
+	.serverName$ = "FluxRO";
+	.redeemTable$ = "cp_redeemlog";
+	.numRedemptionsSimul = 256;
+	// Mail text
+	.sender$ = "Web Service";
+	.title$ = .serverName$+" Service Shop";
+	.body$ = "Thank you for choosing our server!\n\r We wish you a pleasant game!";
+    initnpctimer;
+	end;
+}

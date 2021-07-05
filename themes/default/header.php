@@ -180,4 +180,4 @@
 									<?php include $this->themePath('main/pagemenu.php', true) ?>
 									
 									<!-- Credit balance -->
-									<?php if (in_array($params->get('module'), array('donate', 'purchase'))) include $this->themePath('main/balance.php', true) ?>
+									<?php if (in_array($params->get('module'), array('donate', 'purchase', 'vipshop'))) include $this->themePath('main/balance.php', true) ?>

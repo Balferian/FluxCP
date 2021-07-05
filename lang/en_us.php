@@ -1025,6 +1025,9 @@ return array(
 	'BuyingstoreItemsOf'					=>	'Buyer Items Of [%s]',
 	'BuyingstoreTitle'						=>	'Buyingstore [%s]',
 	'BuyingstoreBuyTitle'					=>	'Items for buy',
+
+	//VIP shop
+	'VipShopLabel'							=>	'Premium Services',
 	
 );
 ?>
