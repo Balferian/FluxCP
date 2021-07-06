@@ -29,7 +29,7 @@ if (Flux::config('MasterAccount')) {
 	}
 
 	$sql = "UPDATE {$loginAthenaGroup->loginDatabase}.$usersTable SET ";
-	$sql .= "confirmed_date = NOW(), confirm_expire = NULL WHERE id = ?";
+	$sql .= "confirmed = 1, confirmed_date = NOW(), confirm_expire = NULL WHERE user_id = ?";
 
 	$loginAthenaGroup->loginServer->unbanMaster(null, Flux::message('AccountConfirmUnban'), $account->account_id);
 } else {
