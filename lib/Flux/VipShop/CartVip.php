@@ -72,12 +72,13 @@ class Flux_VipShop_Cart {
 			return false;
 		}
 		
+		$categories = Flux::config("VipCategories")->toArray();
 		$successful = array();
 		
 		foreach ($this->cartvip as $cartItem) {
 			$successful[] = array(
 				'item'     => $cartItem,
-				'name'     => $cartItem->shop_item_name,
+				'name'     => $categories[$cartItem->shop_category][0].' ('.$cartItem->shop_item_qty.')',
 				'cost'     => $cartItem->shop_item_cost,
 				'quantity' => $cartItem->shop_item_qty,
 				'success'  => $fromShop->buy($cartItem->shop_item_id)
@@ -95,9 +96,10 @@ class Flux_VipShop_Cart {
 	
 	public function getCartItemNames()
 	{
+		$categories = Flux::config("VipCategories")->toArray();
 		$names = array();
 		foreach ($this->cartvip as $cartItem) {
-			$names[] = $cartItem->shop_item_name;
+			$names[] = $categories[$cartItem->shop_category][0].' ('.$cartItem->shop_item_qty.')';
 		}
 		return $names;
 	}
