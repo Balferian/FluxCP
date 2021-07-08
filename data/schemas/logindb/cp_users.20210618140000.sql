@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS `cp_users` (
   `birth_date` date NOT NULL,
   `last_ip` varchar(100) NOT NULL,
   `last_login` datetime DEFAULT NULL,
+  `confirmed` tinyint(1) NOT NULL DEFAULT '0',
   `confirmed_date` datetime DEFAULT NULL,
   `confirm_code` varchar(32) DEFAULT NULL,
   `confirm_expire` datetime DEFAULT NULL,

@@ -631,6 +631,7 @@ return array(
 			'birth_date' => 'birth_date',
 			'last_ip' => 'last_ip',
 			'last_login' => 'last_login',
+			'confirmed' => 'confirmed',
 			'unban_at' => 'unban_date',
 			'created_at' => 'create_date',
 			'updated_at' => 'update_date',

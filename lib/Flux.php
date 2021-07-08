@@ -795,16 +795,30 @@ class Flux {
 	 */
 	public static function pruneUnconfirmedAccounts()
 	{
-		$tbl    = Flux::config('FluxTables.AccountCreateTable');
-		
-		foreach (self::$loginAthenaGroupRegistry as $loginAthenaGroup) {
-			$db   = $loginAthenaGroup->loginDatabase;
-			$sql  = "DELETE $db.login, $db.$tbl FROM $db.login INNER JOIN $db.$tbl ";
-			$sql .= "WHERE login.account_id = $tbl.account_id AND $tbl.confirmed = 0 ";
-			$sql .= "AND $tbl.confirm_code IS NOT NULL AND $tbl.confirm_expire <= NOW()";
-			$sth  = $loginAthenaGroup->connection->getStatement($sql);
+		if(Flux::config('MasterAccount')){
+			$tbl    = Flux::config('FluxTables.MasterUserTable');
 			
-			$sth->execute();
+			foreach (self::$loginAthenaGroupRegistry as $loginAthenaGroup) {
+				$db   = $loginAthenaGroup->loginDatabase;
+				$sql  = "DELETE FROM $db.$tbl ";
+				$sql .= "WHERE $tbl.confirmed = 0 ";
+				$sql .= "AND $tbl.confirm_expire <= NOW()";
+				$sth  = $loginAthenaGroup->connection->getStatement($sql);
+				
+				$sth->execute();
+			}
+		} else {
+			$tbl    = Flux::config('FluxTables.AccountCreateTable');
+			
+			foreach (self::$loginAthenaGroupRegistry as $loginAthenaGroup) {
+				$db   = $loginAthenaGroup->loginDatabase;
+				$sql  = "DELETE $db.login, $db.$tbl FROM $db.login INNER JOIN $db.$tbl ";
+				$sql .= "WHERE login.account_id = $tbl.account_id AND $tbl.confirmed = 0 ";
+				$sql .= "AND $tbl.confirm_code IS NOT NULL AND $tbl.confirm_expire <= NOW()";
+				$sth  = $loginAthenaGroup->connection->getStatement($sql);
+				
+				$sth->execute();
+			}			
 		}
 	}
 	
