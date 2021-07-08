@@ -85,7 +85,7 @@ class Flux_PaymentNotifyRequest {
 		$this->myCurrencyCode  = strtoupper(Flux::config('DonationCurrency'));
 		$this->ipnVariables    = new Flux_Config($ipnPostVars);
 		$this->txnLogTable     = Flux::config('FluxTables.TransactionTable');
-		$this->creditsTable    = Flux::config('FluxTables.CreditsTable');
+		$this->creditsTable    = Flux::config('MasterAccount') ? Flux::config('FluxTables.MasterCreditsTable') : Flux::config('FluxTables.CreditsTable');
 	}
 
 	/**
@@ -239,14 +239,28 @@ class Flux_PaymentNotifyRequest {
 								$credits = floor($amount / $rate);
 
 								if ($trusted) {
-									$sql = "SELECT * FROM {$servGroup->loginDatabase}.{$this->creditsTable} WHERE account_id = ?";
-									$sth = $servGroup->connection->getStatement($sql);
-									$sth->execute(array($accountID));
-									$acc = $sth->fetch();
-
-									$this->logPayPal('Updating account credit balance from %s to %s', (int)$acc->balance, $acc->balance + $credits);
-									$res = $servGroup->loginServer->depositCredits($accountID, $credits, $amount);
-
+									if (Flux::config('MasterAccount')) {
+										$sql = "SELECT user_id FROM {$servGroup->loginDatabase}.cp_user_accounts WHERE account_id = ?";
+										$sth = $servGroup->connection->getStatement($sql);
+										$sth->execute(array($accountID));
+										$uid = $sth->fetch();
+										
+										$sql = "SELECT * FROM {$servGroup->loginDatabase}.{$this->creditsTable} WHERE user_id = ?";
+										$sth = $servGroup->connection->getStatement($sql);
+										$sth->execute(array($uid->user_id));
+										$acc = $sth->fetch();
+	
+										$this->logPayPal('Updating account credit balance from %s to %s', (int)$acc->balance, $acc->balance + $credits);
+										$res = $servGroup->loginServer->depositCredits($uid->user_id, $credits, $amount);
+									} else {
+										$sql = "SELECT * FROM {$servGroup->loginDatabase}.{$this->creditsTable} WHERE account_id = ?";
+										$sth = $servGroup->connection->getStatement($sql);
+										$sth->execute(array($accountID));
+										$acc = $sth->fetch();
+	
+										$this->logPayPal('Updating account credit balance from %s to %s', (int)$acc->balance, $acc->balance + $credits);
+										$res = $servGroup->loginServer->depositCredits($accountID, $credits, $amount);								
+									}
 									if ($res) {
 										$this->logPayPal('Deposited credits.');
 									}
