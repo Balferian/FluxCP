@@ -91,7 +91,7 @@ class Flux_MasterSessionData extends Flux_SessionData {
         }
 
         if (!is_array($this->cartvip)) {
-            $this->setCartVipData(array());
+            $this->setcartvipData(array());
         }
 
         if ($this->account->account_id && $this->loginAthenaGroup) {
