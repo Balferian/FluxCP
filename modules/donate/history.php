@@ -13,14 +13,14 @@ $sqlpartial .= "ORDER BY payment_date DESC";
 $sql = "SELECT COUNT(id) AS total FROM {$server->loginDatabase}.$txnTable $sqlpartial";
 $sth = $server->connection->getStatement($sql);
 
-$sth->execute(array($session->account->account_id));
+$sth->execute(array(Flux::config('MasterAccount') ? $session->account->user_id : $session->account->account_id));
 $completedTotal = $sth->fetch()->total;
 
 $col = "*";
 $sql = "SELECT $col FROM {$server->loginDatabase}.$txnTable $sqlpartial";
 $sth = $server->connection->getStatement($sql);
 
-$sth->execute(array($session->account->account_id));
+$sth->execute(array(Flux::config('MasterAccount') ? $session->account->user_id : $session->account->account_id));
 $completedTxn = $sth->fetchAll();
 
 /** Held Transactions **/
@@ -31,14 +31,14 @@ $sqlpartial .= "ORDER BY payment_date DESC";
 $sql = "SELECT COUNT(id) AS total FROM {$server->loginDatabase}.$txnTable $sqlpartial";
 $sth = $server->connection->getStatement($sql);
 
-$sth->execute(array($session->account->account_id));
+$sth->execute(array(Flux::config('MasterAccount') ? $session->account->user_id : $session->account->account_id));
 $heldTotal = $sth->fetch()->total;
 
 $col = "*";
 $sql = "SELECT $col FROM {$server->loginDatabase}.$txnTable $sqlpartial";
 $sth = $server->connection->getStatement($sql);
 
-$sth->execute(array($session->account->account_id));
+$sth->execute(array(Flux::config('MasterAccount') ? $session->account->user_id : $session->account->account_id));
 $heldTxn = $sth->fetchAll();
 
 /** Failed Transactions **/
@@ -49,13 +49,13 @@ $sqlpartial .= "AND credits < 1 ORDER BY payment_date DESC";
 $sql = "SELECT COUNT(id) AS total FROM {$server->loginDatabase}.$txnTable $sqlpartial";
 $sth = $server->connection->getStatement($sql);
 
-$sth->execute(array($session->account->account_id));
+$sth->execute(array(Flux::config('MasterAccount') ? $session->account->user_id : $session->account->account_id));
 $failedTotal = $sth->fetch()->total;
 
 $col = "*";
 $sql = "SELECT $col FROM {$server->loginDatabase}.$txnTable $sqlpartial";
 $sth = $server->connection->getStatement($sql);
 
-$sth->execute(array($session->account->account_id));
+$sth->execute(array(Flux::config('MasterAccount') ? $session->account->user_id : $session->account->account_id));
 $failedTxn = $sth->fetchAll();
 ?>
