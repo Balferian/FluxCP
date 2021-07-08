@@ -28,11 +28,7 @@ if ($vending) {
     }
 
 // Create the itemdb temp table to retrieve names.
-    if ($server->isRenewal) {
-        $fromTables = array("{$server->charMapDatabase}.item_db_re", "{$server->charMapDatabase}.item_db2_re");
-    } else {
-        $fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-    }
+	$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.ItemsTable')->toArray(), $server->isRenewal);
     $itemDB = "{$server->charMapDatabase}.items";
     $tempTable = new Flux_TemporaryTable($server->connection, $itemDB, $fromTables);
 

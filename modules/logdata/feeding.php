@@ -121,11 +121,7 @@ if ($feeds) {
 
 	if (count($itemIDs)) {
 		require_once 'Flux/TemporaryTable.php';
-		if($server->isRenewal) {
-			$fromTables = array("{$server->charMapDatabase}.item_db_re", "{$server->charMapDatabase}.item_db2_re");
-		} else {
-			$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-		}
+		$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.ItemsTable')->toArray(), $server->isRenewal);
 		$tableName = "{$server->charMapDatabase}.items";
 		$tempTable = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
 
@@ -143,11 +139,7 @@ if ($feeds) {
 
 	if ($mobIDs) {
 		$mobDB      = "{$server->charMapDatabase}.monsters";
-        if($server->isRenewal) {
-            $fromTables = array("{$server->charMapDatabase}.mob_db_re", "{$server->charMapDatabase}.mob_db2_re");
-        } else {
-            $fromTables = array("{$server->charMapDatabase}.mob_db", "{$server->charMapDatabase}.mob_db2");
-        }
+		$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.MobsTable')->toArray(), $server->isRenewal);
 		$tempMobs   = new Flux_TemporaryTable($server->connection, $mobDB, $fromTables);
 
 		$ids = array_keys($mobIDs);

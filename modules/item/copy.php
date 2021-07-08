@@ -10,13 +10,8 @@ $title = 'Duplicate Item';
 
 require_once 'Flux/TemporaryTable.php';
 
-if($server->isRenewal) {
-    $fromTables = array("{$server->charMapDatabase}.item_db_re", "{$server->charMapDatabase}.item_db2_re");
-    $customTable = 'item_db2_re';
-} else {
-    $fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-    $customTable = 'item_db2';
-}
+$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.ItemsTable')->toArray(), $server->isRenewal);
+$customTable = $fromTables[1];
 $tableName = "{$server->charMapDatabase}.items";
 $tempTable = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
 
@@ -47,7 +42,7 @@ if ($item && count($_POST) && $params->get('copyitem')) {
 		$errorMessage = 'Duplicate item ID must be a number.';
 	}
 	else {
-		$sql = "SELECT COUNT(id) AS itemExists FROM {$server->charMapDatabase}.{$customTable} WHERE id = ?";
+		$sql = "SELECT COUNT(id) AS itemExists FROM {$customTable} WHERE id = ?";
 		$sth = $server->connection->getStatement($sql);
 		$res = $sth->execute(array($copyID));
 
@@ -70,7 +65,7 @@ if ($item && count($_POST) && $params->get('copyitem')) {
 				$item->view, $item->script, $item->equip_script, $item->unequip_script, $item->attack
 			);
 
-			$sql  = "INSERT INTO {$server->charMapDatabase}.{$customTable} ($col) VALUES (".implode(',', array_fill(0, count($bind), '?')).")";
+			$sql  = "INSERT INTO {$customTable} ($col) VALUES (".implode(',', array_fill(0, count($bind), '?')).")";
 			$sth  = $server->connection->getStatement($sql);
 			$res  = $sth->execute($bind);
 

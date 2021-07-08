@@ -122,12 +122,14 @@ class Flux_Athena {
 	public $maxCharSlots;
 	
 	/**
-	 * Boolean to signify if server is running a renewal environment or not.
+	 * Signify if server is running a pre-re/renewal/zero environment.
 	 *
 	 * @access public
 	 * @var bool
 	 */
 	public $isRenewal;
+
+	public $GameMechanic;
 	
 	/**
 	 * Boolean to signify if server use VIP system.
@@ -189,7 +191,8 @@ class Flux_Athena {
 		$this->serverName      = $charMapConfig->getServerName();
 		$this->expRates        = $charMapConfig->getExpRates()->toArray();
 		$this->dropRates       = $charMapConfig->getDropRates()->toArray();
-		$this->isRenewal       = (boolean)$charMapConfig->getRenewal();
+		$this->GameMechanic    = $charMapConfig->getGameMechanic();
+		$this->isRenewal       = implode('', array_keys(Flux::config('GameMechanics')->toArray(), "{$charMapConfig->getGameMechanic()}"));
 		$this->VipSystem       = (boolean)$charMapConfig->getVipSystem();
 		$this->maxCharSlots    = (int)$charMapConfig->getMaxCharSlots();
 		$this->dateTimezone    = $charMapConfig->getDateTimezone();

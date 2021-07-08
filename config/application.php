@@ -582,7 +582,24 @@ return array(
 	'MvpCardList'					=> include('mvp_cards.php'),
 
 	// DON'T TOUCH. THIS IS FOR DEVELOPERS.
-	'FluxTables'		=> array(
+	'GameMechanics'		=>	array('Pre-Renewal', 'Renewal', 'Zero'),
+	'FluxTables'		=>	array(
+		// rAthena databases
+		'ItemsTable'			=> array(
+			array('item_db', 'item_db2'),					// Pre-renewal
+			array('item_db_re', 'item_db2_re'),				// Renewal
+			array('item_db_zero', 'item_db2_zero')			// Zero
+		),
+		'MobsTable'			=> array(
+			array('mob_db', 'mob_db2'),						// Pre-renewal
+			array('mob_db_re', 'mob_db2_re'),				// Renewal
+			array('mob_db_zero', 'mob_db2_zero')			// Zero
+		),
+		'MobsSkillsTable'			=> array(
+			array('mob_skill_db', 'mob_skill_db2'),			// Pre-renewal
+			array('mob_skill_db_re', 'mob_skill_db2_re'),	// Renewal
+			array('mob_skill_db_zero', 'mob_skill_db2_zero')// Zero
+		),
 		'CreditsTable'			=> 'cp_credits',
 		'CreditTransferTable'	=> 'cp_xferlog',
 		'ItemShopTable'			=> 'cp_itemshop',

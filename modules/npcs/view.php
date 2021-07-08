@@ -12,11 +12,7 @@ $items = array();
 
 // Items table.
 $itemDB = "{$server->charMapDatabase}.items";
-if($server->isRenewal) {
-	$fromTables = array("{$server->charMapDatabase}.item_db_re", "{$server->charMapDatabase}.item_db2_re");
-} else {
-	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-}
+$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.ItemsTable')->toArray(), $server->isRenewal);
 $tempItems = new Flux_TemporaryTable($server->connection, $itemDB, $fromTables);
 
 $sql = "SELECT * FROM $npcsDB WHERE id = ?";

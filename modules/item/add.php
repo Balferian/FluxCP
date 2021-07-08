@@ -154,13 +154,8 @@ if (count($_POST) && $params->get('additem')) {
 		if (empty($errorMessage)) {
 			require_once 'Flux/TemporaryTable.php';
 
-			if($server->isRenewal) {
-                $fromTables = array("{$server->charMapDatabase}.item_db_re", "{$server->charMapDatabase}.item_db2_re");
-                $customTable = 'item_db2_re';
-			} else {
-                $fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-                $customTable = 'item_db2';
-			}
+			$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.ItemsTable')->toArray(), $server->isRenewal);
+			$customTable = $fromTables[1];
 			$tableName = "{$server->charMapDatabase}.items";
 			$tempTable = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
 			$shopTable = Flux::config('FluxTables.ItemShopTable');
@@ -263,7 +258,7 @@ if (count($_POST) && $params->get('additem')) {
 					$bind[] = $gender;
 				}
 
-				$sql  = "INSERT INTO {$server->charMapDatabase}.{$customTable} (".implode(', ', $cols).") ";
+				$sql  = "INSERT INTO {$customTable} (".implode(', ', $cols).") ";
 				$sql .= "VALUES (".implode(', ', array_fill(0, count($bind), '?')).")";
 				$sth  = $server->connection->getStatement($sql);
 
