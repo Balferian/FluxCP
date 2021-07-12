@@ -76,7 +76,7 @@ $showTempBan = !$isMine && !$tempBanned && !$permBanned && $auth->allowedToTempB
 $showPermBan = !$isMine && !$permBanned && $auth->allowedToPermBanAccount;
 $showUnban   = !$isMine && ($tempBanned && $auth->allowedToTempUnbanAccount) || ($permBanned && $auth->allowedToPermUnbanAccount);
 
-$vipexpires = $server->loginServer->AccountVipTime($account->account_id);
+$vipexpires = $server->loginServer->AccountVipTime($account->account_id, $server->charMapDatabase);
 
 if (count($_POST) && $account) {
 	$reason = (string)$params->get('reason');

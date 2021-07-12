@@ -469,12 +469,13 @@ class Flux_LoginServer extends Flux_BaseServer {
 		}
 	}
 	
-	public function AccountVipTime($targetAccountID)
+	public function AccountVipTime($targetAccountID, $CurrentServer = null)
 	{
 			if(!$targetAccountID)
 				return FLUX::message('VIPUnknownLabel');
+			$CurrentServer = $CurrentServer ? $CurrentServer : $this->loginDatabase;
 
-			$sql = "SELECT `vip_time` FROM {$this->loginDatabase}.login WHERE account_id = ?";
+			$sql = "SELECT `vip_time` FROM {$CurrentServer}.login WHERE account_id = ?";
 			$sth = $this->connection->getStatement($sql);
 			$sth->execute(array($targetAccountID));
 			$vip_time = $sth->fetch()->vip_time;

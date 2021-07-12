@@ -113,7 +113,7 @@
                         <td><?php echo (int)$acct->group_id ?></td>
                         <td><?php echo (int)$acct->logincount ?></td>
 						<?php if($server->VipSystem): ?>
-							<td><?php echo $server->loginServer->AccountVipTime($acct->account_id); ?></td>
+							<td><?php echo $server->loginServer->AccountVipTime($acct->account_id, $server->charMapDatabase); ?></td>
 						<?php endif ?>
 						<td><?php echo (int)$acct->cashpoints ?></td>
                         <td>
