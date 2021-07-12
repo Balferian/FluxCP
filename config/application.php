@@ -214,7 +214,9 @@ return array(
 	'AdminMenuNewStyle'			=> true,					// Use new-style admin menu;  Applies to 'default' theme.
 	'EnablePeakDisplay'			=> true,					// Display Peak User count on Server Status page.
 	
-	
+// Service shop
+	'MultiserverVipTime'		=> true,					// Add vip time for all servers?
+
 // News Options
 	'CMSNewsOnHomepage'			=> true,					// Display News on Home Page instead of "You've Just Installed FluxCP" message?
 	'CMSNewsType'				=> 1,						// Type = source of news feed:
@@ -600,6 +602,8 @@ return array(
 			array('mob_skill_db_re', 'mob_skill_db2_re'),	// Renewal
 			array('mob_skill_db_zero', 'mob_skill_db2_zero')// Zero
 		),
+
+		//FluxCP databases
 		'CreditsTable'			=> 'cp_credits',
 		'CreditTransferTable'	=> 'cp_xferlog',
 		'ItemShopTable'			=> 'cp_itemshop',

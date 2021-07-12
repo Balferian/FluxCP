@@ -1,5 +1,12 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
-
+<?php 
+	echo $server->loginServer->CheckOnlineChars(2000000, $server->charMapDatabase);
+	/*$server_list = array();
+	foreach ($session->loginAthenaGroup->athenaServers as $athenaServer)
+		$server_list[] = $athenaServer->charMapDatabase;
+	if(FLUX::config('MultiserverVipTime')) $server_list = array($server->charMapDatabase);
+	$server->loginServer->AddVipTime(2000000, 1, $server_list);*/
+?>
 <h2><?php echo htmlspecialchars(Flux::message('GameAccountsViewHeading')) ?></h2>
 <?php if ($account): ?>
     <?php foreach ($userAccounts as $serverName => $userAccount): ?>

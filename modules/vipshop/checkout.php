@@ -41,7 +41,7 @@ if (count($_POST) && $params->get('process')) {
 	
 	$sql  = "INSERT INTO {$server->charMapDatabase}.$redeemTable ";
 	$sql .= "(category, quantity, cost, account_id, char_id, redeemed, redemption_date, purchase_date, credits_before, credits_after) ";
-	$sql .= "VALUES (?, ?, ?, ?, NULL, 0, NULL, NOW(), ?, ?)";
+	$sql .= "VALUES (?, ?, ?, ?, NULL, ?, NULL, NOW(), ?, ?)";
 	$sth  = $server->connection->getStatement($sql);
 	
 	$balance = $session->account->balance;
@@ -49,14 +49,38 @@ if (count($_POST) && $params->get('process')) {
 	foreach ($items as $item) {
 		$creditsAfter = $balance - $item->shop_item_cost;
 		
-		$res = $sth->execute(array(
-			$item->shop_category,
-			$item->shop_item_qty,
-			$item->shop_item_cost,
-			(Flux::config('MasterAccount') ? $selected_account : $session->account->account_id),
-			$balance,
-			$creditsAfter
-		));
+		if(FLUX::config('MultiserverVipTime')) {
+			if($item->shop_category == 2) {
+				foreach ($session->loginAthenaGroup->athenaServers as $athenaServer) {
+					$sql2  = "INSERT INTO {$athenaServer->charMapDatabase}.$redeemTable ";
+					$sql2 .= "(category, quantity, cost, account_id, char_id, redeemed, redemption_date, purchase_date, credits_before, credits_after) ";
+					$sql2 .= "VALUES (?, ?, ?, ?, NULL, ?, NULL, NOW(), ?, ?)";
+					$sth2  = $server->connection->getStatement($sql2);
+					$res = $sth2->execute(array(
+						$item->shop_category,
+						$item->shop_item_qty,
+						$item->shop_item_cost,
+						(Flux::config('MasterAccount') ? $selected_account : $session->account->account_id),
+						$server->loginServer->CheckOnlineChars($selected_account, $athenaServer->charMapDatabase) ? 0 : 1,
+						$balance,
+						$creditsAfter
+					));
+					if($server->loginServer->CheckOnlineChars($selected_account, $athenaServer->charMapDatabase) == 0) {
+						$server->loginServer->AddVipTime($selected_account, $item->shop_item_qty, $athenaServer->charMapDatabase);
+					}
+				}
+			}
+		} else {
+			$res = $sth->execute(array(
+				$item->shop_category,
+				$item->shop_item_qty,
+				$item->shop_item_cost,
+				(Flux::config('MasterAccount') ? $selected_account : $session->account->account_id),
+				0,
+				$balance,
+				$creditsAfter
+			));
+		}
 		
 		if ($res) {
 			$deduct  += $item->shop_item_cost;

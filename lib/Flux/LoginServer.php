@@ -469,27 +469,58 @@ class Flux_LoginServer extends Flux_BaseServer {
 		}
 	}
 	
-	public function AccountVipTime($targetAccountID, $CurrentServer = null)
+	public function CheckOnlineChars($targetID, $CurrentServer)
 	{
-			if(!$targetAccountID)
-				return FLUX::message('VIPUnknownLabel');
-			$CurrentServer = $CurrentServer ? $CurrentServer : $this->loginDatabase;
-
-			$sql = "SELECT `vip_time` FROM {$CurrentServer}.login WHERE account_id = ?";
-			$sth = $this->connection->getStatement($sql);
-			$sth->execute(array($targetAccountID));
-			$vip_time = $sth->fetch()->vip_time;
-
-			if($vip_time != '0' && $vip_time !== null && $vip_time > time()){
-				return sprintf(FLUX::message('VIPExpiresLabel').' %s', date(Flux::config('DateTimeFormat'), $vip_time));
-			} elseif ($vip_time == '0' || $vip_time < time()){
-				return FLUX::message('VIPStandardAccountLabel');
-			} else {
-				return FLUX::message('VIPUnknownLabel');
-			}
+		if(!$targetID)
 			return false;
+		$sql = "SELECT COUNT(online) as online_chars FROM {$CurrentServer}.`char` WHERE ";
+		if($targetID >= 2000000)	// Select by account
+			$sql .= "account_id = ? AND online = 1";
+		else						// Select by char
+			$sql .= "char_id = ? AND online = 1";
+		$sth = $this->connection->getStatement($sql);
+		$sth->execute(array($targetID));
+		return $sth->fetch()->online_chars;
 	}
 
+	public function AccountVipTime($targetAccountID, $CurrentServer = null)
+	{
+		if(!$targetAccountID)
+			return FLUX::message('VIPUnknownLabel');
+		$CurrentServer = $CurrentServer ? $CurrentServer : $this->loginDatabase;
+
+		$sql = "SELECT `vip_time` FROM {$CurrentServer}.login WHERE account_id = ?";
+		$sth = $this->connection->getStatement($sql);
+		$sth->execute(array($targetAccountID));
+		$vip_time = $sth->fetch()->vip_time;
+
+		if($vip_time != '0' && $vip_time !== null && $vip_time > time()){
+			return sprintf(FLUX::message('VIPExpiresLabel').' %s', date(Flux::config('DateTimeFormat'), $vip_time));
+		} elseif ($vip_time == '0' || $vip_time < time()){
+			return FLUX::message('VIPStandardAccountLabel');
+		} else {
+			return FLUX::message('VIPUnknownLabel');
+		}
+		return false;
+	}
+
+	public function AddVipTime($targetAccountID, $AddTime, $CurrentServer = null)
+	{
+		$CurrentServer = $CurrentServer ? $CurrentServer : $this->loginDatabase;
+
+		$sql = "SELECT `vip_time` FROM {$CurrentServer}.login WHERE account_id = ?";
+		$sth = $this->connection->getStatement($sql);
+		$sth->execute(array($targetAccountID));
+		$vip_time = $sth->fetch()->vip_time;
+		if($vip_time == 0 || $vip_time <= time())
+			$vip_time = time();
+		$vip_time += $AddTime * 86400;
+
+		$sql  = "UPDATE {$CurrentServer}.login SET vip_time = $vip_time WHERE account_id = ?";
+		$sth  = $this->connection->getStatement($sql);
+		$sth->execute(array($targetAccountID));
+		return true;
+	}
 	/**
 	 *
 	 */
