@@ -521,6 +521,22 @@ class Flux_LoginServer extends Flux_BaseServer {
 		$sth->execute(array($targetAccountID));
 		return true;
 	}
+	
+	public function AddPoints($targetAccountID, $Key, $Value, $CurrentServer = null)
+	{
+		$CurrentServer = $CurrentServer ? $CurrentServer : $this->loginDatabase;
+
+		// Add dummy
+		$sql  = "INSERT IGNORE INTO {$CurrentServer}.acc_reg_num (`account_id`, `key`, `index`, `value`) VALUES (?, ?, 0, 0)";
+		$sth  = $this->connection->getStatement($sql);
+		$sth->execute(array($targetAccountID, $Key));
+
+		// Update value
+		$sql  = "UPDATE {$CurrentServer}.acc_reg_num SET `value` = `value` + $Value WHERE account_id = ? AND `key` = ?";
+		$sth  = $this->connection->getStatement($sql);
+		$sth->execute(array($targetAccountID, $Key));
+		return true;
+	}
 	/**
 	 *
 	 */

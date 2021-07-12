@@ -36,6 +36,7 @@ return array(
 	'ShowSinglePage'			=> true,					// Whether or not to show the page numbers even if there's only one page.
 	'MapsResultsPerPage'		=> 50,						// The number of results to display maps in a paged set, per page.
 	'NpcsResultsPerPage'		=> 50,						// The number of results to display maps in a paged set, per page.
+	'PendingResultsPerPage'		=> 20,						// The number of results to display maps in a paged set, per page.
 	'ResultsPerPage'			=> 20,						// The number of results to display in a paged set, per page.
 	'PagesToShow'				=> 10,						// The number of page numbers to display at once.
 	'PageJumpMinimumPages'		=> 1,						// Minimum number of required pages before page jump box is shown. (0 to always show!)
@@ -399,7 +400,8 @@ return array(
 			'cart'			=> 'Go to Cart',
 			'checkout'		=> 'Checkout',
 			'clear'			=> 'Empty Cart',
-			'pending'		=> 'Pending Redemption'
+			'pending'		=> 'Pending Redemption',
+			'history'		=> 'Purchase History'
 		),
 		'vipshop'		=> array(
 			'index'			=> 'Shop',
@@ -407,6 +409,7 @@ return array(
 			'checkout'		=> 'Checkout',
 			'clear'			=> 'Empty Cart',
 			'pending'		=> 'Pending Redemption',
+			'history'		=> 'Purchase History',
 			'new'			=> 'Add new service'
 		),
 		'donate'		=> array(

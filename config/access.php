@@ -24,7 +24,8 @@ return array(
 			'cart'     => AccountLevel::NORMAL,
 			'checkout' => AccountLevel::NORMAL,
 			'remove'   => AccountLevel::NORMAL,
-			'pending'  => AccountLevel::NORMAL
+			'pending'  => AccountLevel::NORMAL,
+			'history'  => AccountLevel::NORMAL
 		),
 		'vipshop'  => array(
 			'index'    => AccountLevel::ANYONE,
@@ -34,6 +35,7 @@ return array(
 			'checkout' => AccountLevel::NORMAL,
 			'remove'   => AccountLevel::NORMAL,
 			'pending'  => AccountLevel::NORMAL,
+			'history'  => AccountLevel::NORMAL,
 			'new'      => AccountLevel::ADMIN,
 			'edit'     => AccountLevel::ADMIN,
 			'delete'   => AccountLevel::ADMIN,
