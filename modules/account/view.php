@@ -76,11 +76,7 @@ $showTempBan = !$isMine && !$tempBanned && !$permBanned && $auth->allowedToTempB
 $showPermBan = !$isMine && !$permBanned && $auth->allowedToPermBanAccount;
 $showUnban   = !$isMine && ($tempBanned && $auth->allowedToTempUnbanAccount) || ($permBanned && $auth->allowedToPermUnbanAccount);
 
-if($account->vip_time != '0' && $account->vip_time !== null && $account->vip_time > time()){
-	$vipexpires = 'Expires '.date(Flux::config('DateTimeFormat'), $account->vip_time);
-} elseif ($account->vip_time == '0' || $acct->vip_time < time()){
-	$vipexpires = 'Standard Account';
-} else {$vipexpires = 'Unknown';}
+$vipexpires = $server->loginServer->AccountVipTime($account->account_id);
 
 if (count($_POST) && $account) {
 	$reason = (string)$params->get('reason');

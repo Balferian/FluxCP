@@ -469,6 +469,26 @@ class Flux_LoginServer extends Flux_BaseServer {
 		}
 	}
 	
+	public function AccountVipTime($targetAccountID)
+	{
+			if(!$targetAccountID)
+				return FLUX::message('VIPUnknownLabel');
+
+			$sql = "SELECT `vip_time` FROM {$this->loginDatabase}.login WHERE account_id = ?";
+			$sth = $this->connection->getStatement($sql);
+			$sth->execute(array($targetAccountID));
+			$vip_time = $sth->fetch()->vip_time;
+
+			if($vip_time != '0' && $vip_time !== null && $vip_time > time()){
+				return sprintf(FLUX::message('VIPExpiresLabel').' %s', date(Flux::config('DateTimeFormat'), $vip_time));
+			} elseif ($vip_time == '0' || $vip_time < time()){
+				return FLUX::message('VIPStandardAccountLabel');
+			} else {
+				return FLUX::message('VIPUnknownLabel');
+			}
+			return false;
+	}
+
 	/**
 	 *
 	 */

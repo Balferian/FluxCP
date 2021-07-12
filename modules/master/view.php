@@ -60,15 +60,4 @@ $sth->execute(array($account->id));
 
 $userAccount = $sth->fetchAll();
 
-foreach ($userAccount as $acct) {
-	if($acct->vip_time != '0' && $acct->vip_time !== null && $acct->vip_time > time()){
-		$acct->vip_time = Flux::message('VIPExpiresLabel').date(Flux::config('DateTimeFormat'), $acct->vip_time);
-	} elseif ($acct->vip_time == '0' || $acct->vip_time < time()){
-		$acct->vip_time = Flux::message('VIPStandardAccountLabel');
-	} else {
-		$acct->vip_time = Flux::message('VIPUnknownLabel');
-	}
-}
-
 $userAccounts[$athena->serverName] = $userAccount;
-
