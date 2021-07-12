@@ -292,7 +292,11 @@ return array(
 		'AvoidSexChangeCost' => AccountLevel::LOWGM,  // Avoid paying cost (if any) for sex changes.
 		
 		'EditHigherPower'    => AccountLevel::NOONE,
-		'BanHigherPower'     => AccountLevel::NOONE
+		'BanHigherPower'     => AccountLevel::NOONE,
+
+		'SeePendingHistory'	 => AccountLevel::ADMIN,  // Minimum group level required to see redeem history.
+		'SeeServiceDesk'	 => AccountLevel::ADMIN,  // Minimum group level required to see redeem history.
+
 	)
 );
 ?>

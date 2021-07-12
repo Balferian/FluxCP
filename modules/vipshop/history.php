@@ -9,8 +9,15 @@ $redeemTable = "{$server->charMapDatabase}.".Flux::config('FluxTables.VipRedempt
 
 $accounts = $session->account->game_accounts['account_ids'];
 $account_list = array();
-foreach($accounts as $key => $account) {
-	$account_list[] = " $redeemTable.account_id = $account ";
+$isMine = $session->isMine($session->account->account_id);
+if ($isMine || $auth->allowedToSeePendingHistory) {
+	if($params->get('id') && $auth->allowedToSeePendingHistory)
+		$account_list[] = " $redeemTable.account_id = ".$params->get('id')." ";
+	else
+		foreach($accounts as $key => $account)
+			$account_list[] = " $redeemTable.account_id = $account ";
+} else {
+	$this->deny();
 }
 $sqlpartial = "WHERE (".implode('OR', $account_list).") ";
 
