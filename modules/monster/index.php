@@ -7,11 +7,7 @@ require_once 'Flux/TemporaryTable.php';
 
 try {
 	$tableName  = "{$server->charMapDatabase}.monsters";
-	if($server->isRenewal) {
-		$fromTables = array("{$server->charMapDatabase}.mob_db_re", "{$server->charMapDatabase}.mob_db2_re");
-  	} else {
-		$fromTables = array("{$server->charMapDatabase}.mob_db", "{$server->charMapDatabase}.mob_db2");
-	}
+	$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.MobsTable')->toArray(), $server->isRenewal);
 	$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
 	
 	// Statement parameters, joins and conditions.

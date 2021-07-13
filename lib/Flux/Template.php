@@ -1686,5 +1686,12 @@ class Flux_Template {
 		return Flux::getCheckMVPCard($card);
 	}
 
+	public static function DatabasesList($target, $tables, $mode){
+		$result = array();
+		foreach($tables[$mode] as $table)
+			$result[] = $target.'.'.$table;
+		return $result;
+	}
+
 }
 ?>

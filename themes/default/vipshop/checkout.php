@@ -38,7 +38,7 @@
 			<p class="shop-item-qty">Quantity: <span class="qty"><?php echo number_format($item->shop_item_qty) ?></span></p>
 			<?php endif ?>
 			<p class="shop-item-cost"><span class="cost"><?php echo number_format($item->shop_item_cost) ?></span> credits</p>
-			<p><?php echo nl2br(htmlspecialchars($item->shop_item_info)) ?></p>
+			<p><?php echo nl2br(htmlspecialchars($item->shop_item_info)) ?><?php if(Flux::config('MultiserverVipTime') && $item->shop_category == 2) echo "<br><b style=\"color: blue;\">Aplly for all servers.</b>"; ?></p>
 		</td>
 	</tr>
 	<?php endforeach ?>

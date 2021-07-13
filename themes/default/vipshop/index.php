@@ -39,7 +39,7 @@
 				<?php echo $categories[$item->shop_category][0]; ?>
 				<span class="qty">(<?php echo number_format($item->shop_item_qty)." ".$ea ?>)</span>
 			</h4>
-			<p class="shop-item-info"><?php echo nl2br($item->shop_item_info) ?></p>
+			<p class="shop-item-info"><?php echo nl2br($item->shop_item_info) ?><?php if(Flux::config('MultiserverVipTime') && $item->shop_category == 2) echo "<br><b style=\"color: blue;\">Aplly for all servers.</b>"; ?></p>
 			<p class="shop-item-action">
 				<?php if ($auth->allowedToEditShopItem): ?>
 				<a href="<?php echo $this->url('vipshop', 'edit', array('id' => $item->shop_item_id)) ?>">Modify</a>

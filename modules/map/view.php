@@ -5,20 +5,12 @@ require_once 'functions/ScriptParser/mapImage.php';
 
 // Monsters table.
 $mobDB      = "{$server->charMapDatabase}.monsters";
-if($server->isRenewal) {
-	$fromTables = array("{$server->charMapDatabase}.mob_db_re", "{$server->charMapDatabase}.mob_db2_re");
-} else {
- 	$fromTables = array("{$server->charMapDatabase}.mob_db", "{$server->charMapDatabase}.mob_db2");
-}
+$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.MobsTable')->toArray(), $server->isRenewal);
 $tempMobs   = new Flux_TemporaryTable($server->connection, $mobDB, $fromTables);
 
 // Items table.
 $itemDB = "{$server->charMapDatabase}.items";
-if($server->isRenewal) {
-	$fromTables = array("{$server->charMapDatabase}.item_db_re", "{$server->charMapDatabase}.item_db2_re");
-} else {
-	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-}
+$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.ItemsTable')->toArray(), $server->isRenewal);
 $tempItems = new Flux_TemporaryTable($server->connection, $itemDB, $fromTables);
 
 $shopsDB = 		"{$server->charMapDatabase}.".FLUX::config("FluxTables.VendorsTable");

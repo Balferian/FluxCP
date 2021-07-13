@@ -8,11 +8,7 @@ $title = 'Pending Redemption';
 try {
 	// Create item db temp table.
 	require_once 'Flux/TemporaryTable.php';
-	if($server->isRenewal) {
-		$fromTables = array("{$server->charMapDatabase}.item_db_re", "{$server->charMapDatabase}.item_db2_re");
-	} else {
-		$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-	}
+	$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.ItemsTable')->toArray(), $server->isRenewal);
 	$tableName = "{$server->charMapDatabase}.items";
 	$tempTable = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
 
@@ -37,7 +33,7 @@ try {
 	$total = $sth->fetch()->total;
 
 	// Fetch items.
-	$col = "login.userid, nameid, quantity, purchase_date, cost, credits_before, credits_after, items.name_english AS item_name";
+	$col = "login.userid, nameid, name_english, quantity, purchase_date, cost, credits_before, credits_after, items.name_english AS item_name";
 	$sql = "SELECT $col FROM {$server->charMapDatabase}.$redeemTable $sqlpartial";
 	$sth = $server->connection->getStatement($sql);
 	

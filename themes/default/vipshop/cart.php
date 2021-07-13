@@ -28,7 +28,7 @@
 					<a href="<?php echo $this->url('vipshop', 'remove', array('num' => $num)) ?>">Remove from Cart</a> /
 					<a href="<?php echo $this->url('vipshop', 'add', array('id' => $item->shop_item_id, 'cart' => true)) ?>">Add Another to Cart</a>
 				</p>
-				<p><?php echo nl2br(htmlspecialchars($item->shop_item_info)) ?></p>
+				<p><?php echo nl2br(htmlspecialchars($item->shop_item_info)) ?><?php if(Flux::config('MultiserverVipTime') && $item->shop_category == 2) echo "<br><b style=\"color: blue;\">Aplly for all servers.</b>"; ?></p>
 			</td>
 		</tr>
 		<?php endforeach ?>

@@ -178,6 +178,20 @@
 			<?php endif ?>
 		</td> -->
 	</tr>
+	<tr>
+		<td colspan="<?php echo 10 + (Flux::config('MasterAccount') ? 1 : 0) + ($showPassword ? 1 : 0); ?>">
+			<?php
+				$account_links = array();
+				if($auth->allowedToSeeServiceDesk)
+					$account_links[] = "<a href=\"".$this->url('servicedesk', 'staffindex', array('account_id' => $account->account_id))."\">Tickets</a>";
+				if($auth->allowedToSeePendingHistory)
+					$account_links[] = "<a href=\"".$this->url('purchase', 'history', array('id' => $account->account_id))."\">Item Shop history</a>";
+				if($auth->allowedToSeePendingHistory)
+					$account_links[] = "<a href=\"".$this->url('vipshop', 'history', array('id' => $account->account_id))."\">Item Shop history</a>";
+				echo implode(" / ", $account_links);
+			?>
+		<td>
+	</tr>
 	<?php endforeach ?>
 </table>
 <?php echo $paginator->getHTML() ?>

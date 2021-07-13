@@ -24,7 +24,8 @@ return array(
 			'cart'     => AccountLevel::NORMAL,
 			'checkout' => AccountLevel::NORMAL,
 			'remove'   => AccountLevel::NORMAL,
-			'pending'  => AccountLevel::NORMAL
+			'pending'  => AccountLevel::NORMAL,
+			'history'  => AccountLevel::NORMAL
 		),
 		'vipshop'  => array(
 			'index'    => AccountLevel::ANYONE,
@@ -34,6 +35,7 @@ return array(
 			'checkout' => AccountLevel::NORMAL,
 			'remove'   => AccountLevel::NORMAL,
 			'pending'  => AccountLevel::NORMAL,
+			'history'  => AccountLevel::NORMAL,
 			'new'      => AccountLevel::ADMIN,
 			'edit'     => AccountLevel::ADMIN,
 			'delete'   => AccountLevel::ADMIN,
@@ -290,7 +292,11 @@ return array(
 		'AvoidSexChangeCost' => AccountLevel::LOWGM,  // Avoid paying cost (if any) for sex changes.
 		
 		'EditHigherPower'    => AccountLevel::NOONE,
-		'BanHigherPower'     => AccountLevel::NOONE
+		'BanHigherPower'     => AccountLevel::NOONE,
+
+		'SeePendingHistory'	 => AccountLevel::ADMIN,  // Minimum group level required to see redeem history.
+		'SeeServiceDesk'	 => AccountLevel::ADMIN,  // Minimum group level required to see redeem history.
+
 	)
 );
 ?>

@@ -10,11 +10,7 @@ if (trim($mvpdata) === '') { $mvpdata = null; }
 
 // List MVPS
 $tableName  = "{$server->charMapDatabase}.monsters";
-if($server->isRenewal) {
-    $fromTables = array("{$server->charMapDatabase}.mob_db_re", "{$server->charMapDatabase}.mob_db2_re");
-} else {
-    $fromTables = array("{$server->charMapDatabase}.mob_db", "{$server->charMapDatabase}.mob_db2");
-}
+$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.MobsTable')->toArray(), $server->isRenewal);
 $tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
 
 // Get all group_id based on killer_char_id

@@ -53,7 +53,7 @@ return array(
 		'CharMapServers' => array(
 			array(
 				'ServerName'      => 'FluxRO',
-				'Renewal'         => true,
+				'GameMechanic'    => 'Renewal', // 'Pre-Renewal', 'Renewal', 'Zero'
 				'VipSystem'       => true, // Show vip info
 				'MaxCharSlots'    => 9,
 				'DateTimezone'    => null, // Specifies game server's timezone for this char/map pair. (See: http://php.net/timezones)

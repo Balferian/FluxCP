@@ -36,6 +36,7 @@ return array(
 	'ShowSinglePage'			=> true,					// Whether or not to show the page numbers even if there's only one page.
 	'MapsResultsPerPage'		=> 50,						// The number of results to display maps in a paged set, per page.
 	'NpcsResultsPerPage'		=> 50,						// The number of results to display maps in a paged set, per page.
+	'PendingResultsPerPage'		=> 20,						// The number of results to display maps in a paged set, per page.
 	'ResultsPerPage'			=> 20,						// The number of results to display in a paged set, per page.
 	'PagesToShow'				=> 10,						// The number of page numbers to display at once.
 	'PageJumpMinimumPages'		=> 1,						// Minimum number of required pages before page jump box is shown. (0 to always show!)
@@ -214,7 +215,9 @@ return array(
 	'AdminMenuNewStyle'			=> true,					// Use new-style admin menu;  Applies to 'default' theme.
 	'EnablePeakDisplay'			=> true,					// Display Peak User count on Server Status page.
 	
-	
+// Service shop
+	'MultiserverVipTime'		=> true,					// Add vip time for all servers?
+
 // News Options
 	'CMSNewsOnHomepage'			=> true,					// Display News on Home Page instead of "You've Just Installed FluxCP" message?
 	'CMSNewsType'				=> 1,						// Type = source of news feed:
@@ -397,7 +400,8 @@ return array(
 			'cart'			=> 'Go to Cart',
 			'checkout'		=> 'Checkout',
 			'clear'			=> 'Empty Cart',
-			'pending'		=> 'Pending Redemption'
+			'pending'		=> 'Pending Redemption',
+			'history'		=> 'Purchase History'
 		),
 		'vipshop'		=> array(
 			'index'			=> 'Shop',
@@ -405,6 +409,7 @@ return array(
 			'checkout'		=> 'Checkout',
 			'clear'			=> 'Empty Cart',
 			'pending'		=> 'Pending Redemption',
+			'history'		=> 'Purchase History',
 			'new'			=> 'Add new service'
 		),
 		'donate'		=> array(
@@ -582,7 +587,26 @@ return array(
 	'MvpCardList'					=> include('mvp_cards.php'),
 
 	// DON'T TOUCH. THIS IS FOR DEVELOPERS.
-	'FluxTables'		=> array(
+	'GameMechanics'		=>	array('Pre-Renewal', 'Renewal', 'Zero'),
+	'FluxTables'		=>	array(
+		// rAthena databases
+		'ItemsTable'			=> array(
+			array('item_db', 'item_db2'),					// Pre-renewal
+			array('item_db_re', 'item_db2_re'),				// Renewal
+			array('item_db_zero', 'item_db2_zero')			// Zero
+		),
+		'MobsTable'			=> array(
+			array('mob_db', 'mob_db2'),						// Pre-renewal
+			array('mob_db_re', 'mob_db2_re'),				// Renewal
+			array('mob_db_zero', 'mob_db2_zero')			// Zero
+		),
+		'MobsSkillsTable'			=> array(
+			array('mob_skill_db', 'mob_skill_db2'),			// Pre-renewal
+			array('mob_skill_db_re', 'mob_skill_db2_re'),	// Renewal
+			array('mob_skill_db_zero', 'mob_skill_db2_zero')// Zero
+		),
+
+		//FluxCP databases
 		'CreditsTable'			=> 'cp_credits',
 		'CreditTransferTable'	=> 'cp_xferlog',
 		'ItemShopTable'			=> 'cp_itemshop',

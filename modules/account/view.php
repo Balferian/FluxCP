@@ -7,11 +7,7 @@ $title = Flux::message('AccountViewTitle');
 
 require_once 'Flux/TemporaryTable.php';
 
-if($server->isRenewal) {
-	$fromTables = array("{$server->charMapDatabase}.item_db_re", "{$server->charMapDatabase}.item_db2_re");
-} else {
-	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-}
+$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.ItemsTable')->toArray(), $server->isRenewal);
 $tableName = "{$server->charMapDatabase}.items";
 $tempTable = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
 
@@ -80,11 +76,7 @@ $showTempBan = !$isMine && !$tempBanned && !$permBanned && $auth->allowedToTempB
 $showPermBan = !$isMine && !$permBanned && $auth->allowedToPermBanAccount;
 $showUnban   = !$isMine && ($tempBanned && $auth->allowedToTempUnbanAccount) || ($permBanned && $auth->allowedToPermUnbanAccount);
 
-if($account->vip_time != '0' && $account->vip_time !== null && $account->vip_time > time()){
-	$vipexpires = 'Expires '.date(Flux::config('DateTimeFormat'), $account->vip_time);
-} elseif ($account->vip_time == '0' || $acct->vip_time < time()){
-	$vipexpires = 'Standard Account';
-} else {$vipexpires = 'Unknown';}
+$vipexpires = $server->loginServer->AccountVipTime($account->account_id, $server->charMapDatabase);
 
 if (count($_POST) && $account) {
 	$reason = (string)$params->get('reason');

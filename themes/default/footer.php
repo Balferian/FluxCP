@@ -31,16 +31,37 @@
 				<td></td>
 			</tr>
 			<?php endif ?>
-						<?php if (count(Flux::$appConfig->get('ThemeName', false)) > 1): ?>
+	
+			<?php if (count($athenaServerNames=$session->getAthenaServerNames()) > 1): ?>
 			<tr>
 				<td colspan="3"></td>
 				<td align="right">
-				<span>Theme:
-					<select name="preferred_theme" onchange="updatePreferredTheme(this)">
-						<?php foreach (Flux::$appConfig->get('ThemeName', false) as $themeName): ?>
-						<option value="<?php echo htmlspecialchars($themeName) ?>"<?php if ($session->theme == $themeName) echo ' selected="selected"' ?>><?php echo htmlspecialchars($themeName) ?></option>
-						<?php endforeach ?>
-					</select>
+					<span>Server:
+						<select name="preferred_server" onchange="updatePreferredServer(this)"<?php if (count($athenaServerNames=$session->getAthenaServerNames()) === 1) echo ' disabled="disabled"'  ?>>
+							<?php foreach ($athenaServerNames as $serverName): ?>
+							<option value="<?php echo htmlspecialchars($serverName) ?>"<?php if ($server->serverName == $serverName) echo ' selected="selected"' ?>><?php echo htmlspecialchars($serverName) ?></option>
+							<?php endforeach ?>
+						</select>
+					</span>
+					
+					<form action="<?php echo $this->urlWithQs ?>" method="post" name="preferred_server_form" style="display: none">
+						<input type="hidden" name="preferred_server" value="" />
+					</form>
+				</td>
+				<td></td>
+			</tr>
+			<?php endif ?>
+
+			<?php if (count(Flux::$appConfig->get('ThemeName', false)) > 1): ?>
+			<tr>
+				<td colspan="3"></td>
+				<td align="right">
+					<span>Theme:
+						<select name="preferred_theme" onchange="updatePreferredTheme(this)">
+							<?php foreach (Flux::$appConfig->get('ThemeName', false) as $themeName): ?>
+							<option value="<?php echo htmlspecialchars($themeName) ?>"<?php if ($session->theme == $themeName) echo ' selected="selected"' ?>><?php echo htmlspecialchars($themeName) ?></option>
+							<?php endforeach ?>
+						</select>
 					</span>
 					
 					<form action="<?php echo $this->urlWithQs ?>" method="post" name="preferred_theme_form" style="display: none">

@@ -9,29 +9,16 @@ require_once 'Flux/TemporaryTable.php';
 // Monsters table.
 $mobDB      = "{$server->charMapDatabase}.monsters";
 //here needs the same check if the server is renewal or not, I'm just lazy to do it by myself
-if($server->isRenewal) {
-	$fromTables = array("{$server->charMapDatabase}.mob_db_re", "{$server->charMapDatabase}.mob_db2_re");
-} else {
- 	$fromTables = array("{$server->charMapDatabase}.mob_db", "{$server->charMapDatabase}.mob_db2");
-}
+$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.MobsTable')->toArray(), $server->isRenewal);
 $tempMobs   = new Flux_TemporaryTable($server->connection, $mobDB, $fromTables);
 
 // Monster Skills table.
 $skillDB    = "{$server->charMapDatabase}.mobskills";
-if($server->isRenewal) {
-	$fromTables = array("{$server->charMapDatabase}.mob_skill_db_re", "{$server->charMapDatabase}.mob_skill_db2_re");
-} else {
- 	$fromTables = array("{$server->charMapDatabase}.mob_skill_db", "{$server->charMapDatabase}.mob_skill_db2");
-}
-
+$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.MobsSkillsTable')->toArray(), $server->isRenewal);
 $tempSkills = new Flux_TemporaryTable($server->connection, $skillDB, $fromTables);
 
 // Items table.
-if($server->isRenewal) {
-	$fromTables = array("{$server->charMapDatabase}.item_db_re", "{$server->charMapDatabase}.item_db2_re");
-} else {
-	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-}
+$fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.ItemsTable')->toArray(), $server->isRenewal);
 $itemDB    = "{$server->charMapDatabase}.items";
 $tempItems = new Flux_TemporaryTable($server->connection, $itemDB, $fromTables);
 

@@ -1,14 +1,19 @@
 <?php
 if (!defined('FLUX_ROOT')) exit;
 $this->loginRequired();
+$account_id = $params->get('account_id');
+
 $SDCategory = ($params->get('category') > 0) ? $params->get('category') : false;
-$sqlpartial = $SDCategory ? "WHERE status = 'SDStatus_$SDCategory'" : null;
+$sqlpartial = "WHERE 1=1 ";
 
 $tbl = Flux::config('FluxTables.ServiceDeskTable'); 
 $tblcat = Flux::config('FluxTables.ServiceDeskCatTable'); 
 $usersTable = Flux::config('FluxTables.MasterUserTable');
 $userColumns = Flux::config('FluxTables.MasterUserTableColumns');
 $title = Flux::message('SDHeader');
+
+if($SDCategory) $sqlpartial .= "AND status = 'SDStatus_$SDCategory' ";
+if($account_id) $sqlpartial .= "AND $tbl.account_id = $account_id ";
 
 $sql  = "SELECT * FROM {$server->loginDatabase}.$tbl ";
 $sql .= "LEFT JOIN {$server->loginDatabase}.login ON $tbl.account_id = login.account_id ";

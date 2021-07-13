@@ -11,27 +11,25 @@
 		<th>Balance (Before)</th>
 		<th>Balance (After)</th>
 		<th>Purchase Date</th>
+		<th>Status</th>
 	</tr>
 	<?php foreach ($items as $item): ?>
 	<tr>
 		<td><?php echo $item->userid ?></td>
-		<td align="right">
-			<?php if ($item->item_name): ?>
-				<?php if ($auth->actionAllowed('item', 'view')): ?>
-					<?php echo $this->linkToItem($item->nameid, $item->item_name) ?>
-				<?php else: ?>
-					<?php echo htmlspecialchars($item->nameid) ?>
-				<?php endif ?>
+		<td>
+			<img src="<?php echo htmlspecialchars($this->iconImage($item->nameid)); ?>?nocache=<?php echo rand(); ?>" style="vertical-align: middle;" />
+			<?php if ($auth->actionAllowed('item', 'view')): ?>
+				<?php echo $this->linkToItem($item->nameid, $item->name_english) ?>
 			<?php else: ?>
-				<span class="not-applicable">Unknown</span>
+				<?php echo htmlspecialchars($item->name_english) ?>
 			<?php endif ?>
 		</td>
 		<td><?php echo number_format($item->quantity) ?></td>
 		<td><?php echo number_format($item->cost) ?></td>
 		<td><?php echo number_format($item->credits_before) ?></td>
 		<td><?php echo number_format($item->credits_after) ?></td>
-		
 		<td><?php echo $this->formatDateTime($item->purchase_date) ?></td>
+		<td><?php echo $item->redeemed ? "Finished" : "Waiting" ?></td>
 	</tr>
 	<?php endforeach ?>
 </table>
