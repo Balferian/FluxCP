@@ -8,9 +8,12 @@ $title = 'Viewing Character';
 require_once 'Flux/TemporaryTable.php';
 
 $fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.ItemsTable')->toArray(), $server->isRenewal);
-$mobdb = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.MobsTable')->toArray(), $server->isRenewal);
 $tableName = "{$server->charMapDatabase}.items";
 $tempTable = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
+
+$mobdb = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxTables.MobsTable')->toArray(), $server->isRenewal);
+$mob_tableName = "{$server->charMapDatabase}.mobs";
+$mob_tempTable = new Flux_TemporaryTable($server->connection, $mob_tableName, $mobdb);
 
 $charID = $params->get('id');
 
@@ -41,7 +44,7 @@ $col .= "homun.hp AS homun_hp, homun.max_hp As homun_max_hp, homun.sp AS homun_s
 $col .= "homun.skill_point AS homun_skill_point, homun.alive AS homun_alive, ";
 
 $col .= "pet.class AS pet_class, pet.name AS pet_name, pet.level AS pet_level, pet.intimate AS pet_intimacy, ";
-$col .= "pet.hungry AS pet_hungry, pet_mob.name_english AS pet_mob_name, pet_mob2.name_english AS pet_mob_name2, ";
+$col .= "pet.hungry AS pet_hungry, pet_mob.name_english AS pet_mob_name, ";
 
 $col .= "IFNULL(reg.value, 0) AS death_count";
 
@@ -59,8 +62,7 @@ $sql .= "LEFT OUTER JOIN {$server->charMapDatabase}.`party` ON ch.party_id = par
 $sql .= "LEFT OUTER JOIN {$server->charMapDatabase}.`char` AS party_leader ON party.leader_char = party_leader.char_id ";
 $sql .= "LEFT OUTER JOIN {$server->charMapDatabase}.`homunculus` AS homun ON ch.homun_id = homun.homun_id ";
 $sql .= "LEFT OUTER JOIN {$server->charMapDatabase}.`pet` ON ch.pet_id = pet.pet_id ";
-$sql .= "LEFT OUTER JOIN {$server->charMapDatabase}.`".$mobdb[0]."` AS pet_mob ON pet_mob.ID = pet.class ";
-$sql .= "LEFT OUTER JOIN {$server->charMapDatabase}.`".$mobdb[1]."` AS pet_mob2 ON pet_mob2.ID = pet.class ";
+$sql .= "LEFT OUTER JOIN {$server->charMapDatabase}.`mobs` AS pet_mob ON pet_mob.ID = pet.class ";
 $sql .= "LEFT OUTER JOIN {$server->charMapDatabase}.`char_reg_num` AS reg ON reg.char_id = ch.char_id AND reg.key = 'PC_DIE_COUNTER' ";
 if(Flux::config('EmblemUseWebservice'))
 	$sql .= "LEFT OUTER JOIN {$server->charMapDatabase}.`guild_emblems` ON `guild_emblems`.guild_id = ch.guild_id ";	
@@ -70,10 +72,6 @@ $sth  = $server->connection->getStatement($sql);
 $sth->execute(array($charID));
 
 $char = $sth->fetch();
-
-if ($char->pet_mob_name2) {
-	$char->pet_mob_name = $char->pet_mob_name2;
-}
 
 if ($char && $session->isMine($char->char_account_id)) {
 	$isMine = true;
