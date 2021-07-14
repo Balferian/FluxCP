@@ -71,6 +71,7 @@ $StorageTables    = Flux::config('StorageList')->toArray();
 foreach($StorageTables as $table => $data) {
 	if($data[1] != "master")
 		continue;
+	$storage[$table] = array();
 	$col  = "$table.*, items.name_english, items.type, items.slots, c.char_id, c.name AS char_name";
 
 	$sql  = "SELECT $col FROM {$server->charMapDatabase}.$table ";
