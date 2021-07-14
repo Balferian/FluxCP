@@ -7,7 +7,7 @@ $title = 'Pending Redemption History';
 $categories    = Flux::config("VipCategories")->toArray();
 $redeemTable = "{$server->charMapDatabase}.".Flux::config('FluxTables.VipRedemptionTable');
 
-$accounts = $session->account->game_accounts['account_ids'];
+$accounts = Flux::config('MasterAccount') ? $session->account->game_accounts['account_ids'] : array($session->account->account_id);
 $account_list = array();
 $isMine = $session->isMine($session->account->account_id);
 if ($isMine || $auth->allowedToSeePendingHistory) {
