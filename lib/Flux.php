@@ -596,6 +596,8 @@ class Flux {
 	public static function hashPassword($password, $algorithm = null)
 	{
 		switch ($algorithm) {
+			case 0:
+				break;
 			case 'bcrypt':
 				$password = password_hash($password, PASSWORD_BCRYPT);
 				break;
