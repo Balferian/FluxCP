@@ -187,7 +187,7 @@
 				if($auth->allowedToSeePendingHistory)
 					$account_links[] = "<a href=\"".$this->url('purchase', 'history', array('id' => $account->account_id))."\">Item Shop history</a>";
 				if($auth->allowedToSeePendingHistory)
-					$account_links[] = "<a href=\"".$this->url('vipshop', 'history', array('id' => $account->account_id))."\">Item Shop history</a>";
+					$account_links[] = "<a href=\"".$this->url('vipshop', 'history', array('id' => $account->account_id))."\">Service Shop history</a>";
 				echo implode(" / ", $account_links);
 			?>
 		<td>
