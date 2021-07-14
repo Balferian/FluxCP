@@ -586,6 +586,9 @@ return array(
 	// Mvp card list
 	'MvpCardList'					=> include('mvp_cards.php'),
 
+	// Storages
+	'StorageList'					=> include('storages.php'),
+
 	// DON'T TOUCH. THIS IS FOR DEVELOPERS.
 	'GameMechanics'		=>	array('Pre-Renewal', 'Renewal', 'Zero'),
 	'FluxTables'		=>	array(
