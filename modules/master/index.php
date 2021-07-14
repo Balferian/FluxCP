@@ -16,9 +16,9 @@ $bind = [];
 $creditsTable   = Flux::config('MasterAccount') ? Flux::config('FluxTables.MasterCreditsTable') : Flux::config('FluxTables.CreditsTable');
 $creditColumns  = 'credits.balance as balance, credits.last_donation_date, credits.last_donation_amount';
 
-$sql  = "LEFT OUTER JOIN {$server->loginDatabase}.{$userAccountTable} AS useraccounts ON {$usersTable}.{$userColumns->get('id')} = useraccounts.user_id ";
-$sql .= "LEFT OUTER JOIN $creditsTable AS credits ON {$usersTable}.{$userColumns->get('id')} = credits.user_id ";
-$sql .= "WHERE {$userColumns->get('group_id')} >= 0 ";
+$sqlpartial  = "LEFT OUTER JOIN {$server->loginDatabase}.{$userAccountTable} AS useraccounts ON {$usersTable}.{$userColumns->get('id')} = useraccounts.user_id ";
+$sqlpartial .= "LEFT OUTER JOIN $creditsTable AS credits ON {$usersTable}.{$userColumns->get('id')} = credits.user_id ";
+$sql = "WHERE {$userColumns->get('group_id')} >= 0 ";
 $userId = $params->get('id');
 if ($userId) {
     $sql .= "AND {$usersTable}.{$userColumns->get('id')} = ?";
@@ -82,17 +82,18 @@ else {
 $totalAccounts = "SELECT COUNT({$usersTable}.{$userColumns->get('id')}) AS total FROM {$server->loginDatabase}.{$usersTable} $sql";
 $sth = $server->connection->getStatement($totalAccounts);
 $sth->execute($bind);
-
+echo $totalAccounts;
 $paginator = $this->getPaginator($sth->fetch()->total);
 $paginator->setSortableColumns(array(
-    '{$usersTable}.user_id' => 'asc', 'user_id', 
+    'user_id' => 'asc', 'user_id', 
 	'group_id', 'email', 'logincount', 'last_ip',
     'reg_date'
 ));
 
 $columns = implode(", {$usersTable}.",$userColumns->toArray());
-$sql = "SELECT {$usersTable}.{$columns}, count(useraccounts.user_id) as totalAccounts, {$creditColumns} FROM {$server->loginDatabase}.{$usersTable} $sql";
+$sql  = "SELECT {$usersTable}.{$columns}, count(useraccounts.user_id) as totalAccounts, {$creditColumns} FROM {$server->loginDatabase}.{$usersTable} $sqlpartial $sql";
 $sql .= "GROUP BY {$usersTable}.{$columns}";
+$sql  = $paginator->getSQL($sql);
 $sth  = $server->connection->getStatement($sql);
 $sth->execute($bind);
 $accounts   = $sth->fetchAll();
