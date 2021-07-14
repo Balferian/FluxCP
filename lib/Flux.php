@@ -599,6 +599,7 @@ class Flux {
 			case 'bcrypt':
 				$password = password_hash($password, PASSWORD_BCRYPT);
 				break;
+			case 'md5':
 			default:
 				// Default hashing schema is MD5.
 				$password = md5($password);
