@@ -82,7 +82,7 @@ else {
 $totalAccounts = "SELECT COUNT({$usersTable}.{$userColumns->get('id')}) AS total FROM {$server->loginDatabase}.{$usersTable} $sql";
 $sth = $server->connection->getStatement($totalAccounts);
 $sth->execute($bind);
-echo $totalAccounts;
+
 $paginator = $this->getPaginator($sth->fetch()->total);
 $paginator->setSortableColumns(array(
     'user_id' => 'asc', 'user_id', 
