@@ -64,7 +64,7 @@ return array(
 	'AllowUserInPassword'		=> false,					// Whether or not to allow the password to contain the username. (NOTE: A case-insensitive search is performed)
 	'AllowDuplicateEmails'		=> false,					// Whether or not to allow duplicate e-mails to be used in registration. (See Mailer config options)
 	'MasterAccount'				=> true,					// Enable master account feature
-	'MasterAccountPasswordHash' => 'bcrypt',				// Master account password hashing algorithm
+	'MasterAccountPasswordHash' => 'md5',				// Master account password hashing algorithm
 	'MasterAccountMaxAccounts'  => 0,						// Maximum game account per master account; 0 to disable
 	'RequireEmailConfirm'		=> false,					// Require e-mail confirmation during registration.
 	'RequireChangeConfirm'		=> false,					// Require confirmation when changing e-mail addresses.
