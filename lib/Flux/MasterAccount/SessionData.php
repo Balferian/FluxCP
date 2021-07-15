@@ -161,7 +161,7 @@ class Flux_MasterSessionData extends Flux_SessionData {
             }
         }
 
-        if (!$loginAthenaGroup->isAuthMaster($email, $password)) {
+        if (!$loginAthenaGroup->isAuth($email, $password)) {
             throw new Flux_LoginError('Invalid login', Flux_LoginError::INVALID_LOGIN);
         }
 

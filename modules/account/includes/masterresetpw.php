@@ -42,11 +42,7 @@ for ($i = 0; $i < $passLength; ++$i) {
 }
 
 $unhashedNewPassword = $newPassword;
-if ($session->loginAthenaGroup->loginServer->config->getUseMD5()) {
-	$newPassword = Flux::hashPassword($newPassword);
-} else {
-	$newPassword = Flux::hashPassword($newPassword, Flux::config('MasterAccountPasswordHash'));
-}
+$newPassword = Flux::hashPassword($newPassword, Flux::config('MasterAccountPasswordHash'));
 
 if (!$sth->execute(array($_SERVER['REMOTE_ADDR'], $newPassword, $reset->id))) {
     $session->setMessageData(Flux::message('ResetPwFailed'));

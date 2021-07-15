@@ -23,34 +23,49 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
      * @param $password
      * @return boolean
      */
-    public function isAuthMaster($email, $password)
+    public function isAuth($email, $password)
     {
         if (!Flux::config('MasterAccount')) return false;
+		
+		$usersTable = Flux::config('FluxTables.MasterUserTable');
+		$userColumns = Flux::config('FluxTables.MasterUserTableColumns');
 
-        if (trim($email) == '' || trim($password) == '') {
-            return false;
-        }
+		if(Flux::config('MasterAccountPasswordHash') == 'bcrypt') {
+			if (trim($email) == '' || trim($password) == '') {
+				return false;
+			}
+			$sql  = "SELECT {$userColumns->get('id')},{$userColumns->get('password')} FROM {$this->loginDatabase}.{$usersTable}";
+			$sql .= " WHERE {$userColumns->get('group_id')} >= 0 ";
+			$sql .= "AND LOWER({$userColumns->get('email')}) = LOWER(?) LIMIT 1";
+			$sth  = $this->connection->getStatement($sql);
+			$sth->execute(array($email));
+			$res = $sth->fetch();
 
-     	if ($this->config->get('UseMD5')) {
-			$password = Flux::hashPassword($password);
+			return password_verify($password, $res->password);
+		} else {
+			if (trim($email) == '' || trim($password) == '') {
+				return false;
+			}
+
+			if (Flux::config('MasterAccountPasswordHash') == 'md5') {
+				$password = Flux::hashPassword($password);
+			}
+			
+			$sql  = "SELECT {$userColumns->get('id')},{$userColumns->get('password')} FROM {$this->loginDatabase}.{$usersTable}";
+			$sql .= " WHERE {$userColumns->get('group_id')} >= 0 ";
+			$sql .= "AND LOWER({$userColumns->get('email')}) = LOWER(?) AND password = ? LIMIT 1";
+			$sth  = $this->connection->getStatement($sql);
+			$sth->execute(array($email, $password));
+			
+			$res = $sth->fetch();
+			if ($res) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
-
-        $usersTable = Flux::config('FluxTables.MasterUserTable');
-        $userColumns = Flux::config('FluxTables.MasterUserTableColumns');
-        $sql  = "SELECT {$userColumns->get('id')},{$userColumns->get('password')} FROM {$this->loginDatabase}.{$usersTable}";
-        $sql .= " WHERE {$userColumns->get('group_id')} >= 0 ";
-        $sql .= "AND LOWER({$userColumns->get('email')}) = LOWER(?) LIMIT 1";
-        $sth  = $this->connection->getStatement($sql);
-        $sth->execute(array($email));
-        $res = $sth->fetch();
-
-		if($password == $res->password) {
-			return true;
-		}
-		else {
-			return false;
-		}
-    }
+	}
 
     public function register($username, $password, $confirmPassword, $birthDate, $securityCode, $email, $email2, $gender, $serverlist)
     {
@@ -118,11 +133,8 @@ class Flux_MasterLoginServer extends Flux_LoginServer {
             throw new Flux_RegisterError('E-mail address is already in use', Flux_RegisterError::EMAIL_ADDRESS_IN_USE);
         }
 
-		if ($this->config->getUseMD5()) {
-			$password = Flux::hashPassword($password);
-		} else {
-			$password = Flux::hashPassword($password, Flux::config('MasterAccountPasswordHash'));
-		}
+		$password = Flux::hashPassword($password, Flux::config('MasterAccountPasswordHash'));
+
         $withDates = !empty($userColumns->get('created_at')) && !empty($userColumns->get('updated_at'));
 
         $sql = "INSERT INTO {$this->loginDatabase}.{$usersTable} ";

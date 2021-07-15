@@ -105,9 +105,5 @@ class Flux_LoginAthenaGroup {
 	{
 		return $this->loginServer->isAuth($username, $password);
 	}
-	public function isAuthMaster($username, $password)
-	{
-		return $this->loginServer->isAuthMaster($username, $password);
-	}
 }
 ?>

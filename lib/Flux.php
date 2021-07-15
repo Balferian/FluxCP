@@ -596,12 +596,11 @@ class Flux {
 	public static function hashPassword($password, $algorithm = null)
 	{
 		switch ($algorithm) {
-			case 0:
+			case 'no':
 				break;
 			case 'bcrypt':
 				$password = password_hash($password, PASSWORD_BCRYPT);
 				break;
-			case 'md5':
 			default:
 				// Default hashing schema is MD5.
 				$password = md5($password);
