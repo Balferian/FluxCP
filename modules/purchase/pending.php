@@ -14,7 +14,7 @@ try {
 
 	$redeemTable = Flux::config('FluxTables.RedemptionTable');
 
-	$accounts = $session->account->game_accounts['account_ids'];
+	$accounts = Flux::config('MasterAccount') ? $session->account->game_accounts['account_ids'] : array($session->account->account_id);
 	$account_list = array();
 	foreach($accounts as $key => $account) {
         $account_list[] = " {$server->charMapDatabase}.$redeemTable.account_id = $account ";

@@ -13,7 +13,7 @@ $fromTables = $this->DatabasesList($server->charMapDatabase, Flux::config('FluxT
 $tableName = "{$server->charMapDatabase}.items";
 $tempTable = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
 
-$accounts = $session->account->game_accounts['account_ids'];
+$accounts = Flux::config('MasterAccount') ? $session->account->game_accounts['account_ids'] : array($session->account->account_id);
 $account_list = array();
 $isMine = $session->isMine($session->account->account_id);
 if ($isMine || $auth->allowedToSeePendingHistory) {

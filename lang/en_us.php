@@ -881,6 +881,7 @@ return array(
 	'MasterGameAccountCreated'      => 'Account successfully created.',
 	'MasterTotalAccountsLabel'      => 'Total Game Accounts',
 	'ReachedMaxGameAccounts'      	 => 'You have reach the (%d) maximum game account per master account and can\'t create anymore.',
+	'StorageLabel'      			 => 'Items from "%s" storage of %s',
 	
 	// VIP status
 	
