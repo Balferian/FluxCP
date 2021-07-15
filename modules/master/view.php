@@ -83,7 +83,7 @@ foreach($StorageTables as $table => $data) {
 	$sql .= "WHERE $table.user_id = ? ";
 
 	if (!$auth->allowedToSeeUnknownItems) {
-		$sql .= 'AND $table.identify > 0 ';
+		$sql .= "AND $table.identify > 0 ";
 	}
 
 	if ($account) {
