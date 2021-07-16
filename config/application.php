@@ -118,6 +118,7 @@ return array(
 	),
 	'PaypalHackNotify'          => true,                    // Send email notification if hack attempt detected (Notification will be send for each address in list PayPalBusinessEmail and PayPalReceiverEmails)
 	'PayPalAllowedHosts'		=> array(
+	'PayPalAllowedHosts'		=> array(					// PayPal IP list https://www.paypal.com/fm/smarthelp/article/what-are-the-ip-addresses-for-live-paypal-servers-ts1056
 		'ipn.sandbox.paypal.com',
 		'notify.paypal.com'
 	),
