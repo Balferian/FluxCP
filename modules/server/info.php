@@ -3,6 +3,7 @@ if (!defined('FLUX_ROOT')) exit;
 
 $title = Flux::message('ServerInfoTitle');
 $info  = array(
+		'users'      => 0,
 		'accounts'   => 0,
 		'characters' => 0,
 		'guilds'     => 0,
@@ -10,6 +11,16 @@ $info  = array(
 		'zeny'       => 0,
 		'classes'    => array()
 );
+
+if(Flux::config('MasterAccount')) {
+	// Users.
+	$usersTable = Flux::config('FluxTables.MasterUserTable');
+	$userColumns = Flux::config('FluxTables.MasterUserTableColumns');
+	$sql = "SELECT COUNT({$userColumns->get('id')}) AS total FROM {$server->loginDatabase}.{$usersTable}";
+	$sth = $server->connection->getStatement($sql);
+	$sth->execute();
+	$info['users'] += $sth->fetch()->total;
+}
 
 // Accounts.
 $sql = "SELECT COUNT(account_id) AS total FROM {$server->loginDatabase}.login WHERE sex != 'S' ";

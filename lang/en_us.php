@@ -697,6 +697,7 @@ return array(
 	'ServerInfoText'          => "Here you'll find various server information.",
 	'ServerInfoSubHeading'    => 'Information for %s',
 	'ServerInfoSubHeading2'   => 'Job Class Information for %s',
+	'ServerInfoUserLabel'     => 'Users',
 	'ServerInfoAccountLabel'  => 'Accounts',
 	'ServerInfoCharLabel'     => 'Characters',
 	'ServerInfoGuildLabel'    => 'Guilds',

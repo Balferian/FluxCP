@@ -5,6 +5,12 @@
 <h3><?php echo htmlspecialchars(sprintf(Flux::message('ServerInfoSubHeading'), $server->serverName)) ?></h3>
 <div class="generic-form-div">
 	<table class="generic-form-table">
+		<?php if(Flux::config('MasterAccount')): ?>
+			<tr>
+				<th><label><?php echo htmlspecialchars(Flux::message('ServerInfoUserLabel')) ?></label></th>
+				<td><p><?php echo number_format($info['users']) ?></p></td>
+			</tr>
+		<?php endif; ?>
 		<tr>
 			<th><label><?php echo htmlspecialchars(Flux::message('ServerInfoAccountLabel')) ?></label></th>
 			<td><p><?php echo number_format($info['accounts']) ?></p></td>
