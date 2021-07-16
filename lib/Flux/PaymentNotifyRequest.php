@@ -85,7 +85,7 @@ class Flux_PaymentNotifyRequest {
 		$this->myCurrencyCode  = strtoupper(Flux::config('DonationCurrency'));
 		$this->ipnVariables    = new Flux_Config($ipnPostVars);
 		$this->txnLogTable     = Flux::config('FluxTables.TransactionTable');
-		$this->creditsTable    = Flux::config('FluxTables.CreditsTable');
+		$this->creditsTable    = Flux::config('MasterAccount') ? Flux::config('FluxTables.MasterCreditsTable') : Flux::config('FluxTables.CreditsTable');
 	}
 
 	/**
@@ -132,7 +132,7 @@ class Flux_PaymentNotifyRequest {
 	 */
 	public function process()
 	{
-		$allowed_hosts = ['ipn.sandbox.paypal.com', 'notify.paypal.com'];
+		$allowed_hosts = Flux::config('PayPalAllowedHosts')->toArray();
 		$received_from = gethostbyaddr($this->fetchIP());
 		$this->logPayPal('Received notification from %s (%s)', $this->fetchIP(), $received_from);
 
@@ -239,13 +239,14 @@ class Flux_PaymentNotifyRequest {
 								$credits = floor($amount / $rate);
 
 								if ($trusted) {
-									$sql = "SELECT * FROM {$servGroup->loginDatabase}.{$this->creditsTable} WHERE account_id = ?";
+									$sql  = "SELECT * FROM {$servGroup->loginDatabase}.{$this->creditsTable} WHERE ";
+									$sql .= Flux::config('MasterAccount') ? "user_id = ?" : "account_id = ?";
 									$sth = $servGroup->connection->getStatement($sql);
-									$sth->execute(array($accountID));
+									$sth->execute(array($servGroup->loginServer->GetMasterID($accountID)));
 									$acc = $sth->fetch();
 
 									$this->logPayPal('Updating account credit balance from %s to %s', (int)$acc->balance, $acc->balance + $credits);
-									$res = $servGroup->loginServer->depositCredits($accountID, $credits, $amount);
+									$res = $servGroup->loginServer->depositCredits($servGroup->loginServer->GetMasterID($accountID), $credits, $amount);
 
 									if ($res) {
 										$this->logPayPal('Deposited credits.');
@@ -397,6 +398,7 @@ class Flux_PaymentNotifyRequest {
 		$request  = "POST /cgi-bin/webscr HTTP/1.1\r\n";
 		$request .= "Content-Type: application/x-www-form-urlencoded\r\n";
 		$request .= 'Content-Length: '.strlen($qString)."\r\n";
+		$request .= "User-Agent: MyServerUserAgent\r\n"; // this line, with any name i guess.
 		$request .= 'Host: '.$this->ppServer."\r\n";
 		$request .= "Connection: close\r\n\r\n";
 		$request .= $qString;

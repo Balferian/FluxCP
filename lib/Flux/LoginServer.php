@@ -702,5 +702,23 @@ class Flux_LoginServer extends Flux_BaseServer {
 			return false;
 		}
 	}
+
+	public function GetMasterID($targetAccountID)
+	{
+		if(!Flux::config('MasterAccount'))
+			return $targetAccountID;
+		if(!$targetAccountID)
+			return false;
+
+		$userAccountTable = "{$this->loginDatabase}.".Flux::config('FluxTables.MasterUserAccountTable');
+		$userColumns = Flux::config('FluxTables.MasterUserTableColumns');
+
+		$sql = "SELECT {$userColumns->get('id')} as master_id FROM $userAccountTable WHERE account_id = ?";
+		$sth = $this->connection->getStatement($sql);
+		$sth->execute(array($targetAccountID));
+		$master_id = $sth->fetch()->master_id;
+
+		return $master_id;
+	}
 }
 ?>

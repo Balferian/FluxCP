@@ -117,6 +117,10 @@ return array(
 		//'admin3@localhost'								// -- because your Business Email is also checked.
 	),
 	'PaypalHackNotify'          => true,                    // Send email notification if hack attempt detected (Notification will be send for each address in list PayPalBusinessEmail and PayPalReceiverEmails)
+	'PayPalAllowedHosts'		=> array(
+		'ipn.sandbox.paypal.com',
+		'notify.paypal.com'
+	),
 	'GStorageLeaderOnly'		=> false,					// Only allow guild leader to view guild storage rather than all members?
 	'DivorceKeepChild'			=> false,					// Keep child after divorce?
 	'DivorceKeepRings'			=> false,					// Keep wedding rings after divorce?
