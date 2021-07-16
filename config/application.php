@@ -456,10 +456,12 @@ return array(
 			'catcontrol'	=> 'Category Control',
 		),
 		'vending'			=> array(
-			'index'			=> 'Vendors',
+			'index'			=> 'Vendors Items',
+			'vendors'		=> 'Vendors',
 		),
 		'buyingstore'		=> array(
-			'index'			=> 'Buyers',
+			'index'			=> 'Buyers Items',
+			'buyers'		=> 'Buyers',
 		),
 		'map' => array(
 			'index' => 'Map List',

@@ -214,8 +214,14 @@ return array(
 			'staffsettings'	=> AccountLevel::LOWGM,
 			'catcontrol'	=> AccountLevel::HIGHGM
 		),
+		'buyingstore'		=> array(
+			'index'			=> AccountLevel::ANYONE,
+			'buyers'		=> AccountLevel::ANYONE,
+			'viewshop'		=> AccountLevel::ANYONE,
+		),	
 		'vending'		=> array(
 			'index'			=> AccountLevel::ANYONE,
+			'vendors'		=> AccountLevel::ANYONE,
 			'viewshop'		=> AccountLevel::ANYONE,
 		),	
 		'webcommands'	=> array(
