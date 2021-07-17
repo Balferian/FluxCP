@@ -8,6 +8,7 @@
 
 /data/monsters/*.png
 /data/monsters/*.gif
+/data/skills/*.png
 /data/maps/*.png
 /data/debug/*
 

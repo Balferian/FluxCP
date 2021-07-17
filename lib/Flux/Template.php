@@ -1461,6 +1461,24 @@ class Flux_Template {
 	/**
 	 *
 	 */
+	public function skillImage($skillID)
+	{
+		$path = sprintf(FLUX_DATA_DIR."/skills/".Flux::config('SkillIconNameFormat'), $skillID);
+		$link = preg_replace('&/{2,}&', '/', "{$this->basePath}/$path");
+		
+		if(Flux::config('DivinePrideIntegration') && !file_exists($path)) {
+			$download_link = "https://static.divine-pride.net/images/skill/$skillID.png";
+			$data = get_headers($download_link, true);
+			$size = isset($data['Content-Length']) ? (int)$data['Content-Length'] : 0;
+			if($size != 0 && $size != 654)
+				file_put_contents(sprintf(FLUX_DATA_DIR."/skills/".Flux::config('SkillIconNameFormat'), $skillID), file_get_contents($download_link));
+		}
+        return file_exists($path) ? $link : false;
+	}
+	
+	/**
+	 *
+	 */
 	public function iconImage($itemID)
 	{
 		$path = sprintf(FLUX_DATA_DIR."/items/icons/".Flux::config('ItemIconNameFormat'), $itemID);

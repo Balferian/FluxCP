@@ -14,6 +14,7 @@ return array(
 	'ThemeName'					=> array('default', 'bootstrap'), // Names of the themes you would like list for use in the footer. Themes are in FLUX_ROOT/themes.
 	'ScriptTimeLimit'			=> 0,						// Script execution time limit. Specifies (in seconds) how long a page should run before timing out. (0 means forever)
 	'MissingEmblemBMP'			=> 'empty.bmp',				//
+	'SkillIconNameFormat'		=> '%d.png',				// The filename format for skill icons (defaults to {skillid}.png).
 	'ItemIconNameFormat'		=> '%d.png',				// The filename format for item icons (defaults to {itemid}.png).
 	'ItemImageNameFormat'		=> '%d.png',				// The filename format for item images (defaults to {itemid}.png).
 	'CardNameFormat'			=> '%d.png',				// The filename format for card images (defaults to {itemid}.png).
