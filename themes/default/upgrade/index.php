@@ -1,7 +1,7 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
 <h2>Upgrades</h2>
 <?php if ($Upgrades): ?>
-<style>.items{}</style>	<?php echo $paginator->infoText() ?>
+	<?php echo $paginator->infoText() ?>
 	<table class="horizontal-table">
 		<tr>
 			<th colspan="2">Name</th>
