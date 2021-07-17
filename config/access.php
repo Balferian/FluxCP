@@ -248,6 +248,11 @@ return array(
 			'index'			=> AccountLevel::ANYONE,
 			'view'			=> AccountLevel::ANYONE,
 		),
+		'skills' => array(
+			'index'			=> AccountLevel::ANYONE,
+			'view'			=> AccountLevel::ANYONE,
+			'update'		=> AccountLevel::ADMIN,
+		),
 		'synthesis' => array(
 			'index'			=> AccountLevel::ANYONE,
 			'update'		=> AccountLevel::ADMIN,

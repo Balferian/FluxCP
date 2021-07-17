@@ -307,6 +307,7 @@ return array(
 			'MobDatabaseLabel'	=> array('module' => 'monster'),
 			'Maps Database' => array('module' => 'map'),
 			'Npcs Database' => array('module' => 'npcs'),
+			'Skills Database' => array('module' => 'skills'),
 			'Synthesis Database' => array('module' => 'synthesis'),
 			'Upgrades Database' => array('module' => 'upgrade'),
 		),
@@ -470,6 +471,10 @@ return array(
 		),
 		'npcs' => array(
 			'index'			=> 'NPC List',
+		),
+		'skills' => array(
+			'index'			=> 'Skills',
+			'update'		=> 'Update',
 		),
 		'synthesis' => array(
 			'index'			=> 'Synthesis',
@@ -653,6 +658,7 @@ return array(
 		'ServiceDeskSettingsTable'	=> 'cp_servicedesksettings',
 		'WebCommandsTable'			=> 'cp_commands',
 		'ItemDescTable'     		=> 'cp_itemdesc',
+		'SkillsTable'     			=> 'cp_skills',
 		'SynthesisTable'     		=> 'cp_synthesis',
 		'UpgradeTable'     			=> 'cp_upgrades',
 		'MobsSpawnTable'     		=> 'cp_mob_spawns',
