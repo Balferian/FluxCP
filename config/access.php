@@ -237,16 +237,24 @@ return array(
 			'history'		=> AccountLevel::NORMAL,
 		),
 		'script_parser' => array(
-			'index' => AccountLevel::ADMIN,
-			'get' => AccountLevel::ADMIN,
+			'index'			=> AccountLevel::ADMIN,
+			'get'			=> AccountLevel::ADMIN,
 		),
 		'map' => array(
-			'index' => AccountLevel::ANYONE,
-			'view' => AccountLevel::ANYONE,
+			'index'			=> AccountLevel::ANYONE,
+			'view'			=> AccountLevel::ANYONE,
 		),
 		'npcs' => array(
-			'index' => AccountLevel::ANYONE,
-			'view' => AccountLevel::ANYONE,
+			'index'			=> AccountLevel::ANYONE,
+			'view'			=> AccountLevel::ANYONE,
+		),
+		'synthesis' => array(
+			'index'			=> AccountLevel::ANYONE,
+			'update'		=> AccountLevel::ADMIN,
+		),
+		'upgrade' => array(
+			'index'			=> AccountLevel::ANYONE,
+			'update'		=> AccountLevel::ADMIN,
 		),
 	),
 	// General feature permissions, handled by the modules themselves.

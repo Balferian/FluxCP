@@ -307,6 +307,8 @@ return array(
 			'MobDatabaseLabel'	=> array('module' => 'monster'),
 			'Maps Database' => array('module' => 'map'),
 			'Npcs Database' => array('module' => 'npcs'),
+			'Synthesis Database' => array('module' => 'synthesis'),
+			'Upgrades Database' => array('module' => 'upgrade'),
 		),
 		'SocialLabel'		=> array(
 			'JoinUsInFacebookLabel'	=> array('exturl' => 'https://www.facebook.com/<change_me>'),
@@ -464,10 +466,18 @@ return array(
 			'buyers'		=> 'Buyers',
 		),
 		'map' => array(
-			'index' => 'Map List',
+			'index'			=> 'Map List',
 		),
 		'npcs' => array(
-			'index' => 'NPC List',
+			'index'			=> 'NPC List',
+		),
+		'synthesis' => array(
+			'index'			=> 'Synthesis',
+			'update'		=> 'Update',
+		),
+		'upgrade' => array(
+			'index'			=> 'Upgrades',
+			'update'		=> 'Update',
 		),
 	),
 
@@ -643,6 +653,8 @@ return array(
 		'ServiceDeskSettingsTable'	=> 'cp_servicedesksettings',
 		'WebCommandsTable'			=> 'cp_commands',
 		'ItemDescTable'     		=> 'cp_itemdesc',
+		'SynthesisTable'     		=> 'cp_synthesis',
+		'UpgradeTable'     			=> 'cp_upgrades',
 		'MobsSpawnTable'     		=> 'cp_mob_spawns',
 		'NpcsSpawnTable'     		=> 'cp_npcs',
 		'WarpsTable'     			=> 'cp_warps',

@@ -12,6 +12,8 @@ $shopTable = Flux::config('FluxTables.ItemShopTable');
 $itemDescTable = Flux::config('FluxTables.ItemDescTable');
 $npcsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.NpcsSpawnTable");
 $shopsDB = 	"{$server->charMapDatabase}.".FLUX::config("FluxTables.VendorsTable");
+$SynthesisTable = Flux::config('FluxTables.SynthesisTable');
+$UpgradesTable = Flux::config('FluxTables.UpgradeTable');
 
 $itemID = $params->get('id');
 
@@ -25,11 +27,13 @@ if(!$server->isRenewal) {
 	array_splice($class_list, 4);
 }
 
-$col  = 'items.id AS item_id, name_aegis AS identifier, ';
-$col .= 'name_english AS name, type, subtype, ';
-$col .= 'price_buy, price_sell, weight/10 AS weight, attack, defense, `range`, slots, gender, ';
-$col .= 'weapon_level, equip_level_min, equip_level_max, refineable, view, alias_name, ';
-$col .= 'script, equip_script, unequip_script, origin_table, ';
+$col  = "items.id AS item_id, name_aegis AS identifier, ";
+$col .= "name_english AS name, type, subtype, ";
+$col .= "price_buy, price_sell, weight/10 AS weight, attack, defense, `range`, slots, gender, ";
+$col .= "weapon_level, equip_level_min, equip_level_max, refineable, view, alias_name, ";
+$col .= "script, equip_script, unequip_script, origin_table, ";
+$col .= "$UpgradesTable.TargetItems, $UpgradesTable.NeedRefineMin as UNeedRefineMin, $UpgradesTable.NeedRefineMax as UNeedRefineMax, $UpgradesTable.NeedOptionNumMin as UNeedOptionNumMin, $UpgradesTable.NotSocketEnchantItem as UNotSocketEnchantItem, ";
+$col .= "$SynthesisTable.SourceItem, $SynthesisTable.NeedCount as SNeedCount, $SynthesisTable.NeedRefineMin as SNeedRefineMin, $SynthesisTable.NeedRefineMax as SNeedRefineMax, ";
 $col .= implode(', ', $job_list).', ';		// Job list
 $col .= implode(', ', $class_list).', ';	// Class list
 $col .= implode(', ', $equip_list).', ';
@@ -44,6 +48,8 @@ $col .= 'origin_table';
 
 $sql  = "SELECT $col FROM {$server->charMapDatabase}.items ";
 $sql .= "LEFT OUTER JOIN {$server->charMapDatabase}.$shopTable ON $shopTable.nameid = items.id ";
+$sql .= "LEFT OUTER JOIN {$server->charMapDatabase}.$UpgradesTable ON $UpgradesTable.ItemID = items.id ";
+$sql .= "LEFT OUTER JOIN {$server->charMapDatabase}.$SynthesisTable ON $SynthesisTable.ItemID = items.id ";
 if(Flux::config('ShowItemDesc')){
     $sql .= "LEFT OUTER JOIN {$server->charMapDatabase}.$itemDescTable ON $itemDescTable.itemid = items.id ";
 }
@@ -210,5 +216,35 @@ if ($item) {
 	$sth->execute(array($itemID));
 
 	$itemShop = $sth->fetchAll();
+	
+	// Upgrade items
+	if($item->TargetItems) {
+		$temps = explode(",", $item->TargetItems);
+		$TargetTemp = array();
+		foreach ($temps as $temp) {
+			$sql  = "SELECT name_english FROM items WHERE id = ?";
+			$sth  = $server->connection->getStatement($sql);
+			$sth->execute(array($temp));
+			$result = $sth->fetch();
+			$TargetTemp[$temp] = $result->name_english;
+		}
+		$item->TargetItems = $TargetTemp;
+	}
+
+	// Synthesis items
+	if($item->SourceItem) {
+		$temps = explode(",", $item->SourceItem);
+		$SourceTemp = array();
+		foreach ($temps as $temp) {
+			$items = explode(":", $temp);
+			$sql  = "SELECT name_english FROM items WHERE id = ?";
+			$sth  = $server->connection->getStatement($sql);
+			$sth->execute(array($items[0]));
+			$result = $sth->fetch();
+			$SourceTemp[$items[0]] = array($result->name_english, $items[1]);
+		}
+		$item->SourceItem = $SourceTemp;
+	}
+
 }
 ?>

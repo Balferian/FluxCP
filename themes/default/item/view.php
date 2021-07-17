@@ -211,6 +211,74 @@
     <?php endif ?>
     
 </table>
+
+<?php if($item->SourceItem): ?>
+<h3><?php echo htmlspecialchars($item->name) ?> can synthes items</h3>
+<table class="vertical-table">
+	<tr>
+		<th colspan="2">Items</th>
+		<th>Amount</th>
+		<th>Info</th>
+	</tr>
+	<?php foreach($item->SourceItem as $SourceKey => $SourceData): ?>
+		<tr>
+			<td width="24" style="vertical-align: top;">
+				<img src="<?php echo htmlspecialchars($this->iconImage($SourceKey)) ?>?nocache=<?php echo rand() ?>" style="vertical-align: middle;"/>
+			</td>
+			<td>
+				<?php if ($auth->actionAllowed('item', 'view')): ?>
+					<?php echo $this->linkToItem($SourceKey, $SourceData[0]) ?>
+				<?php else: ?>
+					<?php echo htmlspecialchars($SourceData[0]) ?>
+				<?php endif ?>
+			</td>
+			<td>
+				<?php echo $SourceData[1] ?> ea.
+			</td>
+			<?php if(!isset($synth)): ?>
+				<?php $synth = true; ?>
+				<td rowspan="<?php echo count($item->SourceItem) ?>">
+					Need count: <?php echo htmlspecialchars($item->SNeedCount) ?> ea.<br>
+					Need refine: <?php echo htmlspecialchars($item->SNeedRefineMin) ?>~<?php echo htmlspecialchars($item->SNeedRefineMax) ?>
+				</td>
+			<?php endif ?>
+		</tr>
+	<?php endforeach ?>
+</table>
+<?php endif ?>
+
+<?php if($item->TargetItems): ?>
+<h3><?php echo htmlspecialchars($item->name) ?> can upgrade items</h3>
+<table class="vertical-table">
+	<tr>
+		<th colspan="2">Items</th>
+		<th>Info</th>
+	</tr>
+	<?php foreach($item->TargetItems as $TargetKey => $TargetData): ?>
+		<tr>
+			<td width="24" style="vertical-align: top;">
+				<img src="<?php echo htmlspecialchars($this->iconImage($TargetKey)) ?>?nocache=<?php echo rand() ?>" style="vertical-align: middle;"/>
+			</td>
+			<td>
+				<?php if ($auth->actionAllowed('item', 'view')): ?>
+					<?php echo $this->linkToItem($TargetKey, $TargetData) ?>
+				<?php else: ?>
+					<?php echo htmlspecialchars($TargetData) ?>
+				<?php endif ?>
+			</td>
+			<?php if(!isset($upgrade)): ?>
+				<?php $upgrade = true; ?>
+				<td rowspan="<?php echo count($item->TargetItems) ?>">
+					Need Options: <?php echo htmlspecialchars($item->UNeedOptionNumMin) ?><br>
+					Need refine: <?php echo htmlspecialchars($item->UNeedRefineMin) ?>~<?php echo htmlspecialchars($item->UNeedRefineMax) ?><br>
+					Not Socket Enchant Item: <?php echo htmlspecialchars($item->UNotSocketEnchantItem) ?>
+				</td>
+			<?php endif ?>
+		</tr>
+	<?php endforeach ?>
+</table>
+<?php endif ?>
+
 <?php if ($itemDrops): ?>
 <h3><?php echo htmlspecialchars($item->name) ?> Dropped By</h3>
 <table class="vertical-table">

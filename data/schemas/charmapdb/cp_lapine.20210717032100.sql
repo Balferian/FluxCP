@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS `cp_synthesis` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`ItemID` INT(11) NOT NULL DEFAULT '0',
+	`NeedCount` INT(11) NOT NULL DEFAULT '0',
+	`NeedRefineMin` INT(11) NOT NULL DEFAULT '0',
+	`NeedRefineMax` INT(11) NOT NULL DEFAULT '0',
+	`SourceItem` TEXT NOT NULL,
+	`NeedSource_String` CHAR(100) NOT NULL DEFAULT '0',
+	UNIQUE INDEX `id` (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=0;
+
+CREATE TABLE IF NOT EXISTS `cp_upgrades` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`ItemID` INT(11) NOT NULL DEFAULT '0',
+	`NeedRefineMin` INT(11) NOT NULL DEFAULT '0',
+	`NeedRefineMax` INT(11) NOT NULL DEFAULT '0',
+	`NeedOptionNumMin` INT(11) NOT NULL DEFAULT '0',
+	`NotSocketEnchantItem` CHAR(50) NOT NULL DEFAULT 'false',
+	`TargetItems` TEXT NOT NULL,
+	`NeedSource_String` CHAR(100) NOT NULL DEFAULT '0',
+	UNIQUE INDEX `id` (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=0;
